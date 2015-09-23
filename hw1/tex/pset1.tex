@@ -29,9 +29,12 @@ This is implemented in the code, $grad\_descent.m$ which takes arguments, $x_i, 
 
 \subsection*{ Gradient Descent Benchmarking}
 
-
 We implemented this code on a few different functions, first simply a 1-D quadratic bowl, then on a N-D quadratic bowl 
-
+\begin{figure}[H]
+\center
+\includegraphics[scale =.4]{2DQuadBowl.pdf}
+\caption{Gradient Descent Program located the minimum, indicated by the red dot, on 2D quadratic Bowl}
+\end{figure}
 
 
 Implementing the gradient descent code on a sine wave, which has multiple minima,  allowed us to investigate better the effects of input parameters on the declared minima. The figures below show the effect of changing the initial guess and the tolerance. 
@@ -52,7 +55,23 @@ Implementing the gradient descent code on a sine wave, which has multiple minima
 \end{minipage}
 \caption{ Effect of changing input parameters. a) shows the effect of different initial guess leads to a different minimum. b) Setting tolerances too large does not capture true minimum. c) Setting step size too small increases number of iterations. Setting it too large also increases number of iterations by overshooting the minimum}
 \end{figure}
-
 By changing the initial guess at points where the slopes head towards different minima of course changes the output of the gradient descent process. If the tolerance is too high, the solver converges too quickly and does not find the true minima.  Changing the step size caused an increase in computation time because if it is excessively small, the number of steps increases dramatically and it if it is too large the solver can overshoot the minima. 
+
+\subsection*{ Central Differences}
+Here are the results from testing the two methods at different points.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+     point & function & analytically & numerically & difference \\ \hline
+     (11.2) & $f(x) = x^2$ & 22.4 & 22.4000 & $3.7*10^{-13}$ \\ \hline
+     (1, 1) & $f(x) = x_1^2+ x_2^2$ & (2, 2) & (2.0000, 2.0000) & $(10^{-15}, 10^{-15})$ \\ \hline
+     (3) & $f(x) = sin(x)$ & -.9900 & -.9900 & $4.1*10^{-10}$ \\ 
+    \hline
+  \end{tabular}
+\end{center}
+
+The analytical and numerical approximation for the gradient remain very close.
+
  
 \end{document}

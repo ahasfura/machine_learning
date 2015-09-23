@@ -1,4 +1,6 @@
+.DS_Store
 *.aux
 *.log
 *.pdf
-*.syntex.gz
+*.gz
+*~
