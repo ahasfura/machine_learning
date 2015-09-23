@@ -24,8 +24,22 @@ Where $ x(\tau)$ is the current guess, with $\tau$ being the current iteration, 
 
 
 \subsection*{ Gradient Descent Benchmarking}
+katy stuff!
 
+\subsection*{ Central Differences}
+Here are the results from testing the two methods at different points.
 
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+     point & function & analytically & numerically & difference \\ \hline
+     (11.2) & $f(x) = x^2$ & 22.4 & 22.4000 & $3.7*10^{-13}$ \\ \hline
+     (1, 1) & $f(x) = x_1^2+ x_2^2$ & (2, 2) & (2.0000, 2.0000) & $(10^{-15}, 10^{-15})$ \\ \hline
+     (3) & $f(x) = sin(x)$ & -.9900 & -.9900 & $4.1*10^{-10}$ \\ 
+    \hline
+  \end{tabular}
+\end{center}
 
+The analytical and numerical approximation for the gradient remain very close.
 
 \end{document}
