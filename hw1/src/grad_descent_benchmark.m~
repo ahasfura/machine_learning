@@ -36,5 +36,5 @@ hold on
 plot(x_min1, f_min1, 'og', 'MarkerSize', 15)
 plot(x_min3, f_min3, 'or', 'MarkerSize', 15)
 legend('function', 'Tol =10^-6', 'Tol=10^-1')
-axis([-2.5, -.5, -1, -.5])
+axis[-3, 1
 title('F(x)= sin(x)')
