@@ -63,3 +63,32 @@ plot(x_path4, f(x_path4), 'ok', 'MarkerSize', 10)
 legend('function', '\alpha =.2', '\alpha= .5', '\alpha=1.7')
 axis([-2.5, -.5, -1, -.5])
 title('F(x)= sin(x)')
+
+%% Comparison to Fmincon 
+
+f= @(x) 3*x.^4-8*x.^3+6*x.^2 +17; 
+g=@(x) 12*x.^3-24*x.^2+12*x;    
+
+xi=.5;
+[x_min1, f_min1]= grad_descent(xi,  .1, 10^-6,  f, g);
+[xf1, fval1]= fminunc(f, .5); 
+
+xi=1.5;
+[x_min, f_min]= grad_descent(xi,  .05, 10^-6,  f, g);
+[xf, fval]= fminunc(f, .5);
+
+xtest= linspace(-.5,2); 
+ftest= f(xtest); 
+plot(xtest, ftest)
+hold on 
+plot(x_min, f(x_min), 'og', 'MarkerSize', 10)
+plot(xf, f(xf), 'xg', 'MarkerSize', 10)
+
+plot(x_min1, f(x_min1), 'or', 'MarkerSize', 10)
+%plot(xf1, f(xf1), 'xr', 'MarkerSize', 10)
+
+legend('F(x)', 'GD x_i= 1.5', 'Fminunc x_i= 1.5', 'GD x_i= .5', 'Fminunc x_i= .5') 
+
+%% FMinunc
+
+

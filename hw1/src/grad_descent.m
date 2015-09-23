@@ -11,7 +11,7 @@ x_new = xi;
 
 while norm(x_new-x_old)> eps % check for convergence
     x_old = x_new;
-    x_new = x_old-(alpha*df(x_old)); 
+    x_new = x_old-(alpha*df(x_old));
     
 end 
 
