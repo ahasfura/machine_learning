@@ -1,4 +1,4 @@
-function [x_min,f_min]= grad_descent(xi, alpha, eps, f, df) 
+function [x_min,f_min,i]= grad_descent(xi, alpha, eps, f, df) 
 % where x_i is the initial guess
 %   alpha is the step size
 %   eps is the convergence tolerance 
@@ -8,8 +8,10 @@ function [x_min,f_min]= grad_descent(xi, alpha, eps, f, df)
 %%
 x_old = 10*eps+xi; % make something that will for sure not converge
 x_new = xi; 
+i=0;
 
 while norm(x_new-x_old)> eps % check for convergence
+    i=i+1; 
     x_old = x_new;
     x_new = x_old-(alpha*df(x_old));
     

@@ -70,12 +70,18 @@ f= @(x) 3*x.^4-8*x.^3+6*x.^2 +17;
 g=@(x) 12*x.^3-24*x.^2+12*x;    
 
 xi=.5;
-[x_min1, f_min1]= grad_descent(xi,  .1, 10^-6,  f, g);
-[xf1, fval1]= fminunc(f, .5); 
+tic
+[x_min1, f_min1, i1]= grad_descent(xi,  .1, 10^-6,  f, g);
+toc 
+tic 
+[xf1, fval1,~, o1]= fminunc(f, 1.5); 
+toc
 
 xi=1.5;
-[x_min, f_min]= grad_descent(xi,  .05, 10^-6,  f, g);
-[xf, fval]= fminunc(f, .5);
+tic
+[x_min, f_min, i]= grad_descent(xi,  .05, 10^-6,  f, g);
+toc
+[xf, fval, ~, o]= fminunc(f, 1.5);
 
 xtest= linspace(-.5,2); 
 ftest= f(xtest); 

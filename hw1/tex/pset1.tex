@@ -73,13 +73,35 @@ Here are the results from testing the two methods at different points.
 
 The analytical and numerical approximation for the gradient remain very close.
 
-\subsection*{Comparison to fmincon solver}
+\subsection*{Comparison to fminunc solver}
 
-To better evaluate the effectiveness of our solver we compared it to the performance of the Matlab unconstrained optimization solver, fmincon. We chose a trickier function, with local minima to compare performance, 
+To better evaluate the effectiveness of our solver we compared it to the performance of the Matlab unconstrained optimization solver, fminunc. We chose a trickier function, with local minima to compare performance, 
 
 \begin{equation}
 f(x)= 3x^4-8x^3+6x^2+17
 \end{equation}
 
+\begin{figure}[H]
+\label{fig: fminunc}
+\center
+\includegraphics[scale =.6]{comparetofminunc.pdf}
+\caption{Results of gradient descent algorithm versus results of fminunc for two initial guesses. For initial guess, $x_i= 1.5$ the gradient descent algorithm finds a local minimum but fminunc finds the global minimum}
+\end{figure}
  
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+     function & $x_i$ & function calls & computation time (s) & found global minimum \\ \hline
+     gradient descent & .5 &  11 &  0.008759 & YES \\ \hline
+     gradient descent & 1.5 & 1274  & 0.010258 & NO \\ \hline
+    fminunc & .5  & 6 & 0.022194 & YES  \\ \hline
+      fminunc &1.5 & 6 & 0.027067 & YES \\ 
+    \hline
+  \end{tabular}
+\end{center}
+Depending on the starting guess, fminunc and our gradient descent algorithm sometimes differ even with the same tolerances applied. As shown in fig~\ref{fig: fminunc} and the table, fminunc is better than our gradient descent algorithm at finding the global minimum in the presence of local minima.  However, as fminunc takes more precise, and therefore fewer, steps,  it also requires more computation time .
+
+\section{Linear Basis Function Regression}
+
 \end{document}
