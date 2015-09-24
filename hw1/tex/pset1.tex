@@ -8,8 +8,7 @@
 
 \begin{document}
 \title{6.867: Homework 1}
-\author{Andres Hasfura and Kathryn Evans}
-\maketitle
+
 \section{Gradient Descent}
 Gradient descent works by updating an initial guess by taking a step opposite the direction of the gradient at that initial guess. Moving opposite the gradient helps  to effectively move "downhill" in terms of the function value.  The formulation of the gradient descent method is as follows
 \begin{equation}
@@ -101,11 +100,16 @@ f(x)= 3x^4-8x^3+6x^2+17
     \hline
   \end{tabular}
 \end{center}
-Depending on the starting guess, fminunc and our gradient descent algorithm sometimes differ even with the same tolerances applied. As shown in fig~\ref{fig: fminunc} and the table, fminunc is better than our gradient descent algorithm at finding the global minimum in the presence of local minima.  However, as fminunc takes more precise, and therefore fewer, steps,  it also requires more computation time .
+Depending on the starting guess, fminunc and our gradient descent algorithm sometimes differ even with the same tolerances applied. As shown in the above figure and table, fminunc is better than our gradient descent algorithm at finding the global minimum in the presence of local minima.  However, as fminunc takes more precise, and therefore fewer, steps,  it also requires more computation time .
 
 \section{Linear Basis Function Regression}
 
-<<<<<<< HEAD
+\subsection*{Maximum Likelihood Weights}
+
+The procedure for computing the maximum likelihood weights is as follows. First we must take the vector of inputs $x$ and compute the each individual basis vector, $\phi$, according to the definition given by the problem set, $\phi_1(x) = x, ... , \phi_M(x) = x^M$. Then we concatenate the basis vectors into a matrix $\Phi$. Finally, we can directly solve for the weight vector, $w$, using the formula $w_{ml} = (\Phi^T  \Phi)^{-1}  \Phi^T y$.
+
+Shown below is a comparison of the weights we calculated versus the weights Bishop calculated for the same eight data points and different values of M and the corresponding graphs of the fit. Overall our results are nearly the same as those from the textbook.
+
 \begin{table}
 \begin{center}
 	\begin{tabular}{| c | c | c | c | c |}
@@ -117,12 +121,12 @@ Depending on the starting guess, fminunc and our gradient descent algorithm some
 \caption{Computed weights versus weights given in Bishop. Values in red show discrepancies.}
 \end{center}
 \end{table}
-=======
-\subsection*{Maximum Likelihood Weights}
 
-The procedure for computing the maximum likelihood weights is as follows. First we must take the vector of inputs $x$ and compute the each individual basis vector, $\phi$, according to the definition given by the problem set, $\phi_1(x) = x, ... , \phi_M(x) = x^M$. Then we concatenate the basis vectors into a matrix $\Phi$. Finally, we can directly solve for the weight vector, $w$, using the formula $w_{ml} = (\Phi^T * \Phi)^{-1} * \Phi^T * y$.
+\begin{figure}[H]
+\center
+\includegraphics[scale =.45]{ML_weight.pdf}
+\caption{Curves fit to data by maximum likelihood weights}
+\end{figure}
 
-Shown below is a comparison of the weights we calculated versus the weights Bishop calculated for the same eight data points and different values of M.
->>>>>>> origin/master
 
 \end{document}
