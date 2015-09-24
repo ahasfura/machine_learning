@@ -108,6 +108,6 @@ Depending on the starting guess, fminunc and our gradient descent algorithm some
 
 The procedure for computing the maximum likelihood weights is as follows. First we must take the vector of inputs $x$ and compute the each individual basis vector, $\phi$, according to the definition given by the problem set, $\phi_1(x) = x, ... , \phi_M(x) = x^M$. Then we concatenate the basis vectors into a matrix $\Phi$. Finally, we can directly solve for the weight vector, $w$, using the formula $w_{ml} = (\Phi^T * \Phi)^{-1} * \Phi^T * y$.
 
-Shown below is a comparison of the weights we calculated versus the weights Bishop calculated for the same eight data points.
+Shown below is a comparison of the weights we calculated versus the weights Bishop calculated for the same eight data points and different values of M.
 
 \end{document}
