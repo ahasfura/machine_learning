@@ -10,3 +10,4 @@ figure;
 plot(X, Y, 'o', 'MarkerSize', 10);
 xlabel('x');
 ylabel('y');
+end 

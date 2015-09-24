@@ -4,6 +4,7 @@
 \usepackage{mathtools}
 \usepackage{fullpage}
 \usepackage{float}
+\usepackage{color, soul}
 
 \begin{document}
 \title{6.867: Homework 1}
@@ -27,7 +28,7 @@ This is implemented in the code, $grad\_descent.m$ which takes arguments, $x_i, 
 
 
 
-\subsection*{ Gradient Descent Benchmarking}
+\subsection*{ Gradient Descent Testing}
 
 We implemented this code on a few different functions, first simply a 1-D quadratic bowl, then on a N-D quadratic bowl. In these instances the gradient descent performed well, finding the true solution with ease.  
 \begin{figure}[H]
@@ -103,5 +104,17 @@ f(x)= 3x^4-8x^3+6x^2+17
 Depending on the starting guess, fminunc and our gradient descent algorithm sometimes differ even with the same tolerances applied. As shown in fig~\ref{fig: fminunc} and the table, fminunc is better than our gradient descent algorithm at finding the global minimum in the presence of local minima.  However, as fminunc takes more precise, and therefore fewer, steps,  it also requires more computation time .
 
 \section{Linear Basis Function Regression}
+
+\begin{table}
+\begin{center}
+	\begin{tabular}{| c | c | c | c | c |}
+	\hline
+	Source & M=0 & M=1 & M=3 & M=9 \\ \hline
+	Computed  &  .19 & $\begin{bmatrix} .82 \\ -1.27 \end{bmatrix}$ & $\begin{bmatrix} .31 \\ 7.99 \\ -25.43 \\ 17.37 \end{bmatrix}$ & $\begin{bmatrix} .35 \\ \textcolor{red}{231.73} \\ \textcolor{red}{-5307.04} \\ \textcolor{red}{48435.64} \\  \textcolor{red}{-231018.45} \\ \textcolor{red}{638357.05} \\ \textcolor{red}{-1059050.39} \\ \textcolor{red}{1039740.82} \\ \textcolor{red}{-556279.81} \\ \textcolor{red}{124890.36} \end{bmatrix}$  \\ \hline
+	Bishop  &  .19 & $\begin{bmatrix} .82 \\ -1.27 \end{bmatrix}$ & $\begin{bmatrix} .31 \\ 7.99 \\ -25.43 \\ 17.37 \end{bmatrix}$ & $\begin{bmatrix} .35 \\ 232.37 \\ -5321.83 \\ 48568.31 \\  -231639.30 \\ 640042.26 \\ -1061800.52 \\ 1042400.18 \\ -557682.99 \\ 125201.43 \end{bmatrix}$  \\ \hline
+	\end{tabular}
+\caption{Computed weights versus weights given in Bishop. Values in red show discrepancies.}
+\end{center}
+\end{table}
 
 \end{document}
