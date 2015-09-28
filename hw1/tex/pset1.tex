@@ -146,6 +146,9 @@ If the basis functions were sine functions, it would fit this data set very well
 Had we not known the underlying distribution was itself a sine function, using sine functions for your basis functions can have two main potential disadvantages. First, it can require many terms to model simple functions (such as a line), and second not every function can be modeled only by sines, only odd functions can be modeled.
 
 \section{Ridge Regression}
+
+\subsection*{ Implementation}
+
 To implement ridge regression a simple modification to the equation used in problem 2 was made
 \begin{equation}
 w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
@@ -160,5 +163,28 @@ To compare to Bishop we implemented and plotted the results for $\lambda = {0, .
 \end{figure}
 
 recall that large $\lambda$ values penalize higher order terms. $\lambda = 0$ is the same as the maximum likelihood solution, so it is reasonable for lower order fits and overfitted when M is large. $\lambda = .1$ causes the polynomial to be too smooth, so the error to be very high. $\lambda = .001$ strikes a balance between too much error while still being generalizable. $\lambda = .001$ and M = 9 still produces a curve that looks similar to $sin(2\pi x)$, the function we originally sampled from.
+
+\subsection*{ Model Selection}
+
+We ran a grid search optimization to find the best $\lambda$ and M for the ridge regression. Below are our findings.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+     $\lambda$ & M = 0 & M = 1 &  M = 2 & M = 3 \\ \hline
+     1 & 39.15 & 19.13 & 22.86 & 23.59 \\ \hline
+     2 & 36.75 & 17.66 & 23.63 & 24.01 \\ \hline
+     3 & 35.17 & 16.89 & 24.42 & 24.86  \\ \hline
+     4 & 34.12 & 16.57 & 25.20 & 25.58  \\ \hline
+     5 & 33.42 & \textcolor{red}{16.53} & 25.95 & 26.16  \\ \hline
+     6 & 32.95 & 16.67 & 26.66 & 26.62  \\ \hline
+
+    \hline
+  \end{tabular}
+\end{center}
+
+M = 0 and $\lambda = 5$ produces the smallest error.
+
+\subsection*{ BlogFeedback Dataset}
 
 \end{document}
