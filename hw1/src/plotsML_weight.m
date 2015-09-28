@@ -48,11 +48,13 @@ plot(xplot, y9)
 title('M=9')
 %%
 
-M= 0; 
-wi= 1; 
+M= 1; 
+wi= [1; 1]; 
 f= @(x) sum_of_squares_error(X,Y, x, M);
 df= @(x) d_sum_of_squares_error(X,Y, x, M); 
 alpha= .01; 
 eps= 10^-6; 
 
 [x_min,f_min,i]= grad_descent(wi, alpha, eps, f, df); 
+
+[xf, fval, ~, o]= fminunc(f, wi);
