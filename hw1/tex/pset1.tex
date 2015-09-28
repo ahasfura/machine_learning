@@ -159,4 +159,6 @@ To compare to Bishop we implemented and plotted the results for $\lambda = {0, .
 \caption{Effect of $\lambda$ on data fit}
 \end{figure}
 
+recall that large $\lambda$ values penalize higher order terms. $\lambda = 0$ is the same as the maximum likelihood solution, so it is reasonable for lower order fits and overfitted when M is large. $\lambda = .1$ causes the polynomial to be too smooth, so the error to be very high. $\lambda = .001$ strikes a balance between too much error while still being generalizable. $\lambda = .001$ and M = 9 still produces a curve that looks similar to $sin(2\pi x)$, the function we originally sampled from.
+
 \end{document}
