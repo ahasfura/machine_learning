@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[10pt,twocolumn]{article}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{mathtools}
@@ -39,19 +39,19 @@ We implemented this code on a few different functions, first simply a 1-D quadra
 
 By implementing the gradient descent code on a sine wave, which has multiple minima, the effects of input parameters on the declared minima could be investigated. The figures below show the effect of changing the initial guess and the tolerance. 
 \begin{figure}[H]
-\begin{minipage}{.3\textwidth}
+\begin{minipage}{.17\textwidth}
 \center
-\includegraphics[scale=.25]{1Dsin.pdf}
+\includegraphics[scale=.17]{1Dsin.pdf}
 	
 \end{minipage}
-\begin{minipage}{.3\textwidth}
+\begin{minipage}{.17\textwidth}
 \center
-\includegraphics[scale=.25]{1DsinHighTol.pdf}
+\includegraphics[scale=.17]{1DsinHighTol.pdf}
 	
 \end{minipage}
-\begin{minipage}{.3\textwidth}
+\begin{minipage}{.1\textwidth}
 \center
-\includegraphics[scale=.25]{1DsinStepSize.pdf}
+\includegraphics[scale=.17]{1DsinStepSize.pdf}
 \end{minipage}
 \caption{ Effect of changing input parameters. a) shows the effect of different initial guess leads to a different minimum. b) Setting tolerances too large does not capture true minimum. c) Setting step size too small increases number of iterations. Setting it too large also increases number of iterations by overshooting the minimum}
 \end{figure}
@@ -63,9 +63,9 @@ Here are the results from testing the two methods at different points.
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     point & function & analytically & numerically & difference \\ \hline
+     point & function & analytic & numeric & diff \\ \hline
      (11.2) & $f(x) = x^2$ & 22.4 & 22.4000 & $3.7*10^{-13}$ \\ \hline
-     (1, 1) & $f(x) = x_1^2+ x_2^2$ & (2, 2) & (2.0000, 2.0000) & $(10^{-15}, 10^{-15})$ \\ \hline
+     (1, 1) & $f(x) = x_1^2+ x_2^2$ & (2, 2) & (2.0, 2.0) & $(10^{-15}, 10^{-15})$ \\ \hline
      (3) & $f(x) = sin(x)$ & -.9900 & -.9900 & $4.1*10^{-10}$ \\ 
     \hline
   \end{tabular}
@@ -92,11 +92,11 @@ f(x)= 3x^4-8x^3+6x^2+17
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     function & $x_i$ & function calls & computation time (s) & found global minimum \\ \hline
-     gradient descent & .5 &  11 &  0.008759 & YES \\ \hline
-     gradient descent & 1.5 & 1274  & 0.010258 & NO \\ \hline
-    fminunc & .5  & 6 & 0.022194 & YES  \\ \hline
-      fminunc &1.5 & 6 & 0.027067 & YES \\ 
+     function & $x_i$ & calls &  time (s) & global \\ \hline
+     gradient descent & .5 &  11 &  0.009 & YES \\ \hline
+     gradient descent & 1.5 & 1274  & 0.010 & NO \\ \hline
+    fminunc & .5  & 6 & 0.022 & YES  \\ \hline
+      fminunc &1.5 & 6 & 0.027 & YES \\ 
     \hline
   \end{tabular}
 \end{center}
