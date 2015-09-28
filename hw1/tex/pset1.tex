@@ -145,4 +145,18 @@ If the basis functions were sine functions, it would fit this data set very well
 
 Had we not known the underlying distribution was itself a sine function, using sine functions for your basis functions can have two main potential disadvantages. First, it can require many terms to model simple functions (such as a line), and second not every function can be modeled only by sines, only odd functions can be modeled.
 
+\section{Ridge Regression}
+To implement ridge regression a simple modification to the equation used in problem 2 was made
+\begin{equation}
+w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
+\end{equation}
+
+To compare to Bishop we implemented and plotted the results for $\lambda = {0, .1, .001} $
+
+\begin{figure}[H]
+\center
+\includegraphics[scale =.3]{rr_lambdas.png}
+\caption{Effect of $\lambda$ on data fit}
+\end{figure}
+
 \end{document}
