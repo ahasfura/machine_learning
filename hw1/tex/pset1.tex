@@ -128,5 +128,13 @@ Shown below is a comparison of the weights we calculated versus the weights Bish
 \caption{Curves fit to data by maximum likelihood weights}
 \end{figure}
 
+\subsection*{ Sum of Squares Error}
+For a particular hypothesis, $w, M $ and data points $(X, Y)$ the sum of squares error and its derivative are given by
 
+\begin{align}
+SSE(w) = (\Phi(M, X) w - Y)^T(\Phi(M, X) w - Y)\\
+\frac{\partial SSE}{\partial w}= 2 \Phi(M,X)(\Phi(M,X)w -Y) 
+\end{align}
+
+The derivative was verified by testing against the numerical derivative code. Discrepancies for all tried values were under $10^{-10}$. 
 \end{document}

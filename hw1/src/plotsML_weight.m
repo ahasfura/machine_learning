@@ -5,9 +5,10 @@ data = importdata('curvefitting.txt');
 X = data(1,:)';
 Y = data(2,:)';
 xplot= linspace(0,1); 
-
+%%
 M=0; 
 [w_ml0]=  WeightVec(X,Y, M); 
+[SSE0, dSSE0, diff0]=sum_of_squares_error(X,Y, w_ml0, M); 
 y0= zeros(size(xplot))+w_ml0; 
 subplot(1,4,1)
 plot(X,Y,'o', 'MarkerSize', 10)
@@ -18,6 +19,8 @@ title('M=0')
 M=1; 
 [w_ml1]=  WeightVec(X,Y, M); 
 y1= w_ml1(1)+w_ml1(2)*xplot; 
+[SSE1, dSSE1, diff1]=sum_of_squares_error(X,Y, w_ml1, M); 
+
 subplot(1,4,2)
 plot(X,Y,'o', 'MarkerSize', 10)
 hold on 
@@ -43,4 +46,13 @@ plot(X,Y,'o', 'MarkerSize', 10)
 hold on 
 plot(xplot, y9)
 title('M=9')
+%%
 
+M= 0; 
+wi= 1; 
+f= @(x) sum_of_squares_error(X,Y, x, M);
+df= @(x) d_sum_of_squares_error(X,Y, x, M); 
+alpha= .01; 
+eps= 10^-6; 
+
+[x_min,f_min,i]= grad_descent(wi, alpha, eps, f, df); 
