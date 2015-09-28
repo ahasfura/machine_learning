@@ -138,10 +138,11 @@ SSE(w) = (\Phi(M, X) w - Y)^T(\Phi(M, X) w - Y)\\
 
 The derivative was verified by testing against the numerical derivative code. Discrepancies for all tried values were under $10^{-10}$. 
 
+For the same tolerances fminunc and the gradient descent algorithm found the same minimum. This is because the objective function is effectively a n-dimesion quadratic bowl so it has no issues with local minima. However, the gradient descent function takes significantly more function calls than fminunc. The exact number depends on the chosen step size and initial guess but can be many orders of magnitude larger. 
+
 \subsection*{ Sine Basis Function}
 If the basis functions were sine functions, it would fit this data set very well, just because the data was generated from a sine function. The weight for the $sin(2 \pi x)$ will be large, whereas the weights for the other larger frequency sine terms will be close to zero.
 
 Had we not known the underlying distribution was itself a sine function, using sine functions for your basis functions can have two main potential disadvantages. First, it can require many terms to model simple functions (such as a line), and second not every function can be modeled only by sines, only odd functions can be modeled.
-
 
 \end{document}
