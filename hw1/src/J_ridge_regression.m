@@ -10,5 +10,6 @@ A = lambda * eye(M+1,M+1) + Phi' * Phi;
 B = Phi'*Y;
 
 w_ml = A\B; 
+%w_ml=w_ml/norm(w_ml); 
 
 end 

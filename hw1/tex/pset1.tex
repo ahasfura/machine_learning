@@ -63,10 +63,10 @@ Here are the results from testing the two methods at different points.
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     point & function & analytic & numeric & diff \\ \hline
-     (11.2) & $f(x) = x^2$ & 22.4 & 22.4000 & $3.7*10^{-13}$ \\ \hline
-     (1, 1) & $f(x) = x_1^2+ x_2^2$ & (2, 2) & (2.0, 2.0) & $(10^{-15}, 10^{-15})$ \\ \hline
-     (3) & $f(x) = sin(x)$ & -.9900 & -.9900 & $4.1*10^{-10}$ \\ 
+     point & function  & diff \\ \hline
+     (11.2) & $f(x) = x^2$ & $3.7*10^{-13}$ \\ \hline
+     (1, 1) & $f(x) = x_1^2+ x_2^2$ & $(10^{-15}, 10^{-15})$ \\ \hline
+     (3) & $f(x) = sin(x)$ & $4.1*10^{-10}$ \\ 
     \hline
   \end{tabular}
 \end{center}
@@ -84,7 +84,7 @@ f(x)= 3x^4-8x^3+6x^2+17
 \begin{figure}[H]
 \label{fig: fminunc}
 \center
-\includegraphics[scale =.6]{comparetofminunc.pdf}
+\includegraphics[scale =.5]{comparetofminunc.pdf}
 \caption{Results of gradient descent algorithm versus results of fminunc for two initial guesses. For initial guess, $x_i= 1.5$ the gradient descent algorithm finds a local minimum but fminunc finds the global minimum}
 \end{figure}
  
@@ -110,7 +110,7 @@ The procedure for computing the maximum likelihood weights is as follows. First 
 
 Shown below is a comparison of the weights we calculated versus the weights Bishop calculated for the same eight data points and different values of M and the corresponding graphs of the fit. Overall our results are nearly the same as those from the textbook.
 
-\begin{table}
+\begin{table}[H]
 \begin{center}
 	\begin{tabular}{| c | c | c | c | c |}
 	\hline
@@ -121,6 +121,8 @@ Shown below is a comparison of the weights we calculated versus the weights Bish
 \caption{Computed weights versus weights given in Bishop. Values in red show discrepancies.}
 \end{center}
 \end{table}
+
+
 
 \begin{figure}[H]
 \center
@@ -149,54 +151,68 @@ Had we not known the underlying distribution was itself a sine function, using s
 
 \subsection*{ Implementation}
 
-To implement ridge regression a simple modification to the equation used in problem 2 was made
+To implement ridge regression a simple modification to the equation used in problem 2 was made to both the weight selection and the quadratic regularization applied to the error function 
 \begin{equation}
 w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
 \end{equation}
+\begin{equation}
+E(w_{r}) = \frac{1}{2}((w_{r} \Phi -Y)^T(w_{r} \Phi -Y) + \lambda w_{r}^T w_{r}))
+\end{equation}
 
-To compare to Bishop we implemented and plotted the results for $\lambda = {0, .1, .001} $
+To compare to Bishop we implemented and plotted the results for $\lambda = {0, .00001, .1} $
 
 \begin{figure}[H]
 \center
-\includegraphics[scale =.3]{rr_lambdas.png}
+\includegraphics[scale =.4]{rr_lambdas.png}
 \caption{Effect of $\lambda$ on data fit}
 \end{figure}
 
-recall that large $\lambda$ values penalize higher order terms. $\lambda = 0$ is the same as the maximum likelihood solution, so it is reasonable for lower order fits and overfitted when M is large. $\lambda = .1$ causes the polynomial to be too smooth, so the error to be very high. $\lambda = .001$ strikes a balance between too much error while still being generalizable. $\lambda = .001$ and M = 9 still produces a curve that looks similar to $sin(2\pi x)$, the function we originally sampled from.
+recall that large $\lambda$ values penalize higher order terms. $\lambda$ now controls the effective complexity
+of the model and hence determines the degree of over-fitting.  $\lambda = 0$ is the same as the maximum likelihood solution, so it is reasonable for lower order fits and overfitted when M is large. $\lambda = .1$ causes the polynomial to be too smooth, so the error to be very high. $\lambda = .00001$ strikes a balance between too much error while still being generalizable. $\lambda = .00001$ and M = 9 still produces a curve that looks similar to $sin(2\pi x)$, the function we originally sampled from.
 
 \subsection*{ Model Selection}
 
 \begin{figure}[H]
 \center
-\includegraphics[scale =.3]{test_train_validate.png}
+\includegraphics[scale =.4]{test_train_validate.png}
 \caption{Provided data}
 \end{figure}
 
+From the above data we can infer issues we may come across. The training data set has a single outlier that does not follow the generally linear pattern which will influence the preferred model order. 
 
+Given the above training, test, and validation data, we ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error with quadratic regularization for $M= {0,1,2,3,4,5}$  for $10^{-20} < \lambda <1 $. Below are the results for the error cost at the optimal lambda given set M on the validation data set when trained on the training set. 
 
-Given the above training, test, and validation data, we ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error. The minimum sum of squares error for the training data set occurred at M = 1 and $\lambda = 5$. These values also fit pretty well for the validation set, so we chose these parameters as our model selection. Below is the average performance of our model between the validation and test set.
- 
 \begin{table}
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     $\lambda$ & M = 1 &  M = 2 & M = 3 \\ \hline
-     0 & 17.55& 16.17 & 13.62  \\ \hline
-     .1 & 17.36 & 16.16 & {13.57}  \\ \hline
-     .2 & 17.17 & {16.16} & 13.58   \\ \hline
-     .3 & 16.99 & 16.17 & 13.62   \\ \hline
-     4 & 14.16 & 17.43 & 17.24   \\ \hline
-     5 & \textcolor{red}{14.07} & 17.87 & 17.84  \\ \hline
-     6 & 14.11 & 18.31 & 18.33  \\ \hline
+     M & $\lambda ^*$  & E(w) \\ \hline
+     0 & 1 & 15.48  \\ \hline
+     1 & $10^{-20}$ & 7.99   \\ \hline
+     2 & $10^{-20}$ & 4.74   \\ \hline
+     3 & $2 \cdot 10^{-15}$ & 1.82   \\ \hline
+     4 & .60 & \textcolor{red}{1.62}   \\ \hline
+     5 & 1 & 14.69  \\ \hline    
     \hline
   \end{tabular}
-  \caption{Average of the sum of squares error for the test and validation data sets. Model selection highlighted in red. }
+  \caption{Sum of squares with quadratic regularization error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
 \end{center}
 \label{table:ave_sse}
 \end{table}
 
-As you can see in Table 2, there were other parameters (namely $\lambda = .1$ and M = 3) that would have performed better, but given only the training and validation sets, our chosen parameters performed well, achieving a 14.07 SSE. It makes intuitive sense that a good value for M would be 1, since the data seems to be drawn from something roughly linear.
+
+
+The minimum sum of squares error for the validation data set occurred at M = 4 and $\lambda = .60$. This claims that the best fit is a 4th order polynomial. There is a trade off between the model order, M and the corresponding $\lambda$ because both of them influence the amount of  complexity of the model and corresponding  degree of over-fitting.  If we wanted to further optimize the model parameters an exhaustive cross validation might provide different insight since the outlier in the training data would no longer influence the weights, w. 
 
 \subsection*{ BlogFeedback Dataset}
+For this data set we will implement a simple linear regression. For a data entry x, where x is defined by D attributes, $\Phi(x)= \begin{bmatrix} 1 &  x_1 & ... & x_D \end{bmatrix}$ and $y = w^T x$. With this specification we only have to worry about the effect of one parameter, $\lambda$. Again we implemented a search for the minimum lambda by considering logarithmically spaced values between $10^{-15}$ and 1. The corresponding cost is shown in Fig. 7. The value of $\lambda $ that gave us the lowest cost was found to be $\lambda ^* = .0048$ . However the error is large because the number of data entries is large.
 
+\begin{figure}[H]
+\center
+\includegraphics[scale =.4]{3_3.png}
+\caption{Effect of choice of $\lambda$ on the error function. Graph a shows the cost over the entire set of values tried where as graph b simply shows a subset of the values focus at the area around the minimum, indicated by the red circle}
+\end{figure}
+
+\section{Generalizations}
+ 
 \end{document}

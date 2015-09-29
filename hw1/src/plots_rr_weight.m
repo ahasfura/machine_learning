@@ -5,7 +5,7 @@ data = importdata('curvefitting.txt');
 X = data(1,:)';
 Y = data(2,:)';
 xplot= linspace(0,1); 
-lambdas = [0, .1, .001];
+lambdas = [0, .00001, .1];
 %%
 subplot(1,4,3)
 plot(X,Y,'o', 'MarkerSize', 10)
