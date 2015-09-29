@@ -166,8 +166,6 @@ recall that large $\lambda$ values penalize higher order terms. $\lambda = 0$ is
 
 \subsection*{ Model Selection}
 
-Given training, test and validation data of the form, 
-
 \begin{figure}[H]
 \center
 \includegraphics[scale =.3]{test_train_validate.png}
@@ -176,28 +174,28 @@ Given training, test and validation data of the form,
 
 
 
-We ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error. The minimum sum of squares error for the test data set occurred at M = 1 and $\lambda = 5$. The same procedure was followed on the validation set. Here the minimum sum of squares error was found to be at M=3 and  $\lambda = .1$. This means that the order of best fit polynomial is different for the test data and the validation data.  Taking the average of the errors from the test and validation sets leads to the optimal model parameters of $M=3$ $\lambda =.1$ but only by a small percentage as shown below
-
+Given the above training, test, and validation data, we ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error. The minimum sum of squares error for the training data set occurred at M = 1 and $\lambda = 5$. These values also fit pretty well for the validation set, so we chose these parameters as our model selection. Below is the average performance of our model between the validation and test set.
+ 
 \begin{table}
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
      $\lambda$ & M = 1 &  M = 2 & M = 3 \\ \hline
      0 & 17.55& 16.17 & 13.62  \\ \hline
-     .1 & 17.36 & 16.16 & \textcolor{red}{13.57}  \\ \hline
-     .2 & 17.17 & \textcolor{red}{16.16} & 13.58   \\ \hline
+     .1 & 17.36 & 16.16 & {13.57}  \\ \hline
+     .2 & 17.17 & {16.16} & 13.58   \\ \hline
      .3 & 16.99 & 16.17 & 13.62   \\ \hline
      4 & 14.16 & 17.43 & 17.24   \\ \hline
      5 & \textcolor{red}{14.07} & 17.87 & 17.84  \\ \hline
      6 & 14.11 & 18.31 & 18.33  \\ \hline
-	
     \hline
   \end{tabular}
-  \caption{Average of the sum of squares error for the test and validation data sets. The red values indicate the minimum for each set order, M. Thus the optimal solution with this specified training set is thus a third order polynomial }
+  \caption{Average of the sum of squares error for the test and validation data sets. Model selection highlighted in red. }
 \end{center}
+\label{table:ave_sse}
 \end{table}
 
-If we wanted to further validate that the correct model was indeed a third order polynomial, we could implement an exhaustive cross-validation and utilize each division of the data as a training set and test on the remaining sets. 
+As you can see in Table 2, there were other parameters (namely $\lambda = .1$ and M = 3) that would have performed better, but given only the training and validation sets, our chosen parameters performed well, achieving a 14.07 SSE. It makes intuitive sense that a good value for M would be 1, since the data seems to be drawn from something roughly linear.
 
 \subsection*{ BlogFeedback Dataset}
 
