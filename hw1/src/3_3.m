@@ -4,39 +4,28 @@ X = importdata('x_train.csv');
 Y = importdata('y_train.csv');
 
 xtest = importdata('x_test.csv');
-xtest = importdata('y_test.csv');
+ytest = importdata('y_test.csv');
 
 xval= importdata('x_val.csv');
 yval= importdata('y_val.csv');
 
 
 %%
-lambdas = linspace(5,6,11);
-for i= 1:10 
+lambdas = logspace(-5,10,20);
+for i= 1:20 
 lambda=lambdas(i); 
  
-    M=1; 
-    [w_ml1]=  ridge_regression(X,Y, M, lambda); 
-    y1t= w_ml1(1)+w_ml1(2)*xtest;  
+    
+    [w_ml1]=  J_ridge_regression(X,Y, lambda); 
+    y1t= (w_ml1(1)+w_ml1(2:end)'*xtest')';  
       SSE1(i)= (y1t-ytest)'*(y1t-ytest); 
 
-    y1v= w_ml1(1)+w_ml1(2)*xval;  
-      SSE1V(i)= (y1t-yval)'*(y1t-yval); 
+     y1v= (w_ml1(1)+w_ml1(2:end)'*xval')';  
+      SSE1V(i)= (y1v-yval)'*(y1v-yval); 
 
-    subplot(1,4,2)
-    plot(xval, y1t, '*')
-     hold on 
-    %plot(X,Y, 'o')
-
-    subplot(1,4,1)
-    plot(xtest, y1t, '*')
-     hold on 
-    plot(X,Y, 'o')
-
-    plot(xtest, ytest, 'o')
-    title('M=1')
-
- end   
+    
+end  
+    
 
 %%
 lambdas = linspace(5,6,10);

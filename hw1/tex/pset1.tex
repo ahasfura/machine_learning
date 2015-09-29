@@ -176,7 +176,7 @@ Given training, test and validation data of the form,
 
 
 
-We ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error. The minimum sum of squares error for the test data set occurred at M = 1 and $\lambda = 5$. The same procedure was followed on the validation set. Here the minimum sum of squares error was found to be at M=3 and  $\lambda = .1$. This means that the order of best fit polynomial is different for the test data and the validation data.  Taking the average of the errors from the test and validation sets leads to the optimal model parameters of $M=3$ $\lambda =.1$ but only by a small percentage as shown below
+We ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error. The minimum sum of squares error for the validation data set occurred at M=3 and  $\lambda = .1$. The same procedure was followed on test set. Here the minimum sum of squares error was found to be at M=1 $\lambda =1$ . This means that the order of best fit polynomial is different for the test data and the validation data.  Taking the average of the errors from the test and validation sets leads to the optimal model parameters of $M=3$ $\lambda =.1$ but only by a small percentage as shown below
 
 \begin{table}
 \begin{center}
@@ -197,7 +197,7 @@ We ran a grid search optimization to find the best $\lambda$ and M for the ridge
 \end{center}
 \end{table}
 
-If we wanted to further validate that the correct model was indeed a third order polynomial, we could implement an exhaustive cross-validation and utilize each division of the data as a training set and test on the remaining sets. 
+If we wanted to further validate that the correct model was indeed a third order polynomial, we could implement an exhaustive cross-validation and utilize each division of the data as a training set and validate on the remaining sets. 
 
 \subsection*{ BlogFeedback Dataset}
 
