@@ -11,17 +11,17 @@ yval= importdata('y_val.csv');
 
 
 %%
-lambdas = logspace(-4,-2,20);
-for i= 1:20 
+lambdas = logspace(0,4,100);
+for i= 1:100 
     lambda=lambdas(i); 
     
     [w_ml1]=  J_ridge_regression(X,Y, lambda); 
     
     y1t= (w_ml1(1)+w_ml1(2:end)'*xtest')';  
-    SSE1(i)= .5*((y1t-ytest)'*(y1t-ytest)+lambda*(norm(w_ml1))^2); 
+    SSE1(i)= (y1t-ytest)'*(y1t-ytest); %% +lambda*(norm(w_ml1))^2; 
 
     y1v= (w_ml1(1)+w_ml1(2:end)'*xval')';  
-    SSE1V(i)= .5*((y1v-yval)'*(y1v-yval)+lambda*(norm(w_ml1))^2); 
+    SSE1V(i)= (y1v-yval)'*(y1v-yval); %%  +lambda*(norm(w_ml1))^2; 
 
 end  
 %%

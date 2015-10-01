@@ -145,11 +145,13 @@ Had we not known the underlying distribution was itself a sine function, using s
 \subsection*{ Implementation}
 
 To implement ridge regression a simple modification to the equation used in problem 2 was made to both the weight selection and the quadratic regularization applied to the error function 
-\begin{equation}
-w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
-\end{equation}
+
 \begin{equation}
 E(w_{r}) = \frac{1}{2}((\Phi w_{r}  -Y)^T( \Phi w_{r}  -Y) + \lambda w_{r}^T w_{r}))
+\end{equation}
+Exhibiting the closed form solution, 
+\begin{equation}
+w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
 \end{equation}
 
 To compare to Bishop we implemented and plotted the results for $\lambda = {0, .00001, .1} $
@@ -164,7 +166,7 @@ recall that large $\lambda$ values penalize higher order terms. $\lambda$ now co
 of the model and hence determines the degree of over-fitting.  $\lambda = 0$ is the same as the maximum likelihood solution, so it is reasonable for lower order fits and overfitted when M is large. $\lambda = .1$ causes the polynomial to be too smooth, so the error to be very high. $\lambda = .00001$ strikes a balance between too much error while still being generalizable. $\lambda = .00001$ and M = 9 still produces a curve that looks similar to $sin(2\pi x)$, the function we originally sampled from.
 
 \subsection*{ Model Selection}
-
+In this problem we were provide the following three datasets: train, test and validation. 
 \begin{figure}[H]
 \center
 \includegraphics[scale =.4]{test_train_validate.png}
@@ -173,13 +175,13 @@ of the model and hence determines the degree of over-fitting.  $\lambda = 0$ is 
 
 From the above data we can infer issues we may come across. The training data set has a single outlier that does not follow the generally linear pattern which will influence the preferred model order. 
 
-Given the above training, test, and validation data, we ran a grid search optimization to find the best $\lambda$ and M for the ridge regression which minimized the sums of squares error with quadratic regularization for $M= {0,1,2,3,4,5}$  for $10^{-20} < \lambda <1 $. Below are the results for the error cost at the optimal lambda given set M on the validation data set when trained on the training set. 
+Given the above training, test, and validation data, we ran a grid search optimization to find the best $\lambda$ and M for the ridge regression weights. The best model parameters were those which minimized the sums of squares error. Specifically we searched across $M= {0,1,2,3,4,5}$  for $10^{-20} < \lambda <1 $. Below are the results for the error cost at the optimal lambda given set M on the validation data set when trained on the training set. 
 
 \begin{table}
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     M & $\lambda ^*$  & E(w) \\ \hline
+     M & $\lambda ^*$  &$ E(w^*)$ \\ \hline
      0 & 1 & 15.48  \\ \hline
      1 & $10^{-20}$ & 7.99   \\ \hline
      2 & $10^{-20}$ & 4.74   \\ \hline
@@ -188,14 +190,14 @@ Given the above training, test, and validation data, we ran a grid search optimi
      5 & 1 & 14.69  \\ \hline    
     \hline
   \end{tabular}
-  \caption{Sum of squares with quadratic regularization error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
+  \caption{Ridge Regression:  Sum of Squares error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
 \end{center}
 \label{table:ave_sse}
 \end{table}
 
 
 
-The minimum sum of squares error for the validation data set occurred at M = 4 and $\lambda = .67$. This claims that the best fit is a 4th order polynomial which looks like it fits well on the validation data .
+The minimum sum of squares error for the validation data set occurred at M = 4 and $\lambda = .67$. This claims that the best fit is a 4th order polynomial which looks like it somewhat fits the validation data .
 \begin{figure}[H]
 \center
 \includegraphics[scale =.4]{valplot.png}
@@ -213,12 +215,14 @@ However if we look at this fit compared to the test data, the test data looks a 
  There is a trade off between the model order, M and the corresponding $\lambda$ because both of them influence the amount of  complexity of the model and corresponding  degree of over-fitting.  If we wanted to further optimize the model parameters an exhaustive cross validation might provide different insight since the outlier in the training data would no longer influence the weights, w. 
 
 \subsection*{ BlogFeedback Dataset}
-For this data set we will implement a simple linear regression. For a data entry x, where x is defined by D attributes, $\Phi(x)= \begin{bmatrix} 1 &  x_1 & ... & x_D \end{bmatrix}$ and $y = w^T x$. With this specification we only have to worry about the effect of one parameter, $\lambda$. Again we implemented a search for the minimum lambda by considering logarithmically spaced values between $10^{-15}$ and 1. The corresponding cost is shown in Fig. 7. The value of $\lambda $ that gave us the lowest cost was found to be $\lambda ^* = .0048$ . However the error is large because the number of data entries is large.
+For this data set we will implement a simple linear regression. For a data entry x, where x is defined by D attributes, $\Phi(x)= \begin{bmatrix} 1 &  x_1 & ... & x_D \end{bmatrix}$ and $y = w^T x$. With this specification we only have to worry about the effect of one parameter, $\lambda$. 
+
+Again we implemented a search for the minimum lambda by considering logarithmically spaced values between $10^{-10}$ and $10^4$. The corresponding cost is shown in Fig. 7. The value of $\lambda $ that gave us the lowest cost was found to be $\lambda ^* = 3.51 \cdot 10^3 $ . However the error is large because the number of data entries is large.
 
 \begin{figure}[H]
 \center
 \includegraphics[scale =.4]{3_3.png}
-\caption{Effect of choice of $\lambda$ on the error function. Graph a shows the cost over the entire set of values tried where as graph b simply shows a subset of the values focus at the area around the minimum, indicated by the red circle}
+\caption{Ridge Regression: Effect of choice of $\lambda$ on the error of the validation data.  The minimum is indicated by the red circle}
 \end{figure}
 
 \section{Generalizations}
@@ -231,35 +235,41 @@ E(w_{LAD}) = \frac{1}{2}(|\Phi w_{LAD}  -Y| + \lambda w_{LAD}^T w_{LAD}))
 \end{equation}
 
 
-Instead of using grid search like in question 3, we instead utilized the gradient descent algorithm to select the optimal model. One important thing to note is that when implementing LAD, we introduce a nonlinearity into the optimization objective function which is paired with a non-differentiability in the gradient. Therefore to get convergence in the gradient descent algorithm we must implement the sub gradient method in which the step size continuously decays by 
+Because there is no close form calculation for the weights in LAD, we instead use a gradient descent algorithm to select the weights that minimize the LAD error on the training data. One important thing to note is that when implementing LAD, we introduce a nonlinearity into the optimization objective function which is paired with a non-differentiability in the gradient. Therefore to get convergence in the gradient descent algorithm we must implement the sub gradient method in which the step size continuously decays by 
 
 \begin{equation}
 \alpha= \frac{\alpha_0 }{\sqrt{n}}
 \end{equation}
 
-Again choosing M, and allowing gradient search to choose the optimal $\lambda$  the results are shown in  Table 3. The optimal model, ($M=4, \lambda = .69$) was very similar to the one chosen with ridge regression, ($M=4, \lambda=.67$) .
+This process is implement the gradient search on $w$ on the LAD error with regularization on the training data at each point within the grid search across M, and lambda that seeks to minimize the absolute value of the error of the validation data. The grid search included values of $M= {0,1,2,3,4,5}$  for $10^{-10} < \lambda <10 $. The results are shown in  Table 3. The optimal model, ($M=1, \lambda = 0$) was very different to the one chosen with ridge regression, ($M=4, \lambda=.67$) .
 \begin{table}
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     M & $\lambda ^*$  & E(w) \\ \hline
-     0 & $9.97 \cdot 10^{-7}$ & 7.75  \\ \hline
-     1 & $9.99 \cdot 10^{-7}$ & 5.37   \\ \hline
-     2 & $9.99 \cdot 10^{-7}$ & 3.71   \\ \hline
-     3 & $9.97 \cdot 10^{-7}$ & 2.60   \\ \hline
-     4 & .69 & \textcolor{red}{2.43}   \\ \hline
-     5 & 1 & 7.66  \\ \hline    
+     M & $\lambda ^*$  & E($w^*$) \\ \hline
+     0 & 10 & 12.71  \\ \hline
+     1 & $ 10^{-10}$ & \textcolor{red}{2.24}   \\ \hline
+     2 & 1 & 9.63   \\ \hline
+     3 & 2.78 & 5.88   \\ \hline
+     4 & $10^{-10}$ & 7.46   \\ \hline
+    
     \hline
   \end{tabular}
-  \caption{LAD error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
+  \caption{LAD Regression: Error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
 \end{center}
 \label{table:ave_sse}
 \end{table}
 
+For the optimal model, ($M=1, \lambda = 0$), the optimal weights are $w= \begin{bmatrix} 0.8919  &&   0.9015 \end{bmatrix}$ and the prediction fit is shown in Fig. 10. This result fits much better and makes more sense when the test data is overlaid. 
+
+\begin{figure}[H]
+\center
+\includegraphics[scale =.4]{4_1.png}
+\caption{Model fit for LAD regression}
+\end{figure}
 
 
-
-Utilizing the l1 norm ought to be more robust that using OLS. This is because large outliers that would produce errors greater than one are not further increased by squaring. 
+Utilizing the l1 norm turned out to be more robust that using SSE as we were able to find the linear solution with LAD and not with Ridge. This is because large outliers that would produce errors greater than one are not further increased by squaring. Therefore LAD might be a good choice if the data set is known to have an extreme outlier
  
  
 \end{document}
