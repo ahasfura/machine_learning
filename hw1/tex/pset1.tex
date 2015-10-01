@@ -51,12 +51,18 @@ By implementing the gradient descent code on a sine wave, which has multiple min
 By changing the initial guess at points where the slopes head towards different minima of course changes the output of the gradient descent process. If the tolerance is too high, the solver converges too quickly and does not find the true minima.  Changing the step size caused an increase in computation time because if it is excessively small, the number of steps increases dramatically and it if it is too large the solver can overshoot the minima. 
 
 \subsection*{ Central Differences}
-Here are the results from testing the two methods at different points.
+Central difference is a method used to approximate the derivative of a function at a point. It works by finding the function value at two points on either side of the point of interest and using the slope between them as the derivative. Here is the formula:
+
+\begin{equation}
+\delta_h[f](x) = f(x+1/2h) - f(x-1/2h)
+\end{equation}
+
+Here are the differences in results from testing two methods, central difference with step size $h$=.0001 and the analytical method, at different points for different functions.
 
 \begin{center}
   \begin{tabular}{ | c | c | c | c | c | }
     \hline
-     point & function  & diff \\ \hline
+     point & function  & difference \\ \hline
      (11.2) & $f(x) = x^2$ & $3.7*10^{-13}$ \\ \hline
      (1, 1) & $f(x) = x_1^2+ x_2^2$ & $(10^{-15}, 10^{-15})$ \\ \hline
      (3) & $f(x) = sin(x)$ & $4.1*10^{-10}$ \\ 
@@ -64,7 +70,7 @@ Here are the results from testing the two methods at different points.
   \end{tabular}
 \end{center}
 
-The analytical and numerical approximation for the gradient remain very close.
+For small values of $h$ the analytical and numerical approximation for the gradient remain very close. Therefore we can accept central difference as an acceptable approximation for these functions.
 
 \subsection*{Comparison to Matlab solver}
 
