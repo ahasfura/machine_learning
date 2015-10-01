@@ -11,25 +11,24 @@ ytest= test(2,:)';
 xval= validate(1,:)'; 
 yval= validate(2,:)'; 
 %%
-lambdas = logspace(-1,0,100);
 
-for i= 83:83 
-lambda=lambdas(i); 
-    M=0; 
-    [w_ml0]=  ridge_regression(X, Y, M, lambda); 
-    y0t= zeros(size(xval))+w_ml0; 
-    SSE0V(i)= .5*((y0t-yval)'*(y0t-yval)+lambda*(norm(w_ml0))^2); 
+
+    M=1; 
+    f= @(lambda) LAD_error(X, Y, M, lambda, xval, yval); 
+
+    [x_min, f_min, i]= grad_descent_nog(.000001 , .00001, 10^(-6), f, .1);
+
     subplot(1,4,1)
     plot(xval, y0t, '*')
     hold on 
     %plot(X,Y, 'o')
     plot(xval, yval, 'o')
     title('M=0')
-
+%%
     M=1; 
     [w_ml1]=  ridge_regression(X,Y, M, lambda); 
     y1t= w_ml1(1)+w_ml1(2)*xval;  
-      SSE1V(i)= .5*((y1t-yval)'*(y1t-yval)+lambda*(norm(w_ml1))^2);; 
+      SSE1V(i)= .5*(sum(abs(y1t-yval))+lambda*(w_ml1)'*w_ml1);; 
 
     subplot(1,4,2)
     plot(xval, y1t, '*')
@@ -43,7 +42,7 @@ lambda=lambdas(i);
  M=2; 
     [w_ml2]=  ridge_regression(X,Y, M, lambda); 
     y2t= w_ml2(1)+w_ml2(2)*xval+ w_ml2(3)*xval.^2; 
-     SSE2V(i)= .5*((y2t-yval)'*(y2t-yval)+lambda*(norm(w_ml2))^2);; 
+     SSE2V(i)= .5*(sum(abs(y2t-yval))+lambda*(w_ml2)'*w_ml2);; 
 
     subplot(1,4,3)
     plot(xval, y2t, '*')
@@ -55,7 +54,7 @@ lambda=lambdas(i);
     M=3; 
     [w_ml3]=  ridge_regression(X,Y, M, lambda); 
     y3t= w_ml3(1)+w_ml3(2)*xval+ w_ml3(3)*xval.^2+w_ml3(4)*xval.^3;
-     SSE3V(i)= .5*((y3t-yval)'*(y3t-yval)+lambda*(norm(w_ml3))^2); 
+     SSE3V(i)= .5*(sum(abs(y3t-yval))+lambda*w_ml3'*w_ml3); 
 
     subplot(1,4,4)
     hold on 
@@ -67,13 +66,13 @@ lambda=lambdas(i);
      M=4; 
     [w_ml4]=  ridge_regression(X,Y, M, lambda); 
     y4t= w_ml4(1)+w_ml4(2)*xval+ w_ml4(3)*xval.^2+w_ml4(4)*xval.^3+ w_ml4(5)*xval.^4;
-     SSE4V(i)= .5*((y4t-yval)'*(y4t-yval)+lambda*(norm(w_ml4))^2); 
+     SSE4V(i)= .5*(sum(abs(y4t-yval))+lambda*(w_ml4)'*w_ml4); 
 
 
     M=5; 
     [w_ml5]=  ridge_regression(X,Y, M, lambda); 
     y5t= w_ml5(1)+w_ml5(2)*xval+ w_ml5(3)*xval.^2+w_ml5(4)*xval.^3+ w_ml5(5)*xval.^4+w_ml5(6)*xval.^5;
-     SSE5V(i)= .5*((y5t-yval)'*(y5t-yval)+lambda*(norm(w_ml5))^2); 
+     SSE5V(i)= .5*(sum(abs(y5t-yval))+lambda*(w_ml5)'*w_ml5); 
 
 
 
@@ -95,7 +94,7 @@ lambda=lambdas(i);
 %%
 xpred= linspace(-2.5,2); 
  y4t= w_ml4(1)+w_ml4(2)*xpred+ w_ml4(3)*xpred.^2+w_ml4(4)*xpred.^3+ w_ml4(5)*xpred.^4;
-plot (xtest,ytest, 'k*')
+plot (xval,yval, 'o')
 hold on 
 plot(xpred, y4t, '-')
 

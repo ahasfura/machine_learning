@@ -23,7 +23,7 @@ Where $ x(\tau)$ is the current guess, with $\tau$ being the current iteration, 
 \left \lVert x(\tau+1)-x(\tau) \right \rVert \leq \epsilon
 \end{equation}
 
-This is implemented in the code, $grad\_descent.m$ which takes arguments, $x_i, \alpha, \epsilon, f,$ and $df$ where $f$, and $df$ are function handles and returns $x_{min}, f(x_{min})$
+This is implemented in the code in a way that could be tested on N-D functions. 
 
 
 
@@ -39,20 +39,13 @@ We implemented this code on a few different functions, first simply a 1-D quadra
 
 By implementing the gradient descent code on a sine wave, which has multiple minima, the effects of input parameters on the declared minima could be investigated. The figures below show the effect of changing the initial guess and the tolerance. 
 \begin{figure}[H]
-\begin{minipage}{.17\textwidth}
 \center
-\includegraphics[scale=.17]{1Dsin.pdf}
+\includegraphics[scale=.3]{1Dsin.pdf}
 	
-\end{minipage}
-\begin{minipage}{.17\textwidth}
-\center
-\includegraphics[scale=.17]{1DsinHighTol.pdf}
+
+\includegraphics[scale=.3]{1DsinHighTol.pdf}
 	
-\end{minipage}
-\begin{minipage}{.1\textwidth}
-\center
-\includegraphics[scale=.17]{1DsinStepSize.pdf}
-\end{minipage}
+\includegraphics[scale=.3]{1DsinStepSize.pdf}
 \caption{ Effect of changing input parameters. a) shows the effect of different initial guess leads to a different minimum. b) Setting tolerances too large does not capture true minimum. c) Setting step size too small increases number of iterations. Setting it too large also increases number of iterations by overshooting the minimum}
 \end{figure}
 By changing the initial guess at points where the slopes head towards different minima of course changes the output of the gradient descent process. If the tolerance is too high, the solver converges too quickly and does not find the true minima.  Changing the step size caused an increase in computation time because if it is excessively small, the number of steps increases dramatically and it if it is too large the solver can overshoot the minima. 
@@ -156,14 +149,14 @@ To implement ridge regression a simple modification to the equation used in prob
 w_{ridge} = (\lambda I + \Phi^T  \Phi)^{-1}  \Phi^T y
 \end{equation}
 \begin{equation}
-E(w_{r}) = \frac{1}{2}((w_{r} \Phi -Y)^T(w_{r} \Phi -Y) + \lambda w_{r}^T w_{r}))
+E(w_{r}) = \frac{1}{2}((\Phi w_{r}  -Y)^T( \Phi w_{r}  -Y) + \lambda w_{r}^T w_{r}))
 \end{equation}
 
 To compare to Bishop we implemented and plotted the results for $\lambda = {0, .00001, .1} $
 
 \begin{figure}[H]
 \center
-\includegraphics[scale =.4]{rr_lambdas.png}
+\includegraphics[scale =.5]{rr_lambdas.png}
 \caption{Effect of $\lambda$ on data fit}
 \end{figure}
 
@@ -175,7 +168,7 @@ of the model and hence determines the degree of over-fitting.  $\lambda = 0$ is 
 \begin{figure}[H]
 \center
 \includegraphics[scale =.4]{test_train_validate.png}
-\caption{Provided data}
+\caption{Provided data. Looking at the overall data the trend appears roughly linear. However there is a large outlier in the training data}
 \end{figure}
 
 From the above data we can infer issues we may come across. The training data set has a single outlier that does not follow the generally linear pattern which will influence the preferred model order. 
@@ -191,7 +184,7 @@ Given the above training, test, and validation data, we ran a grid search optimi
      1 & $10^{-20}$ & 7.99   \\ \hline
      2 & $10^{-20}$ & 4.74   \\ \hline
      3 & $2 \cdot 10^{-15}$ & 1.82   \\ \hline
-     4 & .60 & \textcolor{red}{1.62}   \\ \hline
+     4 & .67 & \textcolor{red}{1.60}   \\ \hline
      5 & 1 & 14.69  \\ \hline    
     \hline
   \end{tabular}
@@ -202,7 +195,22 @@ Given the above training, test, and validation data, we ran a grid search optimi
 
 
 
-The minimum sum of squares error for the validation data set occurred at M = 4 and $\lambda = .60$. This claims that the best fit is a 4th order polynomial. There is a trade off between the model order, M and the corresponding $\lambda$ because both of them influence the amount of  complexity of the model and corresponding  degree of over-fitting.  If we wanted to further optimize the model parameters an exhaustive cross validation might provide different insight since the outlier in the training data would no longer influence the weights, w. 
+The minimum sum of squares error for the validation data set occurred at M = 4 and $\lambda = .67$. This claims that the best fit is a 4th order polynomial which looks like it fits well on the validation data .
+\begin{figure}[H]
+\center
+\includegraphics[scale =.4]{valplot.png}
+\caption{Ridge Regression fit from training data optimized on validation data shown with the original validation data. The best fit was determined to be a 4th order polynomial.}
+\end{figure}
+
+However if we look at this fit compared to the test data, the test data looks a lot more linear that the validation data. This causes the model to not fit as well at the lower extreme.  Due to the outlier in the training data and the small cluster at the lower extreme of the validation data that looks flat, the optimal solution is a 4th order polynomial. Had we optimized over the more linear looking test data, we would have seen a linear model as the solution. 
+
+\begin{figure}[H]
+\center
+\includegraphics[scale =.4]{testplot.png}
+\caption{Ridge Regression fit from training data optimized on validation data against the test data. The model does not fit well at the lower x values as the test data looks linear }
+\end{figure}
+
+ There is a trade off between the model order, M and the corresponding $\lambda$ because both of them influence the amount of  complexity of the model and corresponding  degree of over-fitting.  If we wanted to further optimize the model parameters an exhaustive cross validation might provide different insight since the outlier in the training data would no longer influence the weights, w. 
 
 \subsection*{ BlogFeedback Dataset}
 For this data set we will implement a simple linear regression. For a data entry x, where x is defined by D attributes, $\Phi(x)= \begin{bmatrix} 1 &  x_1 & ... & x_D \end{bmatrix}$ and $y = w^T x$. With this specification we only have to worry about the effect of one parameter, $\lambda$. Again we implemented a search for the minimum lambda by considering logarithmically spaced values between $10^{-15}$ and 1. The corresponding cost is shown in Fig. 7. The value of $\lambda $ that gave us the lowest cost was found to be $\lambda ^* = .0048$ . However the error is large because the number of data entries is large.
@@ -214,5 +222,44 @@ For this data set we will implement a simple linear regression. For a data entry
 \end{figure}
 
 \section{Generalizations}
+\subsection*{Outlier and LAD}
+
+Using the same test set as the ridge regression question, we implemented a LAD approach, which include a linear term in error but a quadratic term in the regularization, 
+
+\begin{equation}
+E(w_{LAD}) = \frac{1}{2}(|\Phi w_{LAD}  -Y| + \lambda w_{LAD}^T w_{LAD}))
+\end{equation}
+
+
+Instead of using grid search like in question 3, we instead utilized the gradient descent algorithm to select the optimal model. One important thing to note is that when implementing LAD, we introduce a nonlinearity into the optimization objective function which is paired with a non-differentiability in the gradient. Therefore to get convergence in the gradient descent algorithm we must implement the sub gradient method in which the step size continuously decays by 
+
+\begin{equation}
+\alpha= \frac{\alpha_0 }{\sqrt{n}}
+\end{equation}
+
+Again choosing M, and allowing gradient search to choose the optimal $\lambda$  the results are shown in  Table 3. The optimal model, ($M=4, \lambda = .69$) was very similar to the one chosen with ridge regression, ($M=4, \lambda=.67$) .
+\begin{table}
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+     M & $\lambda ^*$  & E(w) \\ \hline
+     0 & $9.97 \cdot 10^{-7}$ & 7.75  \\ \hline
+     1 & $9.99 \cdot 10^{-7}$ & 5.37   \\ \hline
+     2 & $9.99 \cdot 10^{-7}$ & 3.71   \\ \hline
+     3 & $9.97 \cdot 10^{-7}$ & 2.60   \\ \hline
+     4 & .69 & \textcolor{red}{2.43}   \\ \hline
+     5 & 1 & 7.66  \\ \hline    
+    \hline
+  \end{tabular}
+  \caption{LAD error at the optimal lambda for validation data sets for given order. Optimal model selection given just training and validation data is highlighted in red. }
+\end{center}
+\label{table:ave_sse}
+\end{table}
+
+
+
+
+Utilizing the l1 norm ought to be more robust that using OLS. This is because large outliers that would produce errors greater than one are not further increased by squaring. 
+ 
  
 \end{document}
