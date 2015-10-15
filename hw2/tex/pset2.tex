@@ -1,5 +1,6 @@
 \documentclass[10pt,twocolumn]{article}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{fullpage}
@@ -38,6 +39,48 @@ As the magnitude of w increases the steepness of the hyperplane increases.  If $
  
  \section{Support Vector Machine}
  
- Another implementation method of binary classification is the Support Vector Machine. Instead of 
- dual form of linear SVMs with slack variables     
+ Another implementation method of binary classification is the Support Vector Machine. In this classification method, we seek to divide the data into the different classifications with a clear a gap as possible. This gap or margin is defined as support vectors and takes advantage of the hinge loss.  The simplest form of SVM, the primal hard form, is expressed as 
+
+ \begin{equation}
+\min_w ||w||^2
+\end{equation}
+\begin{equation}
+s.t. \: \forall i, y^{(i)}w^T x^{(i)} \geq 1 
+ \end{equation}
+    
+ The hard form of SVM does not allow any leeway on the constraints, making it impossible to create a model if the data is not linearly separable. To increase the capability of the SVM, the soft SVM, includes a slack variable, $\xi$, For the straight forward primal form of soft SVM applied to the linear case,  $\Phi(x)= \begin{bmatrix} 1 & x _1 & x_2 & ... \end{bmatrix}^T$ , the overall objective once combined with corresponding constraint is thus
+ \begin{equation}
+ \min_{w, w_0} (\frac{1}{2} ||w||^2 + C \sum_{i=1}^n \xi_i)
+ \end{equation}
+ \begin{equation}
+ s.t. \: y^{(i)}(w^Tx^{(i)} + w_0) \geq 1 -\xi_i
+ \end{equation}   
+ \begin{equation}
+ \xi_i \geq 0
+ \end{equation}
+    
+    
+This formulation is not ideal, instead we translate this to the dual form which using an auxiliary variable, $\alpha$ to rewrite the SVM as a maximization and clearly shows the optimization as a maximum margin. 
+
+\begin{equation}
+\max_{\alpha \in \mathbb{R}^n} ( \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y^{(i)} y^{(j)} (x^{(i)})^T x^{(j)})
+\end{equation}
+\begin{equation}
+s.t. \: 0 \leq \alpha_i \leq C
+\end{equation}
+\begin{equation}
+\sum_{i=1}^n \alpha_i y^{(i)} =0
+\end{equation}
+
+Instead of optimizing over the weights explicitly, we optimize over $\alpha$ from which the weights can be directly calculated as 
+\begin{equation}
+w= \sum_{i=1}^n \alpha_i y^{(i)}x^{(i)}
+\end{equation}  
+\begin{equation}
+w_0= \frac{1}{M} \sum_{j \in M} y^{(j)} - \sum_{i \in S} \alpha_i y^{(i)}(x^{(j)})^Tx^{(i)}
+\end{equation}
+
+Where $S$ is the set of support vectors, $S=\{i : 0 < \alpha_i \leq C \}$ and $M = \{i : 0 < \alpha_i < C \}$.
+
+      
 \end{document}
