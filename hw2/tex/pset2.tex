@@ -80,7 +80,8 @@ w= \sum_{i=1}^n \alpha_i y^{(i)}x^{(i)}
 w_0= \frac{1}{M} \sum_{j \in M} y^{(j)} - \sum_{i \in S} \alpha_i y^{(i)}(x^{(j)})^Tx^{(i)}
 \end{equation}
 
-Where $S$ is the set of support vectors, $S=\{i : 0 < \alpha_i \leq C \}$ and $M = \{i : 0 < \alpha_i < C \}$.
+Where $S$ is the set of support vectors, $S=\{i : 0 < \alpha_i \leq C \}$ and $M = \{i : 0 < \alpha_i < C \}$. However since there is some numerical residual resulting from the optimizations of $\alpha$ that won't exactly equal 0 or C we will consider the small tolerance, $\epsilon= 10^-5$ so that  $S=\{i : \epsilon < \alpha_i \leq C-\epsilon \}$ and the same for M
 
+\subsection*{Kernels}
       
 \end{document}
