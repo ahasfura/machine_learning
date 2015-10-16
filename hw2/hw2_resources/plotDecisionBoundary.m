@@ -1,4 +1,4 @@
-function plotDecisionBoundary(X, Y, scoreFn, values, mytitle)
+function plotDecisionBoundary(X, Y, scoreFn, values, mytitle, num)
 % X is data matrix (each row is a data point)
 % Y is desired output (1 or -1)
 % scoreFn is a function of a data point
@@ -20,8 +20,7 @@ for i=1:length(arr),
     zz(i) = scoreFn(arr(i,:)'); 
 end  
 zz=reshape(zz,size(xx));
-   
-figure;
+subplot(4,2,num);
 hold on;
 title(mytitle);
 colormap cool
