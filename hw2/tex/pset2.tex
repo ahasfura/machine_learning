@@ -30,12 +30,39 @@ When making predictions and models, sometimes we would rather have discrete labe
  
  Once weights are calculated from minimizing the error on the training data our classifier is simply defined as, 
  \begin{equation}
- h=\textrm{sign}(w^T\Phi(x))
+ h=\textrm{sign}(w^Tx)
  \end{equation}
- Which simply creates a hyperplane in which for any input, $x$. This classification returns -1 if $w^T\Phi(x)<0$ and +1 if $w^T\Phi(x)\geq 0$
+ Which simply creates a hyperplane in which for any input, $x$. This classification returns -1 if $w^Tx<0$ and +1 if $w^Tx\geq 0$. The boundary decision is marked by $.5= \sigma (w^Tx)$ and is shown below for the case where there is no regularizer. 
  
 
-As the magnitude of w increases the steepness of the hyperplane increases.  If $w$ goes to $ \infty$ the separator becomes a step function. The regularizer helps to limit this by penalizing the magnitude of the weights. 
+ 
+ \begin{figure}[H]
+\center
+\includegraphics[scale =.4]{p1lambda0.png}
+\caption{Labelled test and validation data for stdev1,stdev2, stdev4 and nonsep data sets. Also shown is the decision boundary }
+\end{figure}
+ 
+ Also considered was the error from mislabelled points, which was calculated for both the test and validation sets. Of course, the more easily separable the data, the lower the error. These results are shown in Table \ref{LR error}
+
+As the magnitude of w increases the steepness of the hyperplane increases.  If $w$ goes to $ \infty$ the separator becomes a step function. The regularizer helps to limit this by penalizing the magnitude of the weights. It also helps prevent overfitting. So as $\lambda$ is increased the training error might increase since the cost is less influenced on the data error, NLL, and more influenced by the weights. 
+
+
+We tested this logistic regression for $\lambda= \{0, 10, 1000\}$ and for the clearly separable and non separable case, there was no effect. For the stdev2, and stdev4 cases the training error increases but the validation error decreases. These results are shown in Table \ref{LR error}
+
+ \begin{table}
+ \caption{ Training and Validation Errors for different regularizers, $\lambda$}
+  \begin{tabular}{ | c | c | c | c |}
+ \hline
+ dataset &$ \lambda=0 $& $\lambda=10$ & $\lambda=1000$ \\ \hline 
+ stdev1 & [0,0] & [0,0] & [0,0] \\ \hline
+ stdev2 & [36, 29] & [38,31] & [38, 25] \\ \hline
+ stdev4 & [104, 100] & [104, 100] & [105, 95] \\ \hline 
+ nonsep & [193, 202] & [193, 202] & [193, 202] \\ \hline
+ \end{tabular}
+ \label{LR error}
+\end{table}
+ 
+ 
  
  \section{Support Vector Machine}
  
