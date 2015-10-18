@@ -6,10 +6,20 @@ X = data(:,1:2);
 Y = data(:,3);
 
 % Carry out training, primal and/or dual
-%%% TODO %%%
+C = 1;
+as = find_svm_weights(X, Y, C);
+ws = ((a .* Y)' * X)';
+w_0 = ;
 
 % Define the predictSVM(x) function, which uses trained parameters
-%%% TODO %%%
+predictSVM = @(x) sign(ws*x);
+
+
+for i=1:length(X)
+    Ypred(i)= sign(W'*X(i,:)');
+end 
+test_error = .5*sum(abs(Ypred-Y'));
+
 
 
 hold on;
