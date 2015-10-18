@@ -12,11 +12,11 @@ f= @(w_t) LR_error( w_t, X, Y, lambda);
 [w_t, f_min, int]= grad_descent([1; 1; 1] , .001, 10^(-4), f, .1);
 W= w_t(2:end); 
 % Define the predictLR(x) function, which uses trained parameters
-predictLR= @(x) 1/(1+exp(-W'*x));
+predictLR= @(x) 1/(1+exp(-W'*x+w_t(1)));
 
 
 for i=1:length(X)
-    Ypred(i)= sign(W'*X(i,:)');
+    Ypred(i)= sign(W'*X(i,:)'+w_t(1));
 end 
 test_error= .5*sum(abs(Ypred-Y'));
 
@@ -33,7 +33,7 @@ X = validate(:,1:2);
 Y = validate(:,3);
 
 for i=1:length(X)
-    Ypred(i)= sign(W'*X(i,:)');
+    Ypred(i)= sign(W'*X(i,:)'+w_t(1));
 end 
 val_error= .5*sum(abs(Ypred-Y'));
 
