@@ -30,9 +30,9 @@ When making predictions and models, sometimes we would rather have discrete labe
  
  Once weights are calculated from minimizing the error on the training data our classifier is simply defined as, 
  \begin{equation}
- h=\textrm{sign}(w^Tx)
+ h=\textrm{sign}(w^Tx +w_0)
  \end{equation}
- Which simply creates a hyperplane in which for any input, $x$. This classification returns -1 if $w^Tx<0$ and +1 if $w^Tx\geq 0$. The boundary decision is marked by $.5= \sigma (w^Tx)$ and is shown below for the case where there is no regularizer. 
+ Which simply creates a hyperplane in which for any input, $x$. This classification returns -1 if $w^Tx+w_0<0$ and +1 if $w^Tx\geq 0$. The boundary decision is marked by $.5= \sigma (w^Tx)$ and is shown below for the case where there is no regularizer. 
  
 
  
@@ -55,9 +55,9 @@ We tested this logistic regression for $\lambda= \{0, 10, 1000\}$ and for the cl
  \hline
  dataset &$ \lambda=0 $& $\lambda=10$ & $\lambda=1000$ \\ \hline 
  stdev1 & [0,0] & [0,0] & [0,0] \\ \hline
- stdev2 & [36, 29] & [38,31] & [38, 25] \\ \hline
- stdev4 & [104, 100] & [104, 100] & [105, 95] \\ \hline 
- nonsep & [193, 202] & [193, 202] & [193, 202] \\ \hline
+ stdev2 & [36, 29] & [36,30] & [41, 26] \\ \hline
+ stdev4 & [105, 99] & [105, 99] & [106, 98] \\ \hline 
+ nonsep & [239, 247] & [243, 247] & [233, 228] \\ \hline
  \end{tabular}
  \label{LR error}
 \end{table}
@@ -104,7 +104,7 @@ Instead of optimizing over the weights explicitly, we optimize over $\alpha$ fro
 w= \sum_{i=1}^n \alpha_i y^{(i)}x^{(i)}
 \end{equation}  
 \begin{equation}
-w_0= \frac{1}{M} \sum_{j \in M} y^{(j)} - \sum_{i \in S} \alpha_i y^{(i)}(x^{(j)})^Tx^{(i)}
+w_0= \frac{1}{M} ( \sum_{j \in M} y^{(j)} - \sum_{i \in S} \alpha_i y^{(i)}(x^{(j)})^Tx^{(i)})
 \end{equation}
 
 Where $S$ is the set of support vectors, $S=\{i : 0 < \alpha_i \leq C \}$ and $M = \{i : 0 < \alpha_i < C \}$. However since there is some numerical residual resulting from the optimizations of $\alpha$ that won't exactly equal 0 or C we will consider the small tolerance, $\epsilon= 10^-5$ so that  $S=\{i : \epsilon < \alpha_i \leq C-\epsilon \}$ and the same for M
