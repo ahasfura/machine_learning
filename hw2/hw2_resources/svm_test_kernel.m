@@ -1,4 +1,4 @@
-function [test_error,val_error]=svm_test(name, num,C)
+function [w,S]=svm_test_kernel(name, num,C,bw)
 disp('======Training======');
 %%
 % load data from csv files
@@ -9,20 +9,14 @@ Y = data(:,3);
 %%
 % Carry out training, primal and/or dual
 eps=10^-5;
-as = find_svm_weights(X, Y, C);
+as = find_svm_weights_kernel(X, Y, C,bw);
 ws = ((as .* Y)' * X)';
-
+w=norm(ws);
 indM= find(as>eps & as<C-eps);
 M= length(indM); 
 indS= find(as>eps & as<=C); 
 S= length(indS); 
 
-    
-%%  
-w_0 = 1/M * sum(Y(indM)-((as(indS).*Y(indS))'*(X(indM,:)*X(indS,:)')')');
-%w_0 = 1/M * sum(Y(indM)-((as(indS).*Y(indS))*(X(indM,:)'*X(indS,:))));
-
-%%
 w_0=0; 
 k= @(x,z) exp(-1/(2*bw^2)*norm(x-z)^2); 
  
@@ -36,14 +30,12 @@ w_0= w_0/M;
 
 %%
 % Define the predictSVM(x) function, which uses trained parameters
-predictSVM = @(x) sign(ws'*x+w_0);
+% assume x is given as column it is  
+    
 
 
-for i=1:length(X)
-    Ypred(i)= sign(ws'*X(i,:)'+w_0);
-   
-end 
-test_error = .5*sum(abs(Ypred-Y'));
+predictSVM= @(x) predictLoop(x,S,Y,X,indS,as,bw);
+
 
 
 
@@ -57,11 +49,7 @@ disp('======Validation======');
 validate = importdata(strcat('data/data_',name,'_validate.csv'));
 X = validate(:,1:2);
 Y = validate(:,3);
-for i=1:length(X)
-    Ypred(i)= sign(ws'*X(i,:)'+w_0);
-   
-end 
-val_error = .5*sum(abs(Ypred-Y'));
+
 % plot validation results
 plotDecisionBoundary(X, Y, predictSVM, [ -1, 0, 1], 'SVM Validate', num(2));
-
+end 
