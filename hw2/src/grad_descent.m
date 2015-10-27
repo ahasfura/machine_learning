@@ -12,9 +12,9 @@ i=0;
 alpha=alpha0; 
 while norm(x_new-x_old)> eps % check for convergence
     for j= 1:length(x_old); 
-    x_plus= x_new; x_minus= x_new;     
-    x_plus(j)= x_new(j)+.5*h;    x_minus(j)= x_new(j)-.5*h ;
-    df(j) = (f(x_plus) - f(x_minus)) / h;
+        x_plus= x_new; x_minus= x_new;     
+        x_plus(j)= x_new(j)+.5*h;    x_minus(j)= x_new(j)-.5*h ;
+        df(j) = (f(x_plus) - f(x_minus)) / h;
 
     end
     

@@ -151,5 +151,53 @@ This SVM was applied to the data from problem 1, stdev1,stdev2, stdev4 and nonse
 Clearly the more overlapped the data is the more errors the classifier makes. However comparing with the results from Table \ref{LR error}, the SVM implemented here outperforms our logistic regression algorithm for stdev4 (102, 94 vs 105, 99 ) and nonsep (118, 121 vs  243,247). 
 
 \subsection*{Kernels}
+
+\section{Titanic Dataset}
+
+In this section we use the classifiers developed above to make predictions of survival for the Titanic dataset provided by Kaggle. The dataset is divided into train, test, and validation subsets, which will be used to train and evaluate the performance of the classifiers.
+
+\subsection*{Logistic Regression}
+
+We first use a logistic regression classifier. Table 3 shows the resulting error and most predictive feature for different values of $\lambda$.
+
+\begin{table}
+ \caption{Logistic regression on Titanic dataset}
+  \begin{tabular}{ | c | c | c | c |}
+ \hline
+ $\lambda$ & Test Error \% & Validation Error \% & Most Important  \\ \hline 
+ 10 & 21.5 & 24.2 & Class  \\ \hline
+ 1 & 16.0 & 20.2 & Sex  \\ \hline
+ 0.5 & 16.5 & 20.4 & Sex \\ \hline
+ 0.1 & 17.0 & 20.6 & Sex \\ \hline 
+ 0.01 & 17.0 & 20.4 & Sex \\ \hline
+ \end{tabular}
+ \label{SVM C1 T}
+\end{table}
+      
+\subsection*{Support Vector Machine}
+
+We evaluate the performance of a SVM classifier. Table 4 shows the resulting errors and most predictive feature for different values of $C$.
+
+\begin{table}
+ \caption{SVM on Titanic dataset}
+  \begin{tabular}{ | c | c | c | c |}
+ \hline
+ $C$ & Test Error \% & Validation Error \% & Most Important  \\ \hline 
+ 10 &  19.4 & 21.0 &  Sex \\ \hline
+ 1 & 19.5 & 21.0 & Sex  \\ \hline
+ 0.5 & 19.7 & 21.3 & Sex \\ \hline
+ 0.1 & 19.9 & 21.8 & Sex  \\ \hline 
+ 0.01 & 32.5 & 31.6 & Sex \\ \hline
+ \end{tabular}
+ \label{SVM C1 T}
+\end{table}
+
+\subsection*{Comparison}
+
+Both the SVM and logistic regression classifiers are able to predict with similar accuracies, both with peak performances around 20\% error. In both cases, the most indicative feature of survival is the sex of the passenger. A female was much more likely to survive than a male passenger. 
+
+Other important features for both classifiers was a passenger's class and age. The lower classes and elderly were also more prone to dying, although nothing had a stronger correlation to survival than sex. This can be seen in the final scenes of the Titanic movie, as Rose (a female) survives the crash, but Jake (male) is unable to survive the cold waters of the Atlantic ocean. 
+
+Dedicated to Jack Dawson, 1890-1912. Your heart will go on, Jack. Rest in Piece.
       
 \end{document}
