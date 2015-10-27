@@ -19,8 +19,8 @@ zz = zeros(length(arr),1);
 for i=1:length(arr),
     zz(i) = scoreFn(arr(i,:)'); 
 end  
-zz=reshape(zz,size(xx));
 
+zz=reshape(zz,size(xx));
 subplot(4,2,num);
 hold on;
 title(mytitle);

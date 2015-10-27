@@ -26,7 +26,7 @@ When making predictions and models, sometimes we would rather have discrete labe
  \begin{equation}
  E_{LR}(w)= \textrm{NNL}(w) +\lambda w^Tw
  \end{equation}
- Unlike some of the regression formulations we looked at last time, such as ridge or linear, there is no closed from solution to minimizing the error. Thus, we must employ optimization methods to select the correct weights. As far as optimization methods, two options are considered below, a simple gradient descent and the built in MATLAB optimization, fminunc. 
+ Unlike some of the regression formulations we looked at last time, such as ridge or linear, there is no closed from solution to minimizing the error. Thus, we must employ optimization methods to select the correct weights. As far as optimization methods,we used a simple gradient descent. 
  
  Once weights are calculated from minimizing the error on the training data our classifier is simply defined as, 
  \begin{equation}
@@ -136,7 +136,7 @@ This SVM was applied to the data from problem 1, stdev1,stdev2, stdev4 and nonse
 
  \begin{table}
  \caption{ Training and Validation Errors for $C=1$}
-  \begin{tabular}{ | c | c | c }
+  \begin{tabular}{ | c | c | c | }
  \hline
  dataset & Test Error & Validation Error  \\ \hline 
  stdev1 & 0 & 0 \\ \hline
@@ -151,6 +151,90 @@ This SVM was applied to the data from problem 1, stdev1,stdev2, stdev4 and nonse
 Clearly the more overlapped the data is the more errors the classifier makes. However comparing with the results from Table \ref{LR error}, the SVM implemented here outperforms our logistic regression algorithm for stdev4 (102, 94 vs 105, 99 ) and nonsep (118, 121 vs  243,247). 
 
 \subsection*{Kernels}
+
+The multiplication $x^Tx$ appears in multiple locations for out SVM calculations, both in  the optimization of the $\alpha_i$ and in the calculation of $w_0$. The idea of kernel trick is that we can rewrite anything the terms there as a kernel function, $k(x,z)$ replacing any terms that can be expressed as inner products. Using this formulation the SVM can be written as 
+
+\begin{equation}
+\max_{\alpha \in \mathbb{R}^n} ( \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y^{(i)} y^{(j)} k(x^{(i)},x^{(j)})
+\end{equation}
+\begin{equation}
+s.t. \: 0 \leq \alpha_i \leq C
+\end{equation}
+\begin{equation}
+\sum_{i=1}^n \alpha_i y^{(i)} =0
+\end{equation}
+\begin{equation}
+w= \sum_{i=1}^n \alpha_i y^{(i)}x^{(i)}
+\end{equation}  
+\begin{equation}
+w_0= \frac{1}{M} ( \sum_{j \in M} y^{(j)} - \sum_{i \in S} \alpha_i y^{(i)}k(x^{(j)},x^{(i)})
+\end{equation}
+
+With the decision boundary, 
+
+\begin{equation}
+\sum_{i:\alpha_i > 0} \alpha_i y^{(i)}k(x^{(i)}, x) + w_0 = 0.
+\end{equation}
+
+ More importantly kernels are adaptable to a range of basis functions. It can be used for anything that can be written as an inner product. In particular we chose to look at the Gaussian Kernel
+ \begin{equation}
+ k(x,z)= \textrm{exp}(-\frac{1}{2\sigma^2} ||x - z||_2^2)
+\end{equation}
+
+Where $\sigma$ is the bandwidth.
+
+Trying the Guassian Kernel on the data sets already mention, with $C= .01, \sigma =.1$ the following results were obtained
+
+ \begin{figure}[H]
+\center
+\includegraphics[scale =.4]{Cpt01BWpt1.png}
+\caption{Labelled test and validation data for stdev1,stdev2, stdev4 and nonsep data sets when $C=.01, \sigma =.1$ with Gaussian Kernel. Also shown is the decision boundary }
+\label{SVM Gauss C01}
+\end{figure}
+ 
+ Increasing $\sigma$ leads to Fig. \ref{SVM Gauss C10}. Where one can see that the decision boundary has become more linear
+ \begin{figure}[H]
+\center
+\includegraphics[scale =.4]{Cpt01BW10.png}
+\caption{Labelled test and validation data for stdev1,stdev2, stdev4 and nonsep data sets when $C=.01, \sigma =10$ with Gaussian Kernel. Also shown is the decision boundary }
+\label{SVM Gauss C10}
+\end{figure}
+
+As shown in Fig. \ref{SVM Gauss C01} The gaussian kernel performs a lot better on the non separable data. 
+       
+ Using a constant value of $\sigma=.1$ we investigated the effect of changing $C$ on the geometric margin, $\frac{1}{||w||}$ and the number of support vectors, $S$. In particular we considered $C= \{.01, .1, 1, 10, 100 \}$
+ and the  results are shown in Tables \ref{SVM Gauss Marg} and \ref{SVM Gauss S}
+ 
+
+When C increases,the geometric margin decreases as does the number of support vectors. This is because the slack variables are being penalized more and more resulting in smaller margins. However when C becomes too large, the problem becomes hard SVM and it may not be possible to separate the data. 
+
+ \begin{table}
+ \tiny
+ \caption{ Geometric Margin for varying $C$}
+  \begin{tabular}{ | c | c | c | c | c | c| }
+ \hline
+ dataset & $C=.01$ & $C=.1$ & $C=1 $ & $C=10$ & $C=100$   \\ \hline 
+ stdev1 & .089 &  .013 & 8.08 $\cdot 10^-3$ & 2.85 $\cdot 10^-3$ & 3.49 $\cdot 10^-4$ \\ \hline
+ stdev2 & .088 & .009 & 2.40 $\cdot 10^-3$  & 3.72 $\cdot 10^-4$ & 4.01 $\cdot 10^-5$\\ \hline
+ stdev4 & .096 & .010 & 1.71 $\cdot 10^-3$  & 3.25 $\cdot 10^-4$ & 3.57 $\cdot 10^-5$\\ \hline 
+ nonsep & 3.03 & .300 & 2.78 $\cdot 10^-2$  &  3.11 $\cdot 10^-3$ & 1.59 $\cdot 10^-4$\\ \hline
+ \end{tabular}
+ \label{SVM Gauss Marg}
+\end{table}
+
+\begin{table}
+ \scriptsize
+ \caption{ Number of Support Vectors for varying $C$}
+  \begin{tabular}{ | c | c | c | c | c | c| }
+ \hline
+ dataset & $C=.01$ & $C=.1$ & $C=1 $ & $C=10$ & $C=100$   \\ \hline 
+ stdev1 & 400  &  400 & 396 & 388 & 364  \\ \hline
+ stdev2 & 400 & 400 & 386  & 346 & 302 \\ \hline
+ stdev4 & 400 & 392 & 369 & 294 & 263 \\ \hline 
+ nonsep & 400 & 398 & 375  &  332 & 307 \\ \hline
+ \end{tabular}
+ \label{SVM Gauss S}
+\end{table}
 
 \section{Titanic Dataset}
 
