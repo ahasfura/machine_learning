@@ -238,11 +238,11 @@ When C increases,the geometric margin decreases as does the number of support ve
 
 \section{Titanic Dataset}
 
-In this section we use the classifiers developed above to make predictions of survival for the Titanic dataset provided by Kaggle. The dataset is divided into train, test, and validation subsets, which will be used to train and evaluate the performance of the classifiers.
+In this section we use the classifiers developed above to make predictions of survival for the Titanic dataset provided by Kaggle. The dataset is divided into train, test, and validation subsets, which will be used to train and evaluate the performance of the classifiers. Each row of the data represents the information of one person aboard the Titanic, including important information such as sex, name, age, and more, along with whether they survived. We are tasked with producing a classifier that will be able to accurately predict whether a passenger survived given some of their background information.
 
 \subsection*{Logistic Regression}
 
-We first use a logistic regression classifier. Table 5 shows the resulting error and most predictive feature for different values of $\lambda$.
+We first use a logistic regression classifier. We chose not to use our implementation of gradient descent, but to instead use fminunc. This will learn the weights for each of the 11 features using the training dataset. Using these learned weights, we will to be able to make predictions about whether future cases lived or died given their information. This processes was performed on the validation set. Table 5 shows the resulting error and most predictive feature for different values of $\lambda$ on the validation set.
 
 \begin{table}
  \caption{Logistic regression on Titanic dataset}
@@ -260,7 +260,7 @@ We first use a logistic regression classifier. Table 5 shows the resulting error
       
 \subsection*{Support Vector Machine}
 
-We evaluate the performance of a SVM classifier. Table 6 shows the resulting errors and most predictive feature for different values of $C$.
+In this section we evaluate the performance of a SVM classifier. We start by training the SVM weights using the provided training dataset, similar to the logistic regression example. Once we have the fitted weighs, we can use the SVM to classify new examples, then evaluate the performance using the labels. Table 6 shows the resulting errors on the validation and training set, along with the most predictive feature for different values of $C$ .
 
 \begin{table}
  \caption{SVM on Titanic dataset}
@@ -278,10 +278,8 @@ We evaluate the performance of a SVM classifier. Table 6 shows the resulting err
 
 \subsection*{Comparison}
 
-Both the SVM and logistic regression classifiers are able to predict with similar accuracies, both with peak performances around 20\% error. In both cases, the most indicative feature of survival is the sex of the passenger. A female was much more likely to survive than a male passenger. 
+As you can see, both the SVM and logistic regression classifiers are able to predict with similar accuracies, both with peak performances around 20\% error. The logistic regression classifier took longer to train, but in the end the performances are similar. In both cases, the most indicative feature of survival is the sex of the passenger. A female was much more likely to survive than a male passenger. This seems to be in line with what history says, as women were the first to be boarded on the life boats as the Titanic began to sink.
 
-Other important features for both classifiers was a passenger's class and age. The lower classes and elderly were also more prone to dying, although nothing had a stronger correlation to survival than sex. This can be seen in the final scenes of the Titanic movie, as Rose (a female) survives the crash, but Jake (male) is unable to survive the cold waters of the Atlantic ocean. 
-
-Dedicated to Jack Dawson, 1890-1912. Your heart will go on, Jack. Rest in Piece.
+There were other important features which determined the survival rate of a passenger. The next two most important for both classifiers was a passenger's class and age. In general, these features were a little less than half as indicative as sex. On average, the weight vector corresponding to class and age was around .7, while the average weight of sex was around 1.8. From the data, it seems that the highest probability of survival belonged to a young, first class, woman. This can even be seen in the final scenes of the Titanic movie, as Rose (a female) survives the crash, but Jake (male) is unable to survive the cold waters of the Atlantic ocean. 
       
 \end{document}
