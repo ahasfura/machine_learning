@@ -1,0 +1,72 @@
+\documentclass[12pt, twocolumn]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{fullpage}
+\usepackage{float}
+\usepackage{color, soul}
+
+\begin{document}
+\title{6.867 Homework 3}
+\maketitle
+
+\section{Neural Networks}
+So far we have only discussed machine learning problems in which we have specified the basis functions we intend to use. However, since the optimal basis functions could be complicated and non-intuitive, such as in the case of images, we may want an approach that allows us to learn the basis functions. Such an approach is Artificial Neural Networks(ANN). 
+
+The idea of a neural network replaces the known basis functions with features, $z_j$ which are parametric functions of activations, $a_j$ learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features. 
+\begin{equation}
+a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
+\end{equation}
+\begin{equation}
+z_j= g(a_j)
+\end{equation}
+
+Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid, and $a_j$ is an activiation, which depends on the data, $x_i, \; i=\{1,...N\}$  and learned weights $w_ji^{(1)}$ and bias $w_0^{(1)}$. 
+
+The second layer learns in a similar fashion and can be describe for $K$ output classes and M features in the  hidden layer  is thus 
+\begin{equation}
+a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
+\end{equation}
+\begin{equation}
+f_k= \tilde{g}(a_k^{(2)})
+\end{equation}
+ 
+Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$. However for this problem, we will consider them equal, both sigmoids, 
+
+\begin{equation}
+\tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
+\end{equation}
+
+However, this does not get us our prediction, $h_k(x,w)$, instead we consider noise around each $f$
+\begin{equation}
+y^{(i)}= p(f_i(w) | x^{(i)},w)
+\end{equation}
+
+
+\subsection{Gradient Descent}
+First of all we we be utilize gradient descent to train our network so  we must first find the gradient of our cost function, $J$ which depends on the loss function $l(w)$ but also applies a regularization of both sets of weights, $w^{(1)}, w^{(2)}$
+
+\begin{equation}
+J= l(w) + \lambda ( ||w^{(1)}||^2_F +||w^{(2)}||^2_F)
+\end{equation}
+
+Where the norms above are the matrix Frobenius norm and the loss function, $l(w)$ is the  negative log-likelihood given by 
+
+\begin{equation}
+\tiny
+l(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}(h_k(x^{(i)}, w)) - (1 -y^{(i)}_k) \textrm{log}(1 -(h_k(x^{(i)}, w))
+\end {equation}
+
+
+Taking the partial differential of the cost with respect to each variable, $w^{(1)},w^{(2)}$ leads to the gradients, 
+
+\begin{equation}
+\nabla_{w^{(1)}} J (w)= \frac{\partial }{\partial} 
+\end{equation}
+
+\begin{equation}
+\nabla_{w^{(2)}} J (w)= 1
+\end{equation} 
+
+ \end{document}
