@@ -8,10 +8,10 @@
 \usepackage{color, soul}
 
 \begin{document}
-\title{6.867 Homework 3}
+\title{6.867 Homework 3: Neural Networks}
 \maketitle
 
-\section{Neural Networks}
+\section{Approach}
 So far we have only discussed machine learning problems in which we have specified the basis functions we intend to use. However, since the optimal basis functions could be complicated and non-intuitive, such as in the case of images, we may want an approach that allows us to learn the basis functions. Such an approach is Artificial Neural Networks(ANN). 
 
 The idea of a neural network replaces the known basis functions with features, $z_j$ which are parametric functions of activations, $a_j$ learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features. 
@@ -29,7 +29,7 @@ The second layer learns in a similar fashion and can be describe for $K$ output 
 a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
 \end{equation}
 \begin{equation}
-f_k= \tilde{g}(a_k^{(2)})
+y_k= \tilde{g}(a_k^{(2)})
 \end{equation}
  
 Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$. However for this problem, we will consider them equal, both sigmoids, 
@@ -38,10 +38,6 @@ Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not nece
 \tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
 \end{equation}
 
-However, this does not get us our prediction, $h_k(x,w)$, instead we consider noise around each $f$
-\begin{equation}
-y^{(i)}= p(f_i(w) | x^{(i)},w)
-\end{equation}
 
 
 \subsection{Gradient Descent}
@@ -59,14 +55,43 @@ l(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}(h_k(x^{(i)}, w)) - (1 -y
 \end {equation}
 
 
-Taking the partial differential of the cost with respect to each variable, $w^{(1)},w^{(2)}$ leads to the gradients, 
+Taking the partial differential of the cost with respect to each variable, $w^{(1)},w^{(2)}$ leads to the gradients. For the gradient with respect to the second layer weights 
 
 \begin{equation}
-\nabla_{w^{(1)}} J (w)= \frac{\partial }{\partial} 
+\nabla_{w_k^{(2)}} J (w)= \frac{\partial J}{\partial a^{(2)}_{nk}}  (\nabla w_k^{(2)} a_{nk}^{(2)})  +2 \lambda w_k^{(2)}
 \end{equation}
 
+Using the chain rule and introducing a new variable, $\delta_{nk}^{(2)}$, 
 \begin{equation}
-\nabla_{w^{(2)}} J (w)= 1
-\end{equation} 
+\delta_{nk}^{(2)}=\frac{\partial J}{\partial a^{(2)}_{nk}} = \frac{\partial J}{\partial f_{nk}} (\tilde{q}' (a_{nk}^{(2)}))z_n
+\end{equation}
+
+
+Looking at the partial with respect to the first layer 
+
+
+\begin{equation}
+\nabla_{w_j^{(1)}} J (w)= \frac{\partial J}{\partial a^{(1)}_{nj}}  (\nabla w_j^{(1)} a_{nj}^{(1)}) + 2 \lambda w_j^{(1)}
+\end{equation}
+
+Using the chain rule and introducing a new variable, $\delta_{nj}^{(1)}$, 
+\begin{equation}
+\delta_{nj}^{(1)}= \frac{\partial J}{\partial a^{(2)}_{nk}} = \sum_{k=1}^K \frac{\partial J}{\partial a^{(2)}_{nk}}  \frac{\partial a_{nk}^{(2)}}{\partial a_{nj}^{(1)}} \end{equation}
+
+\subsubsection{Stochastic Gradient Descent}
+To actually  optimal weights we will utilized stochastic gradient descend which updates the current guess of the optimal weights by the following formula,
+
+\begin{equation}
+w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
+\end{equation}
+
+Where $\eta$ is the learning rate
+\subsection{Implementation}
+We will use the back prop algorithm to implement our neural network 
+
+\section{Results}
+\subsection{ Toy Data Set}
+\subsection{MNIST}
+
 
  \end{document}
