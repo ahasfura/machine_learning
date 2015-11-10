@@ -29,10 +29,10 @@ The second layer learns in a similar fashion and can be describe for $K$ output 
 a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
 \end{equation}
 \begin{equation}
-y_k= \tilde{g}(a_k^{(2)})
+f_k= \tilde{g}(a_k^{(2)})
 \end{equation}
  
-Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$. However for this problem, we will consider them equal, both sigmoids, 
+Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$ and $f_k$ is really our prediction $h_k(x,w)$. However for this problem, we will consider them equal, both sigmoids, 
 
 \begin{equation}
 \tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
@@ -40,8 +40,8 @@ Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not nece
 
 
 
-\subsection{Gradient Descent}
-First of all we we be utilize gradient descent to train our network so  we must first find the gradient of our cost function, $J$ which depends on the loss function $l(w)$ but also applies a regularization of both sets of weights, $w^{(1)}, w^{(2)}$
+\subsection{Gradient Calculation}
+First of all we we be utilize stochastic gradient descent to train our network by updating the weights with each incoming new data point, as opposed to a batch implementation. To do so,  we must first find the gradient of our cost function, $J$ which depends on the loss function $l(w)$ but also applies a regularization of both sets of weights, $w^{(1)}, w^{(2)}$
 
 \begin{equation}
 J= l(w) + \lambda ( ||w^{(1)}||^2_F +||w^{(2)}||^2_F)
@@ -57,29 +57,38 @@ l(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}(h_k(x^{(i)}, w)) - (1 -y
 
 Taking the partial differential of the cost with respect to each variable, $w^{(1)},w^{(2)}$ leads to the gradients. For the gradient with respect to the second layer weights 
 
+\begin{align}
+\nabla_{w_k^{(2)}} J (w)= \frac{\partial J}{\partial a^{(2)}_{nk}}  (\nabla w_k^{(2)} a_{nk}^{(2)})  +2 \lambda w_k^{(2)} \\
+=\frac{\partial J_n}{\partial h_{nk}} (\tilde{q}' (a_{nk}^{(2)}))z_n + \lambda w_k^{(2)}
+\end{align}
+
+
+algebraically we can solve for the partial of the cost with respect to each prediction where  
 \begin{equation}
-\nabla_{w_k^{(2)}} J (w)= \frac{\partial J}{\partial a^{(2)}_{nk}}  (\nabla w_k^{(2)} a_{nk}^{(2)})  +2 \lambda w_k^{(2)}
+\frac{\partial J_n}{\partial h_{nk}}= -\frac{y_k^{(n)}}{h_k(x^{(n)},w)} + \frac{1- y_k^{(n)}}{1 - h_k(x^{(n)},w)}
 \end{equation}
 
-Using the chain rule and introducing a new variable, $\delta_{nk}^{(2)}$, 
+ Introducing a new variable, $\delta_{nk}^{(2)}$, 
 \begin{equation}
-\delta_{nk}^{(2)}=\frac{\partial J}{\partial a^{(2)}_{nk}} = \frac{\partial J}{\partial f_{nk}} (\tilde{q}' (a_{nk}^{(2)}))z_n
+\delta_{nk}^{(2)}=\frac{\partial J}{\partial a^{(2)}_{nk}} 
 \end{equation}
 
 
 Looking at the partial with respect to the first layer 
 
+\begin{align}
+\nabla_{w_j^{(1)}} J (w)= \frac{\partial J}{\partial a^{(1)}_{nj}}  (\nabla w_j^{(1)} a_{nj}^{(1)}) + 2 \lambda w_j^{(1)}  \\
+ = \delta_{nj}^{(1)}  x^{(n)}
+\end{align}
 
+
+Introducing a new variable, $\delta_{nj}^{(1)}$, 
 \begin{equation}
-\nabla_{w_j^{(1)}} J (w)= \frac{\partial J}{\partial a^{(1)}_{nj}}  (\nabla w_j^{(1)} a_{nj}^{(1)}) + 2 \lambda w_j^{(1)}
+\delta_{nj}^{(1)} = \sum_{k=1}^K    \delta_{nk}^{(2)} w_{kj}^{(2)} g'(a_{nj}^{(1)})
 \end{equation}
 
-Using the chain rule and introducing a new variable, $\delta_{nj}^{(1)}$, 
-\begin{equation}
-\delta_{nj}^{(1)}= \frac{\partial J}{\partial a^{(2)}_{nk}} = \sum_{k=1}^K \frac{\partial J}{\partial a^{(2)}_{nk}}  \frac{\partial a_{nk}^{(2)}}{\partial a_{nj}^{(1)}} \end{equation}
-
 \subsubsection{Stochastic Gradient Descent}
-To actually  optimal weights we will utilized stochastic gradient descend which updates the current guess of the optimal weights by the following formula,
+To actually  optimal weights we will utilized stochastic gradient descend which updates the weights with each new data point,
 
 \begin{equation}
 w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
