@@ -1,5 +1,5 @@
 %% nerural nets
-name= '2'; 
+name= '1'; 
 
 data=importdata(strcat('toy_multiclass_',name, '_train.csv'));
 
@@ -18,19 +18,24 @@ nodes= linspace(2, 6, 5);
 stepsize= logspace(-2,0,5); 
 for i =1:1 
     lambda= lambdas(i); 
-    %lambda=0; 
+    lambda=0; 
     for j= 2:2
         node= nodes(j); 
-        %node= 3; 
+        node= 3; 
         for k=1:1
             step=stepsize(k); 
-           % step=.026; 
+            step=.026; 
 
          [W,U, Err] = neural(X,Y, lambda, k, node, XV, YV);
-        
+       
+         
+    [m,~]= size(X); 
+    Xbias= [ones(m,1) X];  
+    [m,~]= size(XV); 
+    XVbias= [ones(m,1) XV];  
     f= @(x)  1./(1+exp(-x));
-    a= (U*f(W*X')); 
-    a2= (U*f(W*XV')); 
+    a= (U*f(W*Xbias')); 
+    a2= (U*f(W*XVbias')); 
     Pred2=[]; Pred=[];
     Ypred=[]; Ypred2=[];
     suma= exp(a(1,:))+ exp(a(2,:))+exp(a(3,:));     suma2= exp(a2(1,:))+ exp(a2(2,:))+exp(a2(3,:)); 
@@ -51,9 +56,9 @@ for i =1:1
 Ypred=Ypred'; Ypred2=Ypred2';
 misclass2=find(Ypred2~=YV); misclass=find(Ypred~=Y); 
 num_misclass2= length(misclass2); 
-percent_misclass= num_misclass/length(YV)
-    if best_percent > percent_misclass
-        best_percent= percent_misclass;
+percent_misclass2= num_misclass2/length(YV)
+    if best_percent > percent_misclass2
+        best_percent= percent_misclass2;
         ind=[ i, j, k]; 
     end 
         end 

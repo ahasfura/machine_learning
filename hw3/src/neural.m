@@ -1,14 +1,18 @@
 %% Very simple and intuitive neural network implementation
 
-function [W,U, Err] = neural(X,Yval, lambda, n, M, XV, YV)
+function [W,U, y] = neural(X,Yval, lambda, n, M, XV, YV)
 % DATA SETS; demo file
-
+%%
 Y = zeros(length(Yval), 3);
 
-
+[m,~]= size(X); 
 Y(:,1)= Yval==1;
 Y(:,2)=Yval==2;
 Y(:,3)=Yval==3;
+Xbias= [ones(m,1) X]; 
+
+[m,~]= size(XV); 
+XVbias= [ones(m,1) XV]; 
 
 YV2 = zeros(length(YV), 3);
 
@@ -21,10 +25,10 @@ nbrOfNodes=M;
 nbrOfEpochs = 200;
 
 % Initialize matrices with random weights 0-1
-W = rand(nbrOfNodes, length(X(1,:)));
-U = rand(length(Y(1,:)),nbrOfNodes);
+W = rand(nbrOfNodes, length(Xbias(1,:)));
+U = rand(length(Y(1,:)),nbrOfNodes+1);
 
-m = 0;  e = size(X);
+m = 0;  e = size(Xbias);
 
 while m < nbrOfEpochs
 
@@ -34,21 +38,26 @@ while m < nbrOfEpochs
     % Iterate through all examples
     for i=1:e(1)
         % Input data from current example set
-        I = X(i,:).';
+        I = Xbias(i,:).';
         D = Yval(i,:).';
         D2=Y(i,:).'; 
         % Propagate the signals through network
-        H = f(W*I);
-        O = f(U*H);
+        [m, ~]= size(W);
+        Ht = [1 ; f(W*I)];
+        H= f(W*I); 
+        O = f(U*Ht);
 
         % Output layer error
         delta_i = O.*(1-O).*(D2./O - (1-D2)./(1-O));
-
+        
+        size(H)
+        size(U)
+        size(delta_i) 
         % Calculate error for each node in layer_(n-1)
         delta_j = H.*(1-H).*(U.'*delta_i);
-
+        
         % Adjust weights in matrices sequentially
-        U = U + n.*delta_i*(H.') - lambda*U;
+        U = U + n.*delta_i*(Ht.') - lambda*U;
         W = W + n.*delta_j*(I.') - lambda*W;
     end
 
@@ -62,10 +71,11 @@ while m < nbrOfEpochs
     % Calculate RMS error
     for i=1:e(1)
         D = YV(i,:).';
-        I = XV(i,:).';
+        I = XVbias(i,:).';
         D2= YV2(i,:).'; 
-        
-        Err = Err + D2'*log(f(U*f(W*I))) + (1-D2')*log(1-f(U*f(W*I)));
+        [m, ~]= size(W); 
+        H=[1; f(W*I)];
+        Err = Err + D2'*log(f(U*H)) + (1-D2')*log(1-f(U*H));
     end
     
     y = Err/e(1);
