@@ -1,6 +1,6 @@
 %run_remy
 
-name= '1'; 
+name= '2'; 
 
 data=importdata(strcat('toy_multiclass_',name, '_train.csv'));
 
@@ -13,7 +13,7 @@ XV = data(:,1:2);
 YV = data(:,3);
 
 
-[W,U, y]= neuralremy1(-1, -1, 3, 3);
+[W,U, y]= neuralremy1(-2, -2, 4, 4);
 %%
 
  f= @(x)  1./(1+exp(-x));

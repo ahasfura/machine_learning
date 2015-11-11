@@ -8,7 +8,7 @@ function [W,U, y] = neuralremy1(l1,l2,n1,n2)
 % DATA SETS; demo file
 %[Attributes, Classifications] = mendez;
 %disp(Classifications);
-name = 'toy_multiclass_1';
+name = 'toy_multiclass_2';
 %name = 'mnist';
 d = importdata(strcat('/hw3_resources/',name,'_test.csv'));
 d1 = importdata(strcat('/hw3_resources/',name,'_validate.csv'));
