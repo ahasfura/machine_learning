@@ -95,12 +95,64 @@ w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
 \end{equation}
 
 Where $\eta$ is the learning rate
+
 \subsection{Implementation}
-We will use the back prop algorithm to implement our neural network 
+We will use the back prop algorithm to implement the training of our neural network. The back propagation algorithm is the classic method for training multilayer neural nets. It was introduced in the late 1960s, and was adapted for neural nets in the early 1990s. The algorithm consists of two main phases. the \textit{propagation} phase, and the \textit{weight update} phase.
+
+During the propagation phase, data is fed to the input of the ANN and the activations are propagated forward. After this, the error is propagated backward from the output of the ANN, producing a $\delta$ at each neuron which indicates the computed necessary change at each neuron.
+
+In the weight update phase, each neuron updates its weights according to the error gradient at the node.
+
+This is repeated for each data point and corresponding label. After the entire training set has been used in the back propagation algorithm, the neural net is trained for future predictions.
 
 \section{Results}
+
+We tested out neural net implementation on a few different datasets. We started by testing with two toy dataset provided by the staff, and move on to the highly popular real MNIST dataset.
+
 \subsection{ Toy Data Set}
+
+The toy datasets contains three different classes. They were used mostly to work out the kinks in our ANN implementation, before moving on to the more field-standard MNIST dataset.
+
+The first toy dataset is well separated between the classes, so it will not take too much fine tuning to be able to get good results from our ANN. The second dataset has more overlap between the classes, so the ANN will need to be more carefully optimized.
+
+We ran our ANN implementation on the toy data set using a large range of hidden nodes and regularization constants, and cross validated to find the optimal number, using both batch and stochastic gradient descent. Below is a table displaying the error rate on the first validation set across a variety of number of hidden nodes and regularization constants.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }
+    \hline
+     $\lambda$ vs. m & $10^{-10}$ & $10^{-5}$ & $10^{-3}$ & $10^{-2}$ & $10^{-1}$ \\ \hline
+     $2$ & 99.0 & 99.0 & 99.0 & 91.7 & 68.0 \\ \hline
+     $3$ & 99.3 & 99.3 & 99.3 & 99.0 & 67.7 \\ \hline
+     $4$ & 99.3 & 99.3 & 99.3 & 99.0 & 67.7 \\ \hline
+     $5$ & 99.3 & 99.3 & 99.3 & 99.0 & 67.7 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Here is how our ANN implementation performed on the second dataset.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }
+    \hline
+     $\lambda$ vs. m & $10^{-10}$ & $10^{-5}$ & $10^{-3}$ & $10^{-2}$ & $10^{-1}$ \\ \hline
+     $2$ & 89.0 & 88.4 & 88.0 & 66.8 & 33.3 \\ \hline
+     $3$ & 92.7 & 93.0 & 93.0 & 93.0 & 33.3 \\ \hline
+     $4$ & 92.7 & 93.0 & 93.0 & 93.3 & 33.3 \\ \hline
+     $5$ & 92.3 & 93.0 & 92.7 & 92.7 & 33.3 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+As expected, the first dataset is separated well, while the second dataset has some persistent errors. with a proper implementation it is fairly easy to score very highly on the first toy dataset, as it is designed to be mostly separable. For the best choice of number of hidden nodes and gradient descent algorithm, we were able to achieve a correct percentage of 99.3\% for toy dataset 1, and 93.3\% for toy dataset 2.
+
 \subsection{MNIST}
 
+The MNIST dataset is a very common dataset in the field of machine learning. It consists of 60,000 training examples, and 10,000 test examples. The inputs are the grayscale pixel values of a 28x28 image of handwritten digits between 0 and 9. The output of the dataset is a vector of length 10, containing nine zeros and one one, indicating the actual number that was written.
+
+This dataset is much more complex than the toy dataset, but still manageable for an ANN. After testing a many values for the variety of different free parameters, we were able to achieve a best correct percentage of //TODO: fill in the best value. Below is a table with other values for the free parameters and the corresponding scores they produce.
+
+//TODO: insert the table!!
+
+The best performing parameters intuitively are blah blah blah...
 
  \end{document}
