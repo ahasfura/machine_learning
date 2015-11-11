@@ -41,7 +41,7 @@ Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not nece
 
 
 \subsection{Gradient Calculation}
-First of all we we be utilize stochastic gradient descent to train our network by updating the weights with each incoming new data point, as opposed to a batch implementation. To do so,  we must first find the gradient of our cost function, $J$ which depends on the loss function $l(w)$ but also applies a regularization of both sets of weights, $w^{(1)}, w^{(2)}$
+First of all we will need the error to calculate the gradient to update our weights and features and apply either regular gradient descent or stochastic gradient descent. To do so,  we must first find the gradient of our cost function, $J$ which depends on the loss function $l(w)$ but also applies a regularization of both sets of weights, $w^{(1)}, w^{(2)}$
 
 \begin{equation}
 J= l(w) + \lambda ( ||w^{(1)}||^2_F +||w^{(2)}||^2_F)
@@ -88,16 +88,22 @@ Introducing a new variable, $\delta_{nj}^{(1)}$,
 \end{equation}
 
 \subsubsection{Stochastic Gradient Descent}
-To actually  optimal weights we will utilized stochastic gradient descend which updates the weights with each new data point,
+To actually compute optimal weights we will utilize stochastic gradient descent which updates the weights with each new data point,
 
 \begin{equation}
 w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
 \end{equation}
 
-Where $\eta$ is the learning rate
+Where $\eta$ is the learning rate of the form 
+\begin{equation}
+\eta = \frac{ \alpha}{ (\textrm{iter} + \beta)^\gamma}
+\end{equation}
+
+where $\beta \leq 100$, $\gamma >.5$ and iter is the iteration number. 
+
 
 \subsection{Implementation}
-We will use the back prop algorithm to implement the training of our neural network. The back propagation algorithm is the classic method for training multilayer neural nets. It was introduced in the late 1960s, and was adapted for neural nets in the early 1990s. The algorithm consists of two main phases. the \textit{propagation} phase, and the \textit{weight update} phase.
+We will use the back propagation algorithm to implement the training of our neural network. The back propagation algorithm is the classic method for training multilayer neural nets. It was introduced in the late 1960s, and was adapted for neural nets in the early 1990s. The algorithm consists of two main phases. the \textit{propagation} phase, and the \textit{weight update} phase.
 
 During the propagation phase, data is fed to the input of the ANN and the activations are propagated forward. After this, the error is propagated backward from the output of the ANN, producing a $\delta$ at each neuron which indicates the computed necessary change at each neuron.
 
@@ -107,7 +113,7 @@ This is repeated for each data point and corresponding label. After the entire t
 
 \section{Results}
 
-We tested out neural net implementation on a few different datasets. We started by testing with two toy dataset provided by the staff, and move on to the highly popular real MNIST dataset.
+We tested out neural net implementation on a few different datasets. We started by testing with two toy dataset provided by the staff, and move on to a simplified version of the popular MNIST dataset.
 
 \subsection{ Toy Data Set}
 
@@ -115,9 +121,15 @@ The toy datasets contains three different classes. They were used mostly to work
 
 The first toy dataset is well separated between the classes, so it will not take too much fine tuning to be able to get good results from our ANN. The second dataset has more overlap between the classes, so the ANN will need to be more carefully optimized.
 
-We ran our ANN implementation on the toy data set using a large range of hidden nodes and regularization constants, and cross validated to find the optimal number, using both batch and stochastic gradient descent. Below is a table displaying the error rate on the first validation set across a variety of number of hidden nodes and regularization constants.
+We ran our ANN implementation on the toy data set using a large range of hidden nodes and regularization constants, and cross validated to find the optimal number, using both batch and stochastic gradient descent. 
+
+We varied the learning rate parameters, number of internal nodes and regularization coefficients and found that the learning rate that worked well for  the toy data sets was $\alpha = 1$, $\beta = 50$, and $\gamma = .6$ in the formulation $\eta = (\alpha/(it + \beta))^\gamma$.
+
+Table1 displays the error rate on the first toy set validation, Table2 show error rate on second toy set, varied across a variety of number of hidden nodes and regularization constants.
+
 
 \begin{center}
+\begin{table}
   \begin{tabular}{ | c | c | c | c | c | c | }
     \hline
      $\lambda$ vs. m & $10^{-10}$ & $10^{-5}$ & $10^{-3}$ & $10^{-2}$ & $10^{-1}$ \\ \hline
@@ -127,11 +139,12 @@ We ran our ANN implementation on the toy data set using a large range of hidden 
      $5$ & 99.3 & 99.3 & 99.3 & 99.0 & 67.7 \\
     \hline
   \end{tabular}
+  \caption{ Percent correctly classified using SGD for toy data set 1}
+  \end{table}
 \end{center}
 
-Here is how our ANN implementation performed on the second dataset.
-
 \begin{center}
+\begin{table}
   \begin{tabular}{ | c | c | c | c | c | c | }
     \hline
      $\lambda$ vs. m & $10^{-10}$ & $10^{-5}$ & $10^{-3}$ & $10^{-2}$ & $10^{-1}$ \\ \hline
@@ -141,18 +154,60 @@ Here is how our ANN implementation performed on the second dataset.
      $5$ & 92.3 & 93.0 & 92.7 & 92.7 & 33.3 \\
     \hline
   \end{tabular}
+  \caption{Percent correctly classified using SGD for toy data set 2}
+  \end{table}
 \end{center}
 
-As expected, the first dataset is separated well, while the second dataset has some persistent errors. with a proper implementation it is fairly easy to score very highly on the first toy dataset, as it is designed to be mostly separable. For the best choice of number of hidden nodes and gradient descent algorithm, we were able to achieve a correct percentage of 99.3\% for toy dataset 1, and 93.3\% for toy dataset 2.
+As expected, the first dataset is separated well, while the second dataset has some persistent errors. with a proper. For the best choice of number of hidden nodes and gradient descent algorithm, we were able to achieve a correct percentage of 99.3\% for toy dataset 1, and 93.3\% for toy dataset 2.
+
+Figures1-3 provide visuals showing the dataset and the neural net's classification for different values of the free parameters.
+
+Figure1 shows the correctly classified data and the output for $\lambda=10^{-1}$ and $m=3$.
+
+\begin{figure}
+\includegraphics[scale=.4]{toy1val_lambda_min1_m_3.png}
+\caption{ Example of result for poorly chosen parameters toy set 1}
+\end{figure}
+
+This can be contrasted to what the output classification of figure2 when the parameters are set properly, $\lambda=10^{-10}$ and $m=3$.
+
+\begin{figure}
+\includegraphics[scale=.4]{toy1val_lambda_min10_m_3.png}
+\caption{ Example of result for well chosen parameters for toy set 1}
+\end{figure}
+
+It is immediately obvious that better parameters classified the validation set more similarly to the actual classes of the data. 
+
+Finally, figure3 shows the best classification we could get for the second toy dataset with $\lambda=10^{-2}$ and $m=4$.
+
+\begin{figure}
+\includegraphics[scale=.4]{toy2val_lambda_min2_m_34.png}
+\caption{ well chosen parameters for toy set 2}
+\end{figure}
 
 \subsection{MNIST}
 
 The MNIST dataset is a very common dataset in the field of machine learning. It consists of 60,000 training examples, and 10,000 test examples. The inputs are the grayscale pixel values of a 28x28 image of handwritten digits between 0 and 9. The output of the dataset is a vector of length 10, containing nine zeros and one one, indicating the actual number that was written.
 
-This dataset is much more complex than the toy dataset, but still manageable for an ANN. After testing a many values for the variety of different free parameters, we were able to achieve a best correct percentage of //TODO: fill in the best value. Below is a table with other values for the free parameters and the corresponding scores they produce.
+This dataset is much more complex than the toy dataset, but still manageable for an ANN. After testing many values for the variety of different free parameters, we were able to achieve a best correct percentage of $92.6\%$. For the learning rate, we used the same formulation, $\eta = (\alpha/(it + \beta))^\gamma$, but this time with $\alpha = .4$, $\beta = 10$, and $\gamma = .55$. Table3 shows values for the free parameters and the corresponding scores they produce.
 
-//TODO: insert the table!!
+\begin{center}
+\begin{table}
+  \begin{tabular}{ | c | c | c | c | }
+    \hline
+     $\lambda$ vs. m & $10^{-4}$ & $10^{-3}$ & $10^{-2}$ \\ \hline
+     $5$ & 17.4 & 90.6 & 89.6 \\ \hline
+     $6$ & 17.4 & 92.6 & 90.6 \\ \hline
+     $7$ & 17.4 & 92.0 & 90.8 \\ \hline
+     $8$ & 17.4 & 91.2 & 91.0 \\ \hline
+    \hline
+  \end{tabular}
+  \caption{Performance of ANN on MNIST dataset for different pairs of $\lambda$ and $m$}
+  \end{table}
+\end{center}
 
-The best performing parameters intuitively are blah blah blah...
+Something interesting to note is that in this dataset the sensitivity of the parameters in much higher than in the other two toy datasets. This arises because there are so many more data points and the classes have much more overlap. Without the value of the regularization constant being just right, it is very easy to overfit the training data. This causes very bad generalizability, as displayed by table 3. 
+
+In the end, the best choice of parameters proved to be $\lambda = 10^{-3}$, $m=6$, $\alpha = .4$, $\beta = 10$, and $\gamma = .55$ with stochastic gradient descent.
 
  \end{document}
