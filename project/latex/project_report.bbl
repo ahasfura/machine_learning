@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{Szarvas2006}
+M.~Szarvas, U.~Sakai, and J~Ogata.
+\newblock Real-time pedestrian detection using lidar and convolutional neural
+  networks.
+\newblock {\em Intelligent Vehicles Symposium, 2006 IEEE}, pages 213--218,
+  2006.
+
+\bibitem{Li2015}
+Wei Li, Min Li, Zhong Su, and Zhigang Zhu.
+\newblock A deep-learning approach to facial expression recognition with candid
+  images.
+\newblock {\em Machine Vision Applications (MVA), 2015 14th IAPR International
+  Conference on}, pages 279--282, May 2015.
+
+\bibitem{Karpathy}
+Andrej Karpathy.
+\newblock What a deep neural network thinks about your selfie.
+\newblock {\em http://karpathy.github.io/2015/10/25/selfie/}, 2015.
+
+\bibitem{MNIST}
+C.J.C.~Burges Y.~LeCunn, C.~Cortes.
+\newblock The mnist database of handwritten digits.
+\newblock {\em http://yann.lecun.com/exdb/mnist/index.html}.
+
+\bibitem{LeCun1998}
+Y.~Bengio Y.~LeCun, L.~Bottou and P.~Haffne.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, November 1998.
+
+\end{thebibliography}
