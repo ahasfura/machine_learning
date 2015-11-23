@@ -3,48 +3,49 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: project_report.aux
 The style file: unsrt.bst
 Database file #1: references.bib
-Warning--empty year in MNIST
+Warning--empty year in StanfordTut
 Name 1 in "Y. LeCun, L. Bottou, Y. Bengio, and P. Haffne" has a comma at the end for entry LeCun1998
 while executing---line 944 of file unsrt.bst
-You've used 5 entries,
+Warning--empty year in MNIST
+You've used 7 entries,
             1791 wiz_defined-function locations,
-            478 strings with 4358 characters,
-and the built_in function-call counts, 1212 in all, are:
-= -- 110
-> -- 41
+            488 strings with 4637 characters,
+and the built_in function-call counts, 1496 in all, are:
+= -- 134
+> -- 49
 < -- 2
-+ -- 16
-- -- 11
-* -- 72
-:= -- 187
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 5
++ -- 20
+- -- 13
+* -- 82
+:= -- 234
+add.period$ -- 21
+call.type$ -- 7
+change.case$ -- 7
 chr.to.int$ -- 0
-cite$ -- 6
-duplicate$ -- 61
-empty$ -- 113
-format.name$ -- 11
-if$ -- 280
+cite$ -- 9
+duplicate$ -- 79
+empty$ -- 146
+format.name$ -- 13
+if$ -- 344
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 5
-newline$ -- 28
-num.names$ -- 5
-pop$ -- 14
+int.to.str$ -- 7
+missing$ -- 8
+newline$ -- 38
+num.names$ -- 7
+pop$ -- 24
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 40
+skip$ -- 45
 stack$ -- 0
 substring$ -- 83
-swap$ -- 23
+swap$ -- 25
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 1
-while$ -- 10
-width$ -- 6
-write$ -- 54
+warning$ -- 2
+while$ -- 12
+width$ -- 8
+write$ -- 74
 (There was 1 error message)

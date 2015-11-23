@@ -15,7 +15,7 @@
 \section{ Introduction} 
 Neural networks are a useful machine learning framework that's primary benefit is that instead of specifying the basis functions relating input to output,  more or less learns the connectivity, since the optimal basis functions could be complicated and non-intuitive, such as in the case of images. Such an approach is Artificial Neural Networks (ANN). The idea of a neural network replaces the known basis functions with features, which are parametric functions of activations, learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features.
 
-Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain which provided the inspiration for artifical neural networks, the architecture used for machine learning neural networks can be more complicated and complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, while drastically more parameters and computation,  allows for more complex input/output relationship and an ability to classify based on both information from low and high level features.
+Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system which provided the inspiration for artificial neural networks, the architecture used for machine learning neural networks can be more complicated and complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, while drastically more parameters and computation,  allows for more complex input/output relationship and an ability to classify based on both information from low and high level features.
 
 Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of area in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
 	
@@ -25,23 +25,54 @@ In this project, we want to explore the benefits of deep nets as well as convolu
 
 \section{Approach and Methodology}
 	
-In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on datasets of varying difficulty, from MNIST to ImageNet so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
+In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on datasets of varying difficulty, starting from MNIST, so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
 
  We will then compare our rudimentary approach to a professional library for deep learning, specifically TensorFlow. Obviously the professional library will allow for better results and more interesting conclusions but building and implementing a simplified version will give a better understanding into how the neural network works. 
 
-\subsection{Neural Network Basic}
+\subsection{Neural Network Basics}
+
+
+\begin{figure}
+\includegraphics[scale=.7]{simpleNN.png}
+
+\caption{Visualization of a simple Neural Network with 1 hidden layer \cite{Bishop} . }
+\label{fig:basicNN}
+\end{figure}
+
+
+
+
 
 \subsection{Multi-layer Neural Network}
 
 \subsection{General Architecture of a Convolutional Neural Network}
-The idea of the CNN is to no longer have fully connected layers. Instead not every node is connected to every other node. Instead these relationships are described by a kernel. Of particular interest in the convolutional kernel. But instead of hard coding the kernel, the kernels used are learned by training.
+As opposed to a simple neural network, a convolutional neural network is specifically designed to take advantage of the 2-d structure of an input image by considering only local connections and tied weights followed by some form of pooling which results in translation invariant features. Compared to regular neural nets,  CNNs  have many fewer parameters than networks of similar size and thus they are easier to train.
+
+
 
 \subsubsection{Convolutional Layer}
+The idea of the CNN is to no longer have fully connected layers. Instead not every node is connected to every other node. Instead these relationships are described by a kernel. Of particular interest in the convolutional kernel. But instead of hard coding the kernel, the kernels used are learned by training. 
+
+By sub sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by  transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $k$ kernels that are $m * n$,  after convolution, there are  $ k * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
+
+Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same which dramatically reduces the number of parameters needed to describe and set up the network. This idea is shown in fig. \ref{fig:conv}.
 
 
-By using a convolutional kernel we can  transform the 2-D images into a 3-D space, this is done by convolving the images by several kernels. For a  $M * N $ size image, using $k$ kernels that are $m * n$,  after convolution, there are  $ k * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we improved the feature by increase the influence of nearby pixels. \subsubsection{Re-LU Layer}
-\subsubsection{Pool Layer}
 
+
+\begin{figure}
+\includegraphics[scale=.4]{convgraphic.png}
+
+\caption{Layer of a convolutional neural network with pooling. Nodes of the same color have tied weights and units of different color represent different filter maps \cite{StanfordTut}. }
+\label{fig:conv}
+\end{figure}
+
+
+\subsubsection{Pooling Layer}
+The features learned using convolution, are next used for classification. Previously with the fully connected neural network we utilized a softmax classifier, but this can be computationally challenging and expensive. Instead, pooling layers take advantage of a single parameter of these features, such as the mean, ( 'mean pooling') or max ( 'max pooling'), at  various regions in the image. Not only does this reduce the dimensionality of the result but can also help reduce over-fitting.
+
+
+\subsubsection{Re-LU Layer}
 \subsection{Professional Libraries}
 \subsubsection{TensorFlow}
 
@@ -53,30 +84,47 @@ By using a convolutional kernel we can  transform the 2-D images into a 3-D spac
 
 
 \subsection{Benchmarking with MNIST}
-MNIST  \cite{MNIST} 
-Already done and thouroughly explored by many people included Yann LeCun \cite{LeCun1998} however it provides a good system to check our results by since it is so well documented. Without exploring our results for different and being able to concretely compare them to results for different layers and types of layers to published and documented results, we can make sure our implementation is working before taking on a more complicated dataset. 
-
-
-Only considered datasets with no distortions
-
-\begin{table*}[h!]
-\begin{tabular} { |c | c | c | }
+\begin{center}
+\begin{table*}[t]
+\begin{tabular} { |c | c | c | c | }
     \hline
-    ANN Type & LeCun Test Error  &  Our Test Error  \\ \hline
-    2-layer NN, 300 hidden units, mean square error & 4.7 & \\ \hline
-    2-layer NN, 1000 hidden units & 4.5 & \\ \hline
-    3-layer NN, 300+100 hidden units & 3.05 & \\ \hline
-    3-layer NN, 500+150 hidden units & 2.95 & \\ \hline
-    Convolutional net LeNet-1 & 1.7 & \\ \hline 
-    Convolutional net LeNet-4 & 1.1& \\ \hline 
-    Convolutional net LeNet-5 &  .95 & \\ \hline
+    NN Type & LeCun Error  &  Our Error  & Tensor Flow Error \\ \hline
+    2-layer NN, 300 hidden units, mean square error & 4.7 &  & \\ \hline
+    2-layer NN, 1000 hidden units & 4.5 & & \\ \hline
+    3-layer NN, 300+100 hidden units & 3.05 & &  \\ \hline
+    3-layer NN, 500+150 hidden units & 2.95 & & \\ \hline
+    Convolutional net LeNet-1 & 1.7 &  & \\ \hline 
+    Convolutional net LeNet-4 & 1.1& & \\ \hline 
+    Convolutional net LeNet-5 &  0.95 & &\\ \hline
 \end{tabular}
 \label{table: MNISTLeCun}
-\caption{Comparison of results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
+\caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
 \end{table*}
+\end{center}
 
+
+
+The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 training examples and 10,000 test examples \cite{MNIST}  that can be used for image classification.  This data set arose from the U.S. Postal Service zip code database in order to help the scanning and transport of package to the right area. The images are all centered in 28 x 28.
+
+\begin{figure}
+\includegraphics[scale=.8]{MNISTnos.png}
+\label{fig:MNISTex}
+\caption{Sample entries of the MNIST dataset \cite{LeCun1998}}
+\end{figure}
+
+Already done and thoroughly explored by many people included Yann LeCun \cite{LeCun1998} however it provides a good system to check our results by since it is so well documented.  Replication of the architects of both the fully-connected and convolutional neural nets provided in this paper is the first objective of our study. By comparing our results  for different layers and types of layers to published and documented results, we can make sure our implementation is working before taking on a more complicated dataset. 
+
+
+ We specifically chose to replicate the 2 and 3 layer fully connected neural nets as well as LeNet-1 and LeNet-5 with no preprocessing or distortions. 
+
+\subsubsection{Replication of NNs}
+\subsubsection{Replication of LeNet-1}
+\subsubsection{Replication of LeNet-5}
  
 \subsection{Other dataset}
+\section{Conclusions}
+
+\section{Areas for further work}
 
 \bibliographystyle{unsrt}
 \bibliography{references}

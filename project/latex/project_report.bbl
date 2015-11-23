@@ -19,14 +19,25 @@ Andrej Karpathy.
 \newblock What a deep neural network thinks about your selfie.
 \newblock {\em http://karpathy.github.io/2015/10/25/selfie/}, 2015.
 
-\bibitem{MNIST}
-C.J.C.~Burges Y.~LeCunn, C.~Cortes.
-\newblock The mnist database of handwritten digits.
-\newblock {\em http://yann.lecun.com/exdb/mnist/index.html}.
+\bibitem{Bishop}
+Christopher Bishop.
+\newblock {\em Pattern Recognition and Machine Learning}.
+\newblock Springer-Verlag New York, 1 edition, 2006.
+
+\bibitem{StanfordTut}
+Stanford Unsupervised Feature Learning Deep~Learning Tutorial.
+\newblock Convolutional neural netowrk.
+\newblock {\em http://ufldl.stanford.edu/tutorial
+  /supervised/ConvolutionalNeuralNetwork/}.
 
 \bibitem{LeCun1998}
 Y.~Bengio Y.~LeCun, L.~Bottou and P.~Haffne.
 \newblock Gradient-based learning applied to document recognition.
 \newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, November 1998.
+
+\bibitem{MNIST}
+C.J.C.~Burges Y.~LeCunn, C.~Cortes.
+\newblock The mnist database of handwritten digits.
+\newblock {\em http://yann.lecun.com/exdb/mnist/index.html}.
 
 \end{thebibliography}
