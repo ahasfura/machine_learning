@@ -20,18 +20,29 @@ numFilters = 20;   % Number of filters for conv layer
 poolDim = 2;      % Pooling dimension, (should divide imageDim-filterDim+1)
 
 % Load MNIST Train
-addpath ../common/;
-images = loadMNISTImages('../common/train-images-idx3-ubyte');
+filename= [pwd '/MNIST/train-images-idx3-ubyte'];
+images = loadMNISTImages(filename);
 images = reshape(images,imageDim,imageDim,[]);
-labels = loadMNISTLabels('../common/train-labels-idx1-ubyte');
+filename= [pwd '/MNIST/train-labels-idx1-ubyte'];
+labels = loadMNISTLabels(filename);
 labels(labels==0) = 10; % Remap 0 to 10
 
 % Initialize Parameters
 theta = cnnInitParams(imageDim,filterDim,numFilters,poolDim,numClasses);
 
+
+
+%%
+
+convImages = images(:, :, 1:8); 
+convLabels=labels(1:8); 
 %%======================================================================
 %% STEP 1: Implement convNet Objective
 %  Implement the function cnnCost.m.
+lambda=0; 
+[cost, grad, preds] = cnnCost(theta,convImages,convLabels,numClasses,...
+                                filterDim,numFilters,poolDim, lambda, 0); %pred
+
 
 %%======================================================================
 %% STEP 2: Gradient Check
@@ -39,7 +50,7 @@ theta = cnnInitParams(imageDim,filterDim,numFilters,poolDim,numClasses);
 %  calculation for your cnnCost.m function.  You may need to add the
 %  appropriate path or copy the file to this directory.
 
-DEBUG=false;  % set this to true to check gradient
+DEBUG=true;  % set this to true to check gradient
 if DEBUG
     % To speed up gradient checking, we will use a reduced network and
     % a debugging data set
@@ -52,21 +63,21 @@ if DEBUG
                 db_poolDim,numClasses);
     
     [cost grad] = cnnCost(db_theta,db_images,db_labels,numClasses,...
-                                db_filterDim,db_numFilters,db_poolDim);
+                                db_filterDim,db_numFilters,db_poolDim, lambda, 0);
     
 
     % Check gradients
     numGrad = computeNumericalGradient( @(x) cnnCost(x,db_images,...
                                 db_labels,numClasses,db_filterDim,...
-                                db_numFilters,db_poolDim), db_theta);
+                                db_numFilters,db_poolDim, lambda, 0), db_theta);
  
     % Use this to visually compare the gradients side by side
-    disp([numGrad grad]);
+    %disp([numGrad grad]);
     
-    diff = norm(numGrad-grad)/norm(numGrad+grad);
+    %diff = norm(numGrad-grad)/norm(numGrad+grad);
     % Should be small. In our implementation, these values are usually 
     % less than 1e-9.
-    disp(diff); 
+    %disp(diff); 
  
     assert(diff < 1e-9,...
         'Difference too large. Check your gradient computation again');
@@ -83,20 +94,26 @@ options.alpha = 1e-1;
 options.momentum = .95;
 
 opttheta = minFuncSGD(@(x,y,z) cnnCost(x,y,z,numClasses,filterDim,...
-                      numFilters,poolDim),theta,images,labels,options);
+                      numFilters,poolDim, lambda, 0),theta,images,labels,options);
 
+ fprintf('Training Finished');                 
+                  
 %%======================================================================
 %% STEP 4: Test
 %  Test the performance of the trained model using the MNIST test set. Your
 %  accuracy should be above 97% after 3 epochs of training
+filename= [pwd '/MNIST/t10k-images-idx3-ubyte'];
 
-testImages = loadMNISTImages('../common/t10k-images-idx3-ubyte');
+testImages = loadMNISTImages(filename);
 testImages = reshape(testImages,imageDim,imageDim,[]);
-testLabels = loadMNISTLabels('../common/t10k-labels-idx1-ubyte');
-testLabels(testLabels==0) = 10; % Remap 0 to 10
 
+filename= [pwd '/MNIST/t10k-labels-idx1-ubyte'];
+
+testLabels = loadMNISTLabels(filename);
+testLabels(testLabels==0) = 10; % Remap 0 to 10
+%%
 [~,cost,preds]=cnnCost(opttheta,testImages,testLabels,numClasses,...
-                filterDim,numFilters,poolDim,true);
+                filterDim,numFilters,poolDim, 0, true);
 
 acc = sum(preds==testLabels)/length(preds);
 

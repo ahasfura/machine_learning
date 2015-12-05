@@ -44,6 +44,24 @@ In this project, we seek to implement a version of multilayer neural nets for su
 
 
 \subsection{Multi-layer Neural Network}
+For forward propagation is straight forward, you simply continue the formula for a single hidden layer and chain them together for more layers. 
+
+For backwards propagation the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
+
+\begin{equation}
+\delta^{(l)}=((W^{(l)})^T \delta^{(l+1)}) \cdot f ^{\prime} (z^{(l)})
+\end{equation}
+
+and the following derivatives 
+\begin{equation}
+\nabla_{W^{(l)}}J(W,b;x,y) = \delta^{(l+1)}(a^{(l)})^T
+\end{equation}
+\begin{equation}
+\nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
+\end{equation}
+
+As the network grows bigger and bigger the computational time becomes more and more of a constraint. So for all studied neural  networks we will used Stochastic Gradient descent as opposed to batch methods. We simply halve the learning rate after each epoch. As mentioned in Stochastic Gradient Descent, we also randomly shuffle the data before each epoch, which tends to provide better convergence.
+
 
 \subsection{General Architecture of a Convolutional Neural Network}
 As opposed to a simple neural network, a convolutional neural network is specifically designed to take advantage of the 2-d structure of an input image by considering only local connections and tied weights followed by some form of pooling which results in translation invariant features. Compared to regular neural nets,  CNNs  have many fewer parameters than networks of similar size and thus they are easier to train.
@@ -51,12 +69,24 @@ As opposed to a simple neural network, a convolutional neural network is specifi
 
 
 \subsubsection{Convolutional Layer}
-The idea of the CNN is to no longer have fully connected layers. Instead not every node is connected to every other node. Instead these relationships are described by a kernel. Of particular interest in the convolutional kernel. But instead of hard coding the kernel, the kernels used are learned by training. 
+The idea of the CNN is to no longer have fully connected layers. Instead not every node is connected to every other node. Instead these relationships are described by a kernel. Of particular interest in the convolutional kernel. But instead of hard coding the filters, the filters used are learned by training. 
 
-By sub sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by  transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $k$ kernels that are $m * n$,  after convolution, there are  $ k * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
+By sub sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by  transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $K$ filters that are $m * n$,  after convolution, there are  $ K * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
+
+
+Generally, the process that occurs in a convolution layer can be described as for each image, $x_n$ for $n=1..N$ and for each filter $k=1...K$ in the convolution layer, $c$
+\begin{equation}
+a_{n,k}^{(c)}= x_n \ast w_k^{(c)} + b_k^{(c)}
+\end{equation}
+\begin{equation}
+f_{n,k}= \tilde{g}(a_{n,k}^{(c)})
+\end{equation}
+ 
+ Where $\ast$ is the convolution operator. 
+ 
+ Layers closer to the input have fewer filters than those layers further up the chain due t . The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The trick is thus to find the right level of ?granularity? (i.e. filter shapes) in order to create abstractions at the proper scale, given a particular dataset
 
 Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same which dramatically reduces the number of parameters needed to describe and set up the network. This idea is shown in fig. \ref{fig:conv}.
-
 
 
 
@@ -71,12 +101,19 @@ Also CNNs introduce the idea of tied weights, which mean that certain connection
 \subsubsection{Pooling Layer}
 The features learned using convolution, are next used for classification. Previously with the fully connected neural network we utilized a softmax classifier, but this can be computationally challenging and expensive. Instead, pooling layers take advantage of a single parameter of these features, such as the mean, ( 'mean pooling') or max ( 'max pooling'), at  various regions in the image. Not only does this reduce the dimensionality of the result but can also help reduce over-fitting.
 
+The region to be pooled over is determined by the pooling dimensions. It again involves a convolution, this time between regions specified by the pooling dimensions and the results from the previous convolution layer. 
 
-\subsubsection{Re-LU Layer}
+
+
+\subsection{Backprop for CNN}
+Derivatives are needed . Up sample
 \subsection{Professional Libraries}
 \subsubsection{TensorFlow}
 
+
+
 \subsection{Datasets Considered}
+
 
 
 \section{Results}

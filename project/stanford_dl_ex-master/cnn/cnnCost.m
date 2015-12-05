@@ -1,5 +1,5 @@
 function [cost, grad, preds] = cnnCost(theta,images,labels,numClasses,...
-                                filterDim,numFilters,poolDim,pred)
+                                filterDim,numFilters,poolDim,lambda, pred)
 % Calcualte cost and gradient for a single layer convolutional
 % neural network followed by a softmax layer with cross entropy
 % objective.
@@ -22,9 +22,9 @@ function [cost, grad, preds] = cnnCost(theta,images,labels,numClasses,...
 %  preds      -  list of predictions for each example (if pred==True)
 
 
-if ~exist('pred','var')
-    pred = false;
-end;
+%if ~exist('pred','var')
+ %   pred = false;
+%end;
 
 
 imageDim = size(images,1); % height/width of image
@@ -41,6 +41,7 @@ numImages = size(images,3); % number of images
 [Wc, Wd, bc, bd] = cnnParamsToStack(theta,imageDim,filterDim,numFilters,...
                         poolDim,numClasses);
 
+              
 % Same sizes as Wc,Wd,bc,bd. Used to hold gradient w.r.t above params.
 Wc_grad = zeros(size(Wc));
 Wd_grad = zeros(size(Wd));
@@ -67,45 +68,62 @@ outputDim = (convDim)/poolDim; % dimension of subsampled output
 % convDim x convDim x numFilters x numImages tensor for storing activations
 activations = zeros(convDim,convDim,numFilters,numImages);
 
+convolvedFeatures = cnnConvolve(filterDim, numFilters, images, Wc, bc);
+activations=activations+convolvedFeatures; 
+
+
 % outputDim x outputDim x numFilters x numImages tensor for storing
 % subsampled activations
 activationsPooled = zeros(outputDim,outputDim,numFilters,numImages);
-
-%%% YOUR CODE HERE %%%
-
+pooledFeatures = cnnPool(poolDim, activations);
+activationsPooled=activationsPooled+pooledFeatures; 
 % Reshape activations into 2-d matrix, hiddenSize x numImages,
 % for Softmax layer
 activationsPooled = reshape(activationsPooled,[],numImages);
-
 %% Softmax Layer
 %  Forward propagate the pooled activations calculated above into a
 %  standard softmax layer. For your convenience we have reshaped
 %  activationPooled into a hiddenSize x numImages matrix.  Store the
 %  results in probs.
 
+
+
+%Phi= Wd*activationsPooled+bd*ones(1, numImages);
+
 % numClasses x numImages for storing probability that each image belongs to
 % each class.
 probs = zeros(numClasses,numImages);
 
-%%% YOUR CODE HERE %%%
 
+M=exp(bsxfun(@plus,Wd*activationsPooled,bd));
+probs = probs + bsxfun(@rdivide,M,sum(M,1));
+
+%Phi = bsxfun(@minus, Phi, max(Phi, [], 1));
+%probs2 = exp(Phi) ./repmat(sum(exp(Phi)), numClasses, 1);
+%probs=probs2+probs
+
+%%% YOUR CODE HERE %%%
 %%======================================================================
 %% STEP 1b: Calculate Cost
 %  In this step you will use the labels given as input and the probs
 %  calculate above to evaluate the cross entropy objective.  Store your
 %  results in cost.
-
+groundTruth = full(sparse(labels, 1:numImages, 1));
 cost = 0; % save objective into cost
+
+cost=cost-1/numImages*sum(sum(log(probs).*groundTruth));
+
 
 %%% YOUR CODE HERE %%%
 
-% Makes predictions given probs and returns without backproagating errors.
-if pred
-    [~,preds] = max(probs,[],1);
+[~,preds] = max(probs,[],1);
     preds = preds';
+% Makes predictions given probs and returns without backproagating errors.
+if pred == 1;  
     grad = 0;
     return;
 end;
+
 
 %%======================================================================
 %% STEP 1c: Backpropagation
@@ -118,6 +136,21 @@ end;
 %  quickly.
 
 %%% YOUR CODE HERE %%%
+%delta=-(groundTruth - groundTruth.*probs); 
+%delta_pool = (1/poolDim^2) * kron(delta,ones(poolDim));
+
+
+delta_softmax=-(groundTruth-probs);
+delta_pooled=Wd'*delta_softmax;
+delta_pooled=reshape(delta_pooled,[],outputDim,numFilters,numImages);
+delta_unpooled=zeros(outputDim*poolDim,outputDim*poolDim,numFilters,numImages);
+for imageNum=1:numImages
+    for filterNum=1:numFilters
+        delta_unpooled(:,:,filterNum,imageNum)=(1/poolDim^2)*...
+            kron(delta_pooled(:,:,filterNum,imageNum),ones(poolDim,poolDim)); % upsampling
+    end
+end
+delta_conv=delta_unpooled.*activations.*(1-activations);
 
 %%======================================================================
 %% STEP 1d: Gradient Calculation
@@ -129,6 +162,23 @@ end;
 
 %%% YOUR CODE HERE %%%
 
+%       
+Wd_grad=Wd_grad+1/numImages*delta_softmax*reshape(activationsPooled,[],numImages)';
+bd_grad=bd_grad+1/numImages*sum(delta_softmax,2);
+for filterNum=1:numFilters
+    for imageNum=1:numImages
+        Wc_grad(:,:,filterNum,:)=Wc_grad(:,:,filterNum,:)+...
+            conv2(images(:,:,imageNum),rot90(delta_conv(:,:,filterNum,imageNum),2),'valid');
+    end
+    Wc_grad(:,:,filterNum,:)=1/numImages*Wc_grad(:,:,filterNum,:);
+end
+for filterNum = 1 : numFilters
+    bc_grad(filterNum) = 1/numImages*sum(sum(sum(delta_conv(:,:,filterNum,:))));
+end
+
+
+
+    
 %% Unroll gradient into grad vector for minFunc
 grad = [Wc_grad(:) ; Wd_grad(:) ; bc_grad(:) ; bd_grad(:)];
 
