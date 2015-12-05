@@ -30,6 +30,18 @@ Stanford Unsupervised Feature Learning Deep~Learning Tutorial.
 \newblock {\em http://ufldl.stanford.edu/tutorial
   /supervised/ConvolutionalNeuralNetwork/}.
 
+\bibitem{LeCun89}
+J.S. Denker D. Henderson R.E.~Howard Y.~Lecun, B.~Boser.
+\newblock Backpropagation applied to handwritten zip code recognition.
+\newblock {\em Neural Computation}, 1:541--551, 1989.
+
+\bibitem{LeCun95}
+L.~Bottou A. Brunot C. Cortes J. S. Denker H. Drucker I. Guyon U. A. Muller E.
+  Sackinger P.~Simard Y.~LeCun, L. D.~Jackel and V.~Vapnik.
+\newblock Comparison of learning algorithms for handwritten digit recognition.
+\newblock {\em International Conference on Artificial Neural Networks}, 53-60,
+  1995.
+
 \bibitem{LeCun1998}
 Y.~Bengio Y.~LeCun, L.~Bottou and P.~Haffne.
 \newblock Gradient-based learning applied to document recognition.

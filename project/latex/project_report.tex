@@ -13,7 +13,7 @@
 \maketitle
 
 \section{ Introduction} 
-Neural networks are a useful machine learning framework that's primary benefit is that instead of specifying the basis functions relating input to output,  more or less learns the connectivity, since the optimal basis functions could be complicated and non-intuitive, such as in the case of images. Such an approach is Artificial Neural Networks (ANN). The idea of a neural network replaces the known basis functions with features, which are parametric functions of activations, learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features.
+Neural networks are a useful machine learning framework. Their primary benefit is that instead of specifying the basis functions relating input to output,  more or less learns the connectivity, since the optimal basis functions could be complicated and non-intuitive, such as in the case of images. Such an approach is Artificial Neural Networks (ANN). The idea of a neural network replaces the known basis functions with features, which are parametric functions of activations, learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features.
 
 Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system which provided the inspiration for artificial neural networks, the architecture used for machine learning neural networks can be more complicated and complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, while drastically more parameters and computation,  allows for more complex input/output relationship and an ability to classify based on both information from low and high level features.
 
@@ -25,7 +25,7 @@ In this project, we want to explore the benefits of deep nets as well as convolu
 
 \section{Approach and Methodology}
 	
-In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on datasets of varying difficulty, starting from MNIST, so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
+In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on the data , so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
 
  We will then compare our rudimentary approach to a professional library for deep learning, specifically TensorFlow. Obviously the professional library will allow for better results and more interesting conclusions but building and implementing a simplified version will give a better understanding into how the neural network works. 
 
@@ -84,7 +84,7 @@ f_{n,k}= \tilde{g}(a_{n,k}^{(c)})
  
  Where $\ast$ is the convolution operator. 
  
- Layers closer to the input have fewer filters than those layers further up the chain due t . The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The trick is thus to find the right level of ?granularity? (i.e. filter shapes) in order to create abstractions at the proper scale, given a particular dataset
+ Layers closer to the input have fewer filters than those layers further up the chain due t . The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The trick is thus to find the right filter shapes in order to create abstractions at the proper scale, given a particular dataset
 
 Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same which dramatically reduces the number of parameters needed to describe and set up the network. This idea is shown in fig. \ref{fig:conv}.
 
@@ -116,29 +116,11 @@ Derivatives are needed . Up sample
 
 
 
-\section{Results}
+
 
 
 
 \subsection{Benchmarking with MNIST}
-\begin{center}
-\begin{table*}[t]
-\begin{tabular} { |c | c | c | c | }
-    \hline
-    NN Type & LeCun Error  &  Our Error  & Tensor Flow Error \\ \hline
-    2-layer NN, 300 hidden units, mean square error & 4.7 &  & \\ \hline
-    2-layer NN, 1000 hidden units & 4.5 & & \\ \hline
-    3-layer NN, 300+100 hidden units & 3.05 & &  \\ \hline
-    3-layer NN, 500+150 hidden units & 2.95 & & \\ \hline
-    Convolutional net LeNet-1 & 1.7 &  & \\ \hline 
-    Convolutional net LeNet-4 & 1.1& & \\ \hline 
-    Convolutional net LeNet-5 &  0.95 & &\\ \hline
-\end{tabular}
-\label{table: MNISTLeCun}
-\caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
-\end{table*}
-\end{center}
-
 
 
 The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 training examples and 10,000 test examples \cite{MNIST}  that can be used for image classification.  This data set arose from the U.S. Postal Service zip code database in order to help the scanning and transport of package to the right area. The images are all centered in 28 x 28.
@@ -151,14 +133,54 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 
 Already done and thoroughly explored by many people included Yann LeCun \cite{LeCun1998} however it provides a good system to check our results by since it is so well documented.  Replication of the architects of both the fully-connected and convolutional neural nets provided in this paper is the first objective of our study. By comparing our results  for different layers and types of layers to published and documented results, we can make sure our implementation is working before taking on a more complicated dataset. 
 
+\subsubsection{LeNets}
+The CNN LeNet-1 architecture consists of 5 layers, which are denoted by C1, S2,C3, S4, and F5.  The output of the first layer serves as
+input to the next layer. C1 and C3 are convolution layers, and S2 and S4 are sub-sampling layers and the fifth layer is fully connected. \cite{LeCun89}
+
+The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers . \cite{LeCun95}
+
+LeNet-5 architecture expands on this even further by adding an additional layer, with gaussian connections. 
+
+ Although LeNet 5 is 
+
+ \begin{figure*}
+\includegraphics[scale=.6]{LeNet5.png}
+\label{fig:LeNet5}
+\caption{Architecture for LeNet5 \cite{LeCun1998}}
+\end{figure*}
+
+
 
  We specifically chose to replicate the 2 and 3 layer fully connected neural nets as well as LeNet-1 and LeNet-5 with no preprocessing or distortions. 
 
+
+\section{Results}
 \subsubsection{Replication of NNs}
-\subsubsection{Replication of LeNet-1}
-\subsubsection{Replication of LeNet-5}
- 
-\subsection{Other dataset}
+\subsubsection{Multilayer CNN}
+
+
+
+\begin{center}
+\begin{table*}[t]
+\begin{tabular} { |c | c | c | c | }
+    \hline
+    NN Type & LeCun Error  &  Our Error  & Tensor Flow Error \\ \hline
+    2-layer NN, 300 hidden units, mean square error & 4.7 &  & \\ \hline
+    2-layer NN, 1000 hidden units & 4.5 & & \\ \hline
+    3-layer NN, 300+100 hidden units & 3.05 & &  \\ \hline
+    3-layer NN, 500+150 hidden units & 2.95 & & \\ \hline
+    3- layer CNN &  -- &  & \\ \hline
+    5 layer CNN  (LeNet-1) & 1.7 &  & \\ \hline 
+    6 layerCNN (LeNet-4) & 1.1& & \\ \hline 
+    7 layer CNN (LeNet-5) &  0.95 & &\\ \hline
+\end{tabular}
+\label{table: MNISTLeCun}
+\caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
+\end{table*}
+\end{center}
+
+
+
 \section{Conclusions}
 
 \section{Areas for further work}
