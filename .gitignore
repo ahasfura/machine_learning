@@ -3,6 +3,7 @@ bishop.pdf
 .DS_Store
 *.aux
 *.log
+*.pyc
 *.gz
 *~
 reviews/
