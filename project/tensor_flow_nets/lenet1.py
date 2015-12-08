@@ -34,6 +34,9 @@ def conv2d(img, w, b):
 def max_pool(img, k):
     return tf.nn.max_pool(img, ksize=[1, k, k, 1], strides=[1, k, k, 1], padding='SAME')
 
+def mean_pool(img, k):
+    return tf.nn.avg_pool(img, ksize=[1, k, k, 1], strides=[1, k, k, 1], padding='SAME')
+
 def conv_net(_X, _weights, _biases, _dropout):
     # Reshape input picture
     _X = tf.reshape(_X, shape=[-1, 28, 28, 1])
