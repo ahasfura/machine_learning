@@ -61,19 +61,37 @@ def write_out_data(filename, params, final_acc, time_elapsed):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Setup deep net')
 
+
     parser.add_argument("--run_name", required=True, type=str, help="name of run")
     parser.add_argument("--filter_size", type=int, default=9, help="size of convolve filter")
     parser.add_argument("--num_filters", type=int, default=20, help="number of filters")
     parser.add_argument("--learning_rate", type=float, default=.001, help="learning rate")
     parser.add_argument("--batch_size", type=int, default=256, help="batch size")
     parser.add_argument("--pool_dim", type=int, default=2, help="how big are the pooling layer dimensions")
-    parser.add_argument("--relu", type=bool, default=True, help="use relu or tanh?")
-    parser.add_argument("--mean", type=bool, default=True, help="use mean or max?")
-    parser.add_argument("--use_dropout", type=bool, default=True, help="use dropout?")
-    parser.add_argument("--dropout_rate", type=float, default=.75, help="use dropout?")
+    parser.add_argument("--dropout_rate", type=float, default=.75, help="set dropout rate")
     parser.add_argument("--training_iters", type=int, default=100000, help="how many iterations for the training phase?")
 
+    parser.add_argument("--relu", dest="relu", action="store_true", help="use relu")
+    parser.add_argument("--tanh", dest="relu", action="store_false", help="use tanh")
+    parser.set_defaults(relu=True)
+
+    parser.add_argument("--mean", dest="mean", action="store_true", help="use mean pooling")
+    parser.add_argument("--max", dest="mean", action="store_false", help="use max pooling")
+    parser.set_defaults(mean=True)
+
+    parser.add_argument("--dropout", dest="use_dropout", action="store_true", help="use dropout?")
+    parser.add_argument("--no_dropout", dest="use_dropout", action="store_false", help="use dropout?")
+    parser.set_defaults(use_dropout=True)
+
+    parser.add_argument("--save_run", dest="save_run", action="store_true", help="save run")
+    parser.add_argument("--dont_save_run", dest="save_run", action="store_false", help="don't save run")
+    parser.set_defaults(save_run=True)
+
     args = parser.parse_args()
+
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print "save_run: {}".format(args.save_run)
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
     mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
@@ -153,4 +171,5 @@ if __name__ == '__main__':
     
     end = time.time()
 
-    write_out_data(args.run_name[:-3], {'number of layers':len(weights), 'learning_rate':learning_rate, 'training_iters':training_iters, 'batch_size':batch_size, 'filter_size':filter_size, 'num_filters':num_filters, 'pool_dim':pool_dim, 'dropout':dropout, 'mean pool?':is_mean, 'dropout?':is_dropout, 'relu?': is_relu}, final_acc, end - start)
+    if args.save_run:
+        write_out_data(args.run_name[:-3], {'number of layers':len(weights), 'learning_rate':learning_rate, 'training_iters':training_iters, 'batch_size':batch_size, 'filter_size':filter_size, 'num_filters':num_filters, 'pool_dim':pool_dim, 'dropout':dropout, 'mean pool?':is_mean, 'dropout?':is_dropout, 'relu?': is_relu}, final_acc, end - start)
