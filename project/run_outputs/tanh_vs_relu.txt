@@ -22,3 +22,15 @@ final accuracy: 0.78125, time taken: 36.4432928562
 [True, 0.001, 3, 256, True, 9, 10000, True, 2, 20, 0.75]
 final accuracy: 0.78515625, time taken: 36.7697899342
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 16:12:22.246290
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.75]
+final accuracy: 0.97265625, time taken: 305.714396954
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 16:17:16.453017
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.75]
+final accuracy: 0.9609375, time taken: 292.705922842
+

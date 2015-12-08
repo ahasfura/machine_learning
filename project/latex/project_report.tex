@@ -22,7 +22,7 @@ Deep learning, although not a recent idea, has recently exploded in popularity d
 	
 Not only do deep nets contain more hidden layers but a multitude of different types of layers. Each layer type has different connectivity and objectives allowing for a greater richness of information. For use with images convolutional layers are especially beneficial for examining only the relevance of spatially nearby pixels in the context of determining features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
 
-In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is to generalize the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures. Not only do we want to gain familiarity with concept and tools used in deep learning but we also hope to document generalities by applying these approaches to multiple image datasets. The generalities we hope to explore include the following: How does the number of layers effect the amount of training data needed? How does a specific type of layer effect accuracy  or computation time? 
+In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is to generalize the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures but utilizing software we build. Not only do we want to gain familiarity with concept and tools used in deep learning but we also hope to document generalities by applying these approaches to multiple image datasets. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed? How does a specific type of layer affect accuracy  or computation time? 
 
 Our second goal is to attempt to replicate results from Yann Lecun on the classification of the MNIST data sets for more complicated frameworks like LeNet \cite{LeCun1998}. For this we will use the professional deep learning library to get faster results and be able to quickly build extensive architectures. 
 
@@ -67,9 +67,10 @@ Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not nece
 
 We will consider the cross entropy cost function, 
 
-\begin{equation*}
+\begin{equation}
+\scriptsize
 J(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}h_k(x^{(i)})- (1 -y^{(i)}_k) \textrm{log}(1 -h_k(x^{(i)}))
-\end {equation*}
+\end {equation}
 
 
 
@@ -106,7 +107,7 @@ and the following derivatives for weights and biases,
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
-As opposed to a simple neural network, a convolutional neural network is specifically designed to take advantage of the 2-d structure of an input image by considering only local connections and tied weights followed by some form of pooling which results in translation invariant features. Compared to regular neural nets,  CNNs  have many fewer parameters than networks of similar size and thus they are easier to train.
+As opposed to a simple neural network, a convolutional neural network is specifically designed to take advantage of the 2-d structure of an input image by considering only local connections and tied weights followed by some form of pooling which results in translation invariant features. Compared to regular neural nets,  CNNs  have many fewer parameters than networks of similar size and thus they are easier to train. 
 
 
 
@@ -149,7 +150,7 @@ The region to be pooled over is determined by the pooling dimensions. It again i
 
 Another common trick used in CNN is the inclusion of drop out layers which help to decrease the likelihood of overfitting by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
 \begin{figure}
-\includegraphics[scale=.5]{dropout.png}
+\includegraphics[scale=.52]{dropout.png}
 
 \caption{Effect of dropout on a previously fully connected neural network. Dropped nodes are depicted as crossed out \cite{Dropout}. }
 \label{fig:dropout}
@@ -197,12 +198,6 @@ Now because deep learning has become increasingly popular, so too has developmen
 
 
 
-
-
-
-
-
-
 \subsection{Benchmarking with MNIST}
 
 
@@ -222,12 +217,12 @@ input to the next layer. C1 and C3 are convolution layers, and S2 and S4 are sub
 
 The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers . \cite{LeCun95}
 
-LeNet-5 architecture expands on this even further by adding an additional layer, with gaussian connections. 
+LeNet-5 architecture expands on this even further by adding an additional layer, with gaussian connections. More details on the architecture chosen, including filter size number and pooling dimension are shown in Fig. ~\ref{fig:LeNet5}
 
  \begin{figure*}
 \includegraphics[scale=.6]{LeNet5.png}
-\label{fig:LeNet5}
 \caption{Architecture for LeNet5 \cite{LeCun1998}}
+\label{fig:LeNet5}
 \end{figure*}
 
 
@@ -235,11 +230,48 @@ LeNet-5 architecture expands on this even further by adding an additional layer,
 
 
 \section{Results}
-\subsubsection{Multilayer CNN}
-The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer. 
+We start by examining the effects of multiple layers and convolutional network layers to improve performance on MNIST using networks that we made. We will try to quantify accuracy gains versus computation time for different type of networks of relatively small size. Then for bigger networks and to replicate LeCun's results we will transition to utilizing TensorFlow to classify MNIST images. 
+
+\subsection{Multilayer NN}
+\subsection{Simple CNN}
+The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works. We will examine individual design choices and parameters to gain intuition on how they impact the overall result. However, it is important to note than in all these cases we are not performance a full search over the parameter space so these are not necessarily true optima or fully generalizable statements rather they may be perhaps simply local truths. In the sake of completely the project on time,  we will only concentrate on these small studies in the hope that we can glean useful information from them. 
+
+\subsubsection{Efficiency}
+iterations versus accuracy 
+
+\subsubsection{Filter Sizes}
+
+We decided to look at the effect of the filter size on the accuracy and computation time, while keeping all other parameters constant. Not, surprisingly, increasing the filter size increases the computation time quadratically. However, the main takeaway is that after a certain threshold size, the accuracy seems not to be effected by the filter size. This idea is show in Fig.~\ref{fig:filtsize}. Where as long as the filter is bigger than 6x6 pixels the net is able to achieve less than 4 $\%$ error on the testing data. For this architecture there is a optima at a filter size of 13 x 13 pixels but this may just be an effect of other meta parameters. 
+\begin{figure}
+\includegraphics[scale=.35]{filtersize.png}
+\caption{Effect of changing filter size on error and time}
+\label{fig:filtsize}
+
+\end{figure}
 
 
-\subsubsection{Replication of NNs and LeNets}
+\subsubsection{Dropout Effect}
+We also looked at changing the dropout rate, $p$ from.5 to 1, where $p=1$ is no dropout. Which the exception of one sharp peak, the computation time showed a logarithmic increase in computation time, making little difference at the high end of the range tested shown in Fig. ~\ref{fig:dropoutres}. It also show that high probabilities of dropout perform better than lower values and better than no dropout at all $p=1$. 
+\begin{figure}
+\includegraphics[scale=.35]{dropoutrate.png}
+\caption{Effect of changing dropout rate on error and time}
+\label{fig:dropoutres}
+\end{figure}
+
+
+\subsubsection{Pooling Method}
+On this simple network we investigated the accuracy and computation time of utilizing mean versus max pooling. We expect computation time to be about the same since both operations are linear time. However we found that 
+
+SMALL filter, MEDIUM BIG Filter,
+
+\subsubsection{Pooling Size}
+
+\subsubsection{Tanh versus ReLU}
+
+The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. 
+
+For bigger CNNs we will turn to TensorFlow. 
+\subsection{Replication of NNs and LeNets Results}
 
 
 
@@ -268,7 +300,10 @@ The first objective was to build the simplest CNN, comprising of one convolution
 
 \section{Conclusions}
 
-\section{Areas for further work}
+\subsection{Division of Labor}
+Kathryn build the CNN. 
+Andres led the implementation of TensorFlow and complex architectures.
+Remy build multilayer neural nets. 
 
 \bibliographystyle{unsrt}
 \bibliography{references}

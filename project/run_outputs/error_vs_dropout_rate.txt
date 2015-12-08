@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 14:43:46.007956
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.5]
+final accuracy: 0.9375, time taken: 280.388802052
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 14:49:22.224855
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.55]
+final accuracy: 0.9609375, time taken: 334.144457102
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 14:54:09.008683
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.6]
+final accuracy: 0.9609375, time taken: 284.764665127
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 14:58:47.874199
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.65]
+final accuracy: 0.9375, time taken: 277.458313942
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:03:39.826729
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.7]
+final accuracy: 0.96484375, time taken: 290.816339016
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:08:39.577795
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.75]
+final accuracy: 0.953125, time taken: 298.492958069
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:13:41.590781
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.8]
+final accuracy: 0.9609375, time taken: 300.554169893
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:18:43.836801
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.85]
+final accuracy: 0.96484375, time taken: 300.703011036
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:23:51.034560
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.9]
+final accuracy: 0.9765625, time taken: 305.476307154
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:28:59.079170
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.95]
+final accuracy: 0.9765625, time taken: 306.544832945
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 15:34:06.783937
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 1.0]
+final accuracy: 0.953125, time taken: 306.215177774
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2015-12-08 16:54:25.656738
+['relu?', 'learning_rate', 'number of layers', 'batch_size', 'dropout?', 'filter_size', 'training_iters', 'mean pool?', 'pool_dim', 'num_filters', 'dropout']
+[True, 0.001, 3, 256, True, 9, 100000, True, 2, 20, 0.5]
+final accuracy: 0.9296875, time taken: 324.344132185
+
