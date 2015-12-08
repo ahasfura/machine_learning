@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Szarvas2006}
 M.~Szarvas, U.~Sakai, and J~Ogata.
@@ -19,6 +19,11 @@ Andrej Karpathy.
 \newblock What a deep neural network thinks about your selfie.
 \newblock {\em http://karpathy.github.io/2015/10/25/selfie/}, 2015.
 
+\bibitem{LeCun1998}
+Y.~Bengio Y.~LeCun, L.~Bottou and P.~Haffne.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, November 1998.
+
 \bibitem{Bishop}
 Christopher Bishop.
 \newblock {\em Pattern Recognition and Machine Learning}.
@@ -30,14 +35,41 @@ Stanford Unsupervised Feature Learning Deep~Learning Tutorial.
 \newblock {\em http://ufldl.stanford.edu/tutorial
   /supervised/ConvolutionalNeuralNetwork/}.
 
-\bibitem{LeCun1998}
-Y.~Bengio Y.~LeCun, L.~Bottou and P.~Haffne.
-\newblock Gradient-based learning applied to document recognition.
-\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, November 1998.
+\bibitem{Dropout}
+Krizhevsky~Sutskever N.~Srivastava, Hinton and Salakhutdinov.
+\newblock Dropout: A simple way to prevent neural networks from overfitting.
+\newblock {\em Journal of Machine Learning Research}, 15:1929--1958, June 2014.
+
+\bibitem{imagenet}
+G.~Hinton A.~Krizhevsky, I.~Sutskever.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock {\em Neural Information Processing Systems}, 2012.
+
+\bibitem{TensorFlowGH}
+Google.
+\newblock Tensorflow.
+\newblock {\em https://github. com/tensorflow/tensorflow.git}, 2015.
+
+\bibitem{TensorFlowWeb}
+Google~Brain Team.
+\newblock About tensor flow.
+\newblock {\em https://www.tensorflow.org/}, 2015.
 
 \bibitem{MNIST}
 C.J.C.~Burges Y.~LeCunn, C.~Cortes.
 \newblock The mnist database of handwritten digits.
-\newblock {\em http://yann.lecun.com/exdb/mnist/index.html}.
+\newblock {\em http://yann.lecun.com/exdb/mnist/ index.html}.
+
+\bibitem{LeCun89}
+J.S. Denker D. Henderson R.E.~Howard Y.~Lecun, B.~Boser.
+\newblock Backpropagation applied to handwritten zip code recognition.
+\newblock {\em Neural Computation}, 1:541--551, 1989.
+
+\bibitem{LeCun95}
+L.~Bottou A. Brunot C. Cortes J. S. Denker H. Drucker I. Guyon U. A. Muller E.
+  Sackinger P.~Simard Y.~LeCun, L. D.~Jackel and V.~Vapnik.
+\newblock Comparison of learning algorithms for handwritten digit recognition.
+\newblock {\em International Conference on Artificial Neural Networks}, 53-60,
+  1995.
 
 \end{thebibliography}
