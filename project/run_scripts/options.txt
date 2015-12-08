@@ -1,0 +1,42 @@
+usage: katynet.py [-h] --run_name RUN_NAME [--filter_size FILTER_SIZE]
+                  [--num_filters NUM_FILTERS] [--learning_rate LEARNING_RATE]
+                  [--batch_size BATCH_SIZE] [--pool_dim POOL_DIM]
+                  [--dropout_rate DROPOUT_RATE]
+                  [--training_iters TRAINING_ITERS] [--relu] [--tanh] [--mean]
+                  [--max] [--dropout] [--no_dropout] [--save_run]
+                  [--dont_save_run]
+
+Set up deep net
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --run_name RUN_NAME   name of run
+  --filter_size FILTER_SIZE
+                        size of convolve filter
+  --num_filters NUM_FILTERS
+                        number of filters
+  --learning_rate LEARNING_RATE
+                        learning rate
+  --batch_size BATCH_SIZE
+                        batch size
+  --pool_dim POOL_DIM   how big are the pooling layer dimensions
+  --dropout_rate DROPOUT_RATE
+                        set dropout rate
+  --training_iters TRAINING_ITERS
+                        how many iterations for the training phase?
+
+CHOOSE ONE OR THE OTHER, DEFAULT IS RELU
+  --relu                use relu
+  --tanh                use tanh
+
+CHOOSE ONE OR THE OTHER, DEFAULT IS MEAN
+  --mean                use mean pooling
+  --max                 use max pooling
+
+CHOOSE ONE OR THE OTHER, DEFAULT IS DROPOUT
+  --dropout             use dropout?
+  --no_dropout          use dropout?
+
+CHOOSE ONE OR THE OTHER, DEFAULT IS TO SAVE THE RUN
+  --save_run            save run
+  --dont_save_run       don't save run
