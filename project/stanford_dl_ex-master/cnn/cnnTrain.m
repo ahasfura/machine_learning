@@ -11,6 +11,7 @@
 %%======================================================================
 %% STEP 0: Initialize Parameters and Load Data
 %  Here we initialize some parameters used for the exercise.
+imageDim = 28;
 
 filename= [pwd '/MNIST/train-images-idx3-ubyte'];
 images = loadMNISTImages(filename);
@@ -30,10 +31,10 @@ testLabels = loadMNISTLabels(filename);
 testLabels(testLabels==0) = 10; % Remap 0 to 10
 
 
-for epochs=2:5
-
+for run=11:20
+epochs=3; 
+lambda=0; 
 % Configuration
-imageDim = 28;
 numClasses = 10;  % Number of classes (MNIST images fall into 10 classes)
 filterDim = 9;    % Filter size for conv layer
 numFilters = 20;   % Number of filters for conv layer
@@ -82,8 +83,8 @@ acc = sum(preds==testLabels)/length(preds);
 fprintf('Accuracy is %f\n',acc);
 
 
- filename=[pwd '/stanford_dl_ex-master/results/epochs' num2str(epochs)  ]
+ filename=[pwd '/stanford_dl_ex-master/results/epoch3run' num2str(run)  ]
     save(filename, 'acc', 'ttest', 'ttrain', 'options' )
-    
+ CNNacc(run)=acc; 
 end 
 %
