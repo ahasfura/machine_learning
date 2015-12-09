@@ -9,8 +9,7 @@ print 'lenet1'
 # Import MINST data
 import time
 import input_data
-data_amount = 55000 #This represents how much data to get. Don't do more than 55,000!!!!
-mnist = input_data.read_data_sets("/tmp/data/", data_amount, one_hot=True)
+mnist = input_data.read_data_sets("/tmp/data/", data_amount=int(sys.argv[1]), one_hot=True)
 
 import tensorflow as tf
 

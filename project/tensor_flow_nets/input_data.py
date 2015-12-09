@@ -65,6 +65,7 @@ class DataSet(object):
           "images.shape: %s labels.shape: %s" % (images.shape,
                                                  labels.shape))
       self._num_examples = images.shape[0]
+      print("amount of input data:", self._num_examples)
       # Convert shape from [num examples, rows, columns, depth]
       # to [num examples, rows*columns] (assuming depth == 1)
       assert images.shape[3] == 1
