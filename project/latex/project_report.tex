@@ -254,6 +254,9 @@ We start by examining the effects of multiple layers and convolutional network l
 \subsection{Simple CNN}
 The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works. We will examine individual design choices and parameters to gain intuition on how they impact the overall result. However, it is important to note than in all these cases we are not performing a full search over the parameter space so these are not necessarily true optima or fully generalizable statements. Rather they may be local maximas. In the sake of completely the project on time,  we will only concentrate on these small studies in the hope that we can glean useful information from them. 
 
+The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. From this optima we will consider small perturbations to each parameter to investigate the effect of each parameter on performance. 
+
+
 \subsubsection{Efficiency}
 iterations versus accuracy 
 
@@ -286,9 +289,8 @@ SMALL filter, MEDIUM BIG Filter,
 
 \subsubsection{Tanh versus ReLU}
 
-The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. 
 
-For bigger CNNs we will turn to TensorFlow. 
+For bigger CNNs we will turn to TensorFlow and run with CUDA on the GPU. 
 \subsection{Replication of NNs and LeNets Results}
 
 
@@ -319,9 +321,9 @@ For bigger CNNs we will turn to TensorFlow.
 \section{Conclusions}
 
 \subsection{Division of Labor}
-Kathryn build the CNN. 
-Andres led the implementation of TensorFlow and complex architectures.
-Remy build multilayer neural nets. 
+Kathryn built and analyzed the CNN. 
+Andres led the implementation of TensorFlow and complex architectures for replication of results.
+Remy built multilayer neural nets. 
 
 \subsection{Additional Insight: Multi-layer vs Single-layer}
 According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
