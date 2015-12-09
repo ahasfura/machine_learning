@@ -12,7 +12,7 @@ mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 import tensorflow as tf
 
 # Parameters
-learning_rate = 0.001
+learning_rate = 0.1
 training_iters = 100000
 batch_size = 128
 display_step = 10
@@ -66,16 +66,16 @@ def conv_net(_X, _weights, _biases, _dropout):
 
 # Store layers weight & bias
 weights = {
-    'wc1': tf.Variable(tf.random_normal([5, 5, 1, 32])), # 5x5 conv, 1 input, 32 outputs
-    'wc2': tf.Variable(tf.random_normal([5, 5, 32, 64])), # 5x5 conv, 32 inputs, 64 outputs
-    'wd1': tf.Variable(tf.random_normal([7*7*64, 1024])), # fully connected, 7*7*64 inputs, 1024 outputs
-    'out': tf.Variable(tf.random_normal([1024, n_classes])) # 1024 inputs, 10 outputs (class prediction)
+    'wc1': tf.Variable(tf.random_normal([5, 5, 1, 12])), # 5x5 conv, 1 input, 32 outputs
+    'wc2': tf.Variable(tf.random_normal([5, 5, 12, 24])), # 5x5 conv, 32 inputs, 64 outputs
+    'wd1': tf.Variable(tf.random_normal([7*7*24, 30])), # fully connected, 7*7*64 inputs, 1024 outputs
+    'out': tf.Variable(tf.random_normal([30, n_classes])) # 1024 inputs, 10 outputs (class prediction)
 }
 
 biases = {
-    'bc1': tf.Variable(tf.random_normal([32])),
-    'bc2': tf.Variable(tf.random_normal([64])),
-    'bd1': tf.Variable(tf.random_normal([1024])),
+    'bc1': tf.Variable(tf.random_normal([12])),
+    'bc2': tf.Variable(tf.random_normal([24])),
+    'bd1': tf.Variable(tf.random_normal([30])),
     'out': tf.Variable(tf.random_normal([n_classes]))
 }
 
