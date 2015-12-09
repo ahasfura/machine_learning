@@ -6,6 +6,7 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 '''
 
 # Import MINST data
+import sys
 import time
 import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
@@ -17,6 +18,8 @@ learning_rate = 0.001
 training_iters = 100000
 batch_size = 128
 display_step = 10
+hidden_nodes = int(sys.argv[1])
+print hidden_nodes
 
 # Network Parameters
 n_input = 784 # MNIST data input (img shape: 28*28)
@@ -50,12 +53,12 @@ def conv_net(_X, _weights, _biases, _dropout):
 
 # Store layers weight & bias
 weights = {
-    'wd1': tf.Variable(tf.random_normal([28*28, 300])), # fully connected, 7*7*64 inputs, 1024 outputs
-    'out': tf.Variable(tf.random_normal([300, n_classes])) # 1024 inputs, 10 outputs (class prediction)
+    'wd1': tf.Variable(tf.random_normal([28*28, hidden_nodes])), # fully connected, 7*7*64 inputs, 1024 outputs
+    'out': tf.Variable(tf.random_normal([hidden_nodes, n_classes])) # 1024 inputs, 10 outputs (class prediction)
 }
 
 biases = {
-    'bd1': tf.Variable(tf.random_normal([300])),
+    'bd1': tf.Variable(tf.random_normal([hidden_nodes])),
     'out': tf.Variable(tf.random_normal([n_classes]))
 }
 

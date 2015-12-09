@@ -4,10 +4,13 @@ This example is using the MNIST database of handwritten digits (http://yann.lecu
 
 Project: https://github.com/aymericdamien/TensorFlow-Examples/
 '''
+print 'lenet1'
 
 # Import MINST data
+import time
 import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+data_amount = 55000 #This represents how much data to get. Don't do more than 55,000!!!!
+mnist = input_data.read_data_sets("/tmp/data/", data_amount, one_hot=True)
 
 import tensorflow as tf
 
@@ -93,6 +96,8 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.types.float32))
 # Initializing the variables
 init = tf.initialize_all_variables()
 
+start = time.time()
+
 # Launch the graph
 with tf.Session() as sess:
     sess.run(init)
@@ -112,3 +117,6 @@ with tf.Session() as sess:
     print "Optimization Finished!"
     # Calculate accuracy for 256 mnist test images
     print "Testing Accuracy:", sess.run(accuracy, feed_dict={x: mnist.test.images[:256], y: mnist.test.labels[:256], keep_prob: 1.})
+
+end = time.time()
+print end - start

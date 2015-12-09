@@ -112,7 +112,7 @@ class DataSet(object):
       assert batch_size <= self._num_examples
     end = self._index_in_epoch
     return self._images[start:end], self._labels[start:end]
-def read_data_sets(train_dir, fake_data=False, one_hot=False):
+def read_data_sets(train_dir, data_amount=55000, fake_data=False, one_hot=False):
   class DataSets(object):
     pass
   data_sets = DataSets()
@@ -138,7 +138,7 @@ def read_data_sets(train_dir, fake_data=False, one_hot=False):
   validation_labels = train_labels[:VALIDATION_SIZE]
   train_images = train_images[VALIDATION_SIZE:]
   train_labels = train_labels[VALIDATION_SIZE:]
-  data_sets.train = DataSet(train_images, train_labels)
+  data_sets.train = DataSet(train_images[:data_amount], train_labels[:data_amount])
   data_sets.validation = DataSet(validation_images, validation_labels)
   data_sets.test = DataSet(test_images, test_labels)
   return data_sets
