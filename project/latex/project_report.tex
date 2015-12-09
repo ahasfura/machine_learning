@@ -74,7 +74,7 @@ J(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}h_k(x^{(i)})- (1 -y^{(i)}
 
 
 
-As the network grows bigger and bigger the computational time becomes more and more of a constraint. So for all studied neural  networks we will used Stochastic Gradient descent as opposed to batch methods in order to find the optimal weights for each layer. 
+As the network grows in size, the computational time becomes more and more of a constraint. So for all studied neural networks we will used Stochastic Gradient descent as opposed to batch methods in order to find the optimal weights for each layer. 
 \begin{equation}
 w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
 \end{equation}
@@ -88,9 +88,9 @@ To use stochastic gradient descent  on the neural net, the back prop algorithm i
 
 
 \subsection{Multi-layer Neural Network}
-For each fully connected layer forward propagation is straight forward, you simply continue the formula for a single hidden layer and chain them together for more layers. 
+For each fully connected layer forward propagation is straight forward, as you simply continue the formula for a single hidden layer and chain them together for more layers. 
 
-For backwards propagation the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
+For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
 
 \begin{equation}
 \delta^{(l)}=((W^{(l)})^T \delta^{(l+1)}) \cdot f ^{\prime} (z^{(l)})
@@ -104,6 +104,24 @@ and the following derivatives for weights and biases,
 \nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
 \end{equation}
 
+\subsubsection{Implementation}
+Using MATLAB, we have implemented the Multi-layer Neural Network. It is soft-coded so the hidden layers and number of hidden nodes per layer can easily be altered. The function created cells for the weights of each layers and initialized the weights randomly between -1 and 1.
+\newline
+A sigmoid function shown below is used as the activation function.
+
+\begin{equation}
+\tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
+\end{equation}
+
+A stochastic gradient descent approach was used with a step size $\eta$ shown below.
+\begin{equation}
+\eta = \frac{ \alpha}{ (\textrm{epoch} + \beta)^\gamma}
+\end{equation}
+
+where $\beta \leq 100$, $\gamma >.5$ and epoch is the number of times the descent method has gone through the training set.  
+\newline\newline
+
+To prevent over-fitting we used a regularization parameter $\lambda$. 
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
@@ -112,9 +130,9 @@ As opposed to a simple neural network, a convolutional neural network is specifi
 
 
 \subsubsection{Convolutional Layer}
-The idea of the CNN is to no longer have fully connected layers. Instead not every node is connected to every other node. Instead these relationships are described by a kernel. Of particular interest in the convolutional kernel. But instead of hard coding the filters, the filters used are learned by training. 
+The idea of the CNN is to no longer have fully connected layers. In a CNN, the relationship between two nodes are described by a kernel, ie. the convolutional kernel. But instead of hard coding the filters, the filters used are learned by training. 
 
-By sub sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by  transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $K$ filters that are $m * n$,  after convolution, there are  $ K * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
+By sub-sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $K$ filters that are $m * n$,  after convolution, there are  $ K * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
 
 
 Generally, the process that occurs in a convolution layer can be described as for each image, $x_n$ for $n=1..N$ and for each filter $k=1...K$ in the convolution layer, $c$
@@ -127,9 +145,9 @@ f_{n,k}= \tilde{g}(a_{n,k}^{(c)})
  
  Where $\ast$ is the convolution operator. 
  
- The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The challenge is then to identify the correct filter size in order to get reasonable features out, given a particular dataset
+ The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The challenge is then to identify the correct filter size in order to obtain reasonable features, given a particular dataset.
 
-Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same which dramatically reduces the number of parameters needed to describe and set up the network compared to a fully connected network of similar size. This idea is shown in fig. \ref{fig:conv}.
+Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same. The tied weights dramatically reduces the number of parameters needed to describe and set up the network compared to a fully connected network of similar size. This idea is shown in fig. \ref{fig:conv}.
 
 
 
@@ -148,7 +166,7 @@ The region to be pooled over is determined by the pooling dimensions. It again i
 
 \subsubsection{Dropout}
 
-Another common trick used in CNN is the inclusion of drop out layers which help to decrease the likelihood of overfitting by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
+Another common trick used in CNN is the inclusion of drop-out layers which help to decrease the likelihood of overfitting. It achieves this by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
 \begin{figure}
 \includegraphics[scale=.52]{dropout.png}
 
@@ -156,22 +174,22 @@ Another common trick used in CNN is the inclusion of drop out layers which help 
 \label{fig:dropout}
 \end{figure}
 
-The simples way to implement dropout is to keep each node with probability, $p$, otherwise discard it. The key benefit is that dropout is able to outperform regularization in neural networks for reducing overfitting \cite{Dropout}. Dropout also has the added benefit of being able to evaluate exponentially many different neural network architectures depending on which nodes are dropped
+The simplest way to implement drop-out is to keep each node with probability, $p$, and otherwise discard it. The key benefit is that dropout is able to outperform regularization in neural networks for reducing overfitting \cite{Dropout}. Dropout also has the added benefit of being able to evaluate exponentially many different neural network architectures depending on which nodes are dropped.
  
 \subsubsection{Re-LU}
 
-Yet another problem with deep nets is that they are computationally expensive. One of the main tools to minimize this is actually a smart selection of the activation function, $g$. Specifically using a rectified linear unit, (Re-LU) as opposed to more traditional sigmoids or tanh, can be beneficially in increasing the efficiency of a neural network \cite{imagenet}. The Re-LU function is simple, 
+Yet another problem with deep nets is that they are computationally expensive. One of the main tools to minimize this is a smart selection of the activation function, $g$. Specifically using a rectified linear unit, (Re-LU) as opposed to more traditional sigmoids or tanh, can be beneficial in increasing the efficiency of a neural network \cite{imagenet}. The Re-LU function is simple, 
 
 \begin{equation}
 g(x)= \textrm{max}(0,x)
 \end{equation}
 
-This function is not smooth but because the computation of g is simply a comparison, it is generally much faster than smooth approximates. It also allows for sparse activation of the neural network, eliminating nodes with negative activations. 
+This function is not smooth but because the computation of $g$ is simply a comparison, it is generally much faster than smooth approximates. It also allows for sparse activation of the neural network, eliminating nodes with negative activations. 
 
 \subsection{Backprop for CNN}
-For fully connected layers  the derivative calculation remains the same. However, more complicated are the error propagations through the pooling and convolutional layers. 
+For fully connected layers  the derivative calculation remains the same. However,  error propagations are more complicated through the pooling and convolutional layers. 
 
-For the pooling layer, the error must be up sampled to propagate backwards
+For the pooling layer, the error must be up-sampled to propagate backwards
 \begin{equation}
 \delta^{(l)}_k=\textrm{upsample}((W^{(l)}_k)^T \delta^{(l+1)}_k) \cdot f^{\prime}(z^{(l)}_k)
 \end{equation}
@@ -183,7 +201,7 @@ delta^{(l)}= \frac{1}{\textrm{p}^2}  \textrm{kron}(\delta^{(l+1)}, \textrm{ones}
 \end{equation}
 Where kron, is the Kroneckor Tensor Product.
 
-Thus for the convolution layer, the derivates can be calculated as follows.
+Thus for the convolution layer, the derivatives can be calculated as follows.
 \begin{equation}
 \nabla_{W^{(l)}}J(W,b;x,y) = \sum_{i=1}^m (a^{(l)}_i) \ast \textrm{rot90}( \delta^{(l+1)}_k,2)
 \end{equation}
@@ -194,7 +212,7 @@ Thus for the convolution layer, the derivates can be calculated as follows.
 
 \subsection{Professional Libraries}
 
-Now because deep learning has become increasingly popular, so too has development of optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets. There are many of these libraries, but we chose to work with TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, is easy and intuitive to use as well an interface with Cuda for GPU processing to speed up results for image computations \cite{TensorFlowWeb}. 
+Since deep learning has become increasingly popular, optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets are becoming easily accesible. There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
 
 
 
@@ -209,10 +227,10 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 \caption{Sample entries of the MNIST dataset \cite{LeCun1998}}
 \end{figure}
 
-Already done and thoroughly explored by many people included Yann LeCun \cite{LeCun1998} however it provides a good system to check our results by since it is so well documented.  Replication of the architects of both the fully-connected and convolutional neural nets provided in this paper is the first objective of our study. By comparing our results  for different layers and types of layers to published and documented results, we can make sure our implementation is working before taking on a more complicated dataset. 
+Since the datatset has already been thoroughly explored on by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets provided in this paper is the first objective of our study. By comparing our results for different layers and types of layers to published and documented results, we can make sure our implementation is working correctly before taking on a more complicated dataset. 
 
 \subsubsection{LeNets}
-The CNN LeNet-1 architecture consists of 5 layers, which are denoted by C1, S2,C3, S4, and F5.  The output of the first layer serves as
+The CNN LeNet-1 architecture created by LeCun, consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
 input to the next layer. C1 and C3 are convolution layers, and S2 and S4 are sub-sampling layers and the fifth layer is fully connected. \cite{LeCun89}
 
 The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers . \cite{LeCun95}
@@ -230,18 +248,21 @@ LeNet-5 architecture expands on this even further by adding an additional layer,
 
 
 \section{Results}
-We start by examining the effects of multiple layers and convolutional network layers to improve performance on MNIST using networks that we made. We will try to quantify accuracy gains versus computation time for different type of networks of relatively small size. Then for bigger networks and to replicate LeCun's results we will transition to utilizing TensorFlow to classify MNIST images. 
+We start by examining the effects of multiple layers and convolutional network layers to improve performance on MNIST using networks that we made. We will try to quantify accuracy gains versus computation time for different type of networks of relatively small size. To test bigger networks and to replicate LeCun's results we will transition to utilizing TensorFlow to classify MNIST images. 
 
 \subsection{Multilayer NN}
 \subsection{Simple CNN}
-The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works. We will examine individual design choices and parameters to gain intuition on how they impact the overall result. However, it is important to note than in all these cases we are not performance a full search over the parameter space so these are not necessarily true optima or fully generalizable statements rather they may be perhaps simply local truths. In the sake of completely the project on time,  we will only concentrate on these small studies in the hope that we can glean useful information from them. 
+The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works. We will examine individual design choices and parameters to gain intuition on how they impact the overall result. However, it is important to note than in all these cases we are not performing a full search over the parameter space so these are not necessarily true optima or fully generalizable statements. Rather they may be local maximas. In the sake of completely the project on time,  we will only concentrate on these small studies in the hope that we can glean useful information from them. 
+
+The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. From this optima we will consider small perturbations to each parameter to investigate the effect of each parameter on performance. 
+
 
 \subsubsection{Efficiency}
 iterations versus accuracy 
 
 \subsubsection{Filter Sizes}
 
-We decided to look at the effect of the filter size on the accuracy and computation time, while keeping all other parameters constant. Not, surprisingly, increasing the filter size increases the computation time quadratically. However, the main takeaway is that after a certain threshold size, the accuracy seems not to be effected by the filter size. This idea is show in Fig.~\ref{fig:filtsize}. Where as long as the filter is bigger than 6x6 pixels the net is able to achieve less than 4 $\%$ error on the testing data. For this architecture there is a optima at a filter size of 13 x 13 pixels but this may just be an effect of other meta parameters. 
+We decided to look at the effect of the filter size on the accuracy and computation time, while keeping all other parameters constant. Not surprisingly, increasing the filter size increases the computation time quadratically. However, the main takeaway is that after a certain threshold size, the accuracy seems not to be affected by the filter size. This idea is show in Fig.~\ref{fig:filtsize}. As long as the filter is bigger than 6x6 pixels, the net is able to achieve less than 4 $\%$ error on the testing data. For this architecture there is a optima at a filter size of 13 x 13 pixels, but this may just be an effect of other meta parameters. 
 \begin{figure}
 \includegraphics[scale=.35]{filtersize.png}
 \caption{Effect of changing filter size on error and time}
@@ -251,7 +272,7 @@ We decided to look at the effect of the filter size on the accuracy and computat
 
 
 \subsubsection{Dropout Effect}
-We also looked at changing the dropout rate, $p$ from.5 to 1, where $p=1$ is no dropout. Which the exception of one sharp peak, the computation time showed a logarithmic increase in computation time, making little difference at the high end of the range tested shown in Fig. ~\ref{fig:dropoutres}. It also show that high probabilities of dropout perform better than lower values and better than no dropout at all $p=1$. 
+We also looked at changing the dropout rate, $p$ from .5 to 1, where $p=1$ is no dropout. Which the exception of one sharp peak, the computation time showed a logarithmic increase in computation time, making little difference at the high end of the range tested shown in Fig. ~\ref{fig:dropoutres}. It also show that high probabilities of dropout perform better than lower values and better than no dropout at all $p=1$. 
 \begin{figure}
 \includegraphics[scale=.35]{dropoutrate.png}
 \caption{Effect of changing dropout rate on error and time}
@@ -268,9 +289,8 @@ SMALL filter, MEDIUM BIG Filter,
 
 \subsubsection{Tanh versus ReLU}
 
-The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. 
 
-For bigger CNNs we will turn to TensorFlow. 
+For bigger CNNs we will turn to TensorFlow and run with CUDA on the GPU. 
 \subsection{Replication of NNs and LeNets Results}
 
 
@@ -301,10 +321,29 @@ For bigger CNNs we will turn to TensorFlow.
 \section{Conclusions}
 
 \subsection{Division of Labor}
-Kathryn build the CNN. 
-Andres led the implementation of TensorFlow and complex architectures.
-Remy build multilayer neural nets. 
+Kathryn built and analyzed the CNN. 
+Andres led the implementation of TensorFlow and complex architectures for replication of results.
+Remy built multilayer neural nets. 
+
+\subsection{Additional Insight: Multi-layer vs Single-layer}
+According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
+\begin{equation}
+\textrm{params} = 784*1000 + 1000* 10 = 794000
+\end{equation}
+\newline
+and in the case of the 3 layer with 300 and 100 hidden nodes,
+\begin{equation}
+\textrm{params} = 784*300 + 300*100 + 100* 10 = 266200
+\end{equation}
+\newline
+It is evident that the three-layer network outperforms the two-layer network with less parameters. 
+\newline
+\newline
+In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
+\newline
+\newline
+It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
 
 \bibliographystyle{unsrt}
 \bibliography{references}
- \end{document}
+\end{document}
