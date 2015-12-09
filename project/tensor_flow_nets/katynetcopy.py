@@ -36,16 +36,17 @@ def build_net(_X, _weights, _biases, _dropout, _pool_dim, _mean=True, _is_dropou
         conv1 = tf.nn.dropout(conv1, _dropout)
 
     # Fully connected layer
-    #dense1 = tf.reshape(conv1, [-1, _weights['wd1'].get_shape().as_list()[0]]) # Reshape conv2 output to fit dense layer input
-    dense1 = tf.reshape(conv1, [-1, _weights['out'].get_shape().as_list()[0]]) # Reshape conv2 output to fit dense layer input
-    '''
+    print _weights['wd1']
+    print _weights['wd1'].get_shape()
+    print _weights['wd1'].get_shape().as_list()
+    print _weights['wd1'].get_shape().as_list()[0]
+    dense1 = tf.reshape(conv1, [-1, _weights['wd1'].get_shape().as_list()[0]]) # Reshape conv2 output to fit dense layer input
     if _is_relu:
         dense1 = tf.nn.relu(tf.add(tf.matmul(dense1, _weights['wd1']), _biases['bd1'])) # Relu activation
     else:
         dense1 = tf.nn.tanh(tf.add(tf.matmul(dense1, _weights['wd1']), _biases['bd1'])) # tanh activation
     if _is_dropout:
         dense1 = tf.nn.dropout(dense1, _dropout) # Apply Dropout
-    '''
 
     # Output, class prediction
     out = tf.add(tf.matmul(dense1, _weights['out']), _biases['out'])
@@ -70,10 +71,9 @@ if __name__ == '__main__':
     parser.add_argument("--num_filters", type=int, default=20, help="number of filters")
     parser.add_argument("--learning_rate", type=float, default=.001, help="learning rate")
     parser.add_argument("--batch_size", type=int, default=256, help="batch size")
-    parser.add_argument("--pool_dim", choices=[2, 4, 6, 8, 10], type=int, default=2, help="how big are the pooling layer dimensions")
+    parser.add_argument("--pool_dim", type=int, default=2, help="how big are the pooling layer dimensions")
     parser.add_argument("--dropout_rate", type=float, default=.75, help="set dropout rate")
     parser.add_argument("--training_iters", type=int, default=100000, help="how many iterations for the training phase?")
-    #parser.add_argument("--fc_size", type=int, default=1024, help="how many hidden nodes for fully connected layer?")
 
     parser.add_argument("--relu", dest="relu", action="store_true", help="use relu")
     parser.add_argument("--tanh", dest="relu", action="store_false", help="use tanh")
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     parser.add_argument("--mean", dest="mean", action="store_true", help="use mean pooling")
     parser.add_argument("--max", dest="mean", action="store_false", help="use max pooling")
-    parser.set_defaults(mean=False)
+    parser.set_defaults(mean=True)
 
     parser.add_argument("--dropout", dest="use_dropout", action="store_true", help="use dropout?")
     parser.add_argument("--no_dropout", dest="use_dropout", action="store_false", help="use dropout?")
@@ -93,12 +93,16 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    print "save_run: {}".format(args.save_run)
+    print '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+
     mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
     # Parameters
     learning_rate = args.learning_rate
     training_iters = args.training_iters
-    batch_size = args.batch_size
+    batch_size = args.batch_size # katy recommended
     display_step = 10
     is_relu = args.relu
     is_dropout = args.use_dropout
@@ -106,9 +110,8 @@ if __name__ == '__main__':
     filter_size = args.filter_size
     num_filters = args.num_filters
     pool_dim = args.pool_dim
-    image_size = 28
-    #fc_size = args.fc_size
-
+    conv_dim= 28-filter_size+1
+    output_dim= (conv_dim)/pool_dim
     # Network Parameters
     n_input = 784 # MNIST data input (img shape: 28*28)
     n_classes = 10 # MNIST total classes (0-9 digits)
@@ -121,15 +124,13 @@ if __name__ == '__main__':
     # Store layers weight & bias
     weights = {
     'wc1': tf.Variable(tf.random_normal([filter_size, filter_size, 1, num_filters])), # 5x5 conv, 1 input, 32 outputs
-    #'wd1': tf.Variable(tf.random_normal([(image_size/pool_dim)*(image_size/pool_dim)*num_filters, fc_size])), # fully connected, 14*14*32 inputs, 1024 outputs
-    #'out': tf.Variable(tf.random_normal([fc_size, n_classes])) # 1024 inputs, 10 outputs (class prediction)
-    'out': tf.Variable(tf.random_normal([(image_size/pool_dim)*(image_size/pool_dim)*num_filters, n_classes])) # 1024 inputs, 10 outputs (class prediction)
+    'wd1': tf.Variable(tf.random_normal([output_dim*output_dim*num_filters, 1024])), # fully connected, 7*7*64 inputs, 1024 outputs
+    'out': tf.Variable(tf.random_normal([1024, n_classes])) # 1024 inputs, 10 outputs (class prediction)
     }
 
     biases = {
     'bc1': tf.Variable(tf.random_normal([num_filters])),
-    #'bd1': tf.Variable(tf.random_normal([fc_size])),
-    #'out': tf.Variable(tf.random_normal([n_classes]))
+    'bd1': tf.Variable(tf.random_normal([1024])),
     'out': tf.Variable(tf.random_normal([n_classes]))
     }
 

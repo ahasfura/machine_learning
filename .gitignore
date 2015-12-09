@@ -4,6 +4,7 @@ bishop.pdf
 *.aux
 *.log
 *.pyc
+*.swp
 *.gz
 *~
 reviews/
