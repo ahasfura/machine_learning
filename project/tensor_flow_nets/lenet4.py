@@ -50,7 +50,7 @@ mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
 hist_vals = []
 
-for i in range(10)
+for i in range(10):
     # Parameters
     learning_rate = 0.001
     training_iters = 100000
@@ -124,3 +124,5 @@ for i in range(10)
     end = time.time()
     #print end-start
     hist_vals.append(acc)
+
+print hist_vals
