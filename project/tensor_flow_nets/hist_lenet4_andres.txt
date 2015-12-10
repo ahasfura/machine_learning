@@ -1,1 +1,9 @@
 [0.94921875, 0.953125, 0.95703125, 0.96875, 0.9453125, 0.96484375, 0.9765625, 0.94921875, 0.9375, 0.97265625, 0.9453125]
+Extracting /tmp/data/train-images-idx3-ubyte.gz
+Extracting /tmp/data/train-labels-idx1-ubyte.gz
+Extracting /tmp/data/t10k-images-idx3-ubyte.gz
+Extracting /tmp/data/t10k-labels-idx1-ubyte.gz
+amount of input data: 55000
+amount of input data: 5000
+amount of input data: 10000
+[0.94921875, 0.98046875, 0.96484375, 0.99609375, 0.93359375, 0.96484375, 0.95703125, 0.9765625, 0.97265625, 0.96484375]
