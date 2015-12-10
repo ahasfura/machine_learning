@@ -105,7 +105,7 @@ l(w)=\sum_{i=1}^N \sum_{k=1}^K [-y^i_k log(h_k(x_i,w))-(1-y^i_k)log(1-h_k(x_i,w)
 \subsection{Multi-layer Neural Network}
 
 
-For each fully connected layer forward propagation is straight forward, as you simply  chain the formula for a single hidden layer together for more layers.  For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
+For each fully connected layer the forward propagation is straight forward, as you simply  chain the formula for a single hidden layer together for more layers.  For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
 
 \begin{equation}
 \delta^{(l)}=((W^{(l)})^T \delta^{(l+1)}) \cdot f ^{\prime} (z^{(l)})
@@ -119,7 +119,7 @@ Which create the the following derivatives for weights and biases,
 \nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
 \end{equation}
 
-the weights are then adjusted accordingly in the gradient descent
+the weights are then adjusted accordingly in the gradient descent.
 
 
 
@@ -140,7 +140,6 @@ A stochastic gradient descent approach was used with a step size $\eta$ shown be
 where $\beta \leq 100$, $\gamma >.5$ and epoch is the number of times the descent method has gone through the training set.  
 \newline\newline
 
-To prevent over-fitting we used a regularization parameter $\lambda$. 
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
@@ -204,7 +203,7 @@ g(x)= \textrm{max}(0,x)
 
 This function is not smooth but because the computation of $g$ is simply a comparison, it is generally much faster than smooth approximates. It also allows for sparse activation of the neural network, eliminating nodes with negative activations. 
 
-\subsection{Backprop for CNN}
+\subsubsection{Backprop for CNN}
 For fully connected layers  the derivative calculation remains the same. However,  error propagations are more complicated through the pooling and convolutional layers. 
 
 For the pooling layer, the error must be up-sampled to propagate backwards
@@ -351,6 +350,11 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 \label{fig:hist2layer}
 \end{figure}
 
+\begin{figure}
+	\includegraphics[scale=.5]{hist2layer.png}
+	\caption{Histogram for Test Error for the LeNet network}
+	\label{fig:histlenet}
+\end{figure}
 
 
 \subsection{Effect of Training Data size}
@@ -365,17 +369,17 @@ With the same number of iterations but fewer examples, a simple way to guess the
 \end{figure}
 
 
-In these plotted figures we have 
+In these plotted figures we see that as expected the networks ability to classify correctly increases as it is given more dat-sets to train on. However the learning curve was not as steep as expected. Even with only 256 data-sets the network was able to perform with only a 10.4\% test error.
 
 \subsection{Comparison to a two-layer model}
-According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error.
+According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error on a two layer model.
  
  \begin{figure}[H]
  	\includegraphics[scale=.5]{errorvshiddennodes.png}
  	\caption{Effect of number of hidden nodes on a two layer model}
  	\label{fig:trainsize}
  \end{figure}
-It is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
+Looking at the figure 8, it is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
 
 \section{Conclusions}
 We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
@@ -385,7 +389,7 @@ We implemented the multi-layer neural network and convolutional neural network a
 \bibliography{references}
 \section{Appendix}
 \subsection{Calculation of the number of Parameters}
-According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
+ Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
 \begin{equation*}
 \textrm{params} = 784*1000 + 1000* 10 = 794000
 \end{equation*}
@@ -396,7 +400,5 @@ and in the case of the three layer model with 300 and 100 hidden nodes,
 \end{equation*}
 It is evident that the three-layer network outperforms the two-layer network with less parameters. 
 
-In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
-
-It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
+In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. 
 \end{document}
