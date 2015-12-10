@@ -20,7 +20,7 @@ Through this course, a simple singular layer artificial neural network was prese
 
 Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of areas in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
 	
-Not only do deep nets contain more hidden layers but a multitude of different types of layers. Each layer type has different connectivity and objective, allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining spatially close pixels to determine features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
+Not only do deep nets contain more hidden layers but also a multitude of different types of layers. Each layer type has different connectivity and objective, allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining spatially close pixels to determine features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
 
 In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is implement our own multilayer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated layer types.  Not only do we want to gain familiarity with the concepts and tools used in deep learning but we hope to benchmark our home made software on MNIST. 
 
@@ -242,8 +242,8 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 Since the data-set has already been thoroughly explored  by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets, (LeNet) provided in this paper is the one of the objective of our study. 
 
 \subsubsection{LeNets}
-
-The CNN LeNet-1 architecture created by LeCun, consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
+The LeNet framework was developed by LeCun beginning in the 1980's. They provide a few examples of more complex CNN architecture on which we will compare our performance. 
+The CNN LeNet-1 architecture consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
 input to the next layer. C1 and C3 are convolution layers, and S2 and S4 are sub-sampling layers and the fifth layer is fully connected. \cite{LeCun89}
 
 The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers  \cite{LeCun95}.
