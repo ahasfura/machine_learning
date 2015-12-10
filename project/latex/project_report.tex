@@ -16,7 +16,7 @@
 Artificial Neural networks (ANN) are a useful machine learning framework. Their primary benefit is that instead of specifying the basis functions relating input to output, they are learned.  This is especially useful for when the optimal basis function is complicated or non-intuitive, such as in the case of images.
 
 
-Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system , the architectures used for machine learning neural networks can be more complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, allows for more complex input/output relationships and an ability to classify based on both information from low and high level features.
+Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system , the architectures used for neural networks can be more complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, allows for more complex input/output relationships and an ability to classify based on both information from low and high level features.
 
 Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of areas in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
 	
@@ -28,10 +28,10 @@ Our second goal is to attempt to replicate results from Yann LeCun on the classi
 
 Thirdly, we hope to do some analysis on the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization/dropouts? How large of a dataset do we need to train on to be able to classify accurately?  To quickly cycle through a number of different tests we will utilize TensorFlow, a professional software by Google.
 
-This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implementations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication and lastly expanding to deeper analysis. 
+This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implementations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication of LeCun's results using TensorFlow and lastly expanding to deeper analysis. 
 
 \section{Methodology}
-In this project, we seek to implement a version of multi-layer neural network for supervised learning on images. We plan on trying our implementation on the MNIST dataset, so that we do not have to worry about data generation and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
+In this project, we seek to implement a version of multi-layer neural network for supervised learning on images. We plan on trying our implementation on the MNIST dataset, so that we do not have to worry about data generation and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit in making the network out of convolution layers, where not all nodes are connected. We will compare this to a implementation with fully connected layers.
 
  We will then compare our rudimentary approach to a professional library for deep learning, specifically the TensorFlow platform. Undoubtedly, the professional library will allow for better results and interesting conclusions. However, building and implementing a simplified version will give a better understanding into how the neural network works. 
 
@@ -77,7 +77,7 @@ where $\tilde{g}(x)$ is the  another nonlinear map, not necessarily the same as 
 
 \subsubsection{Back-propagation}
 
-To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. Back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary gradients with respect to the cost function $J$. The specific error function $J$ we will attempt to minimize is 
+To find the optimum weights for the network, the back-propagation algorithm is used. Back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary gradients with respect to the cost function $J$. The specific error function $J$ we will attempt to minimize is 
 \begin{equation}
 J(w)= l(w) + \sum_{i=1}^N\lambda_{i}(\|w_i\|_F^2);
 \end{equation}
@@ -131,7 +131,7 @@ A sigmoid function shown below is used as the activation function for all layers
 \tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
 \end{equation}
 
-A stochastic gradient descent approach was used with a step size $\eta$ shown below.
+A stochastic gradient descent approach was used with the error function shown in equation 5 and a step size $\eta$ shown below.
 \begin{equation}
 \eta = \frac{ \alpha}{ (\textrm{epoch} + \beta)^\gamma}
 \end{equation}
@@ -142,7 +142,7 @@ where $\beta \leq 100$, $\gamma >.5$ and epoch is the number of times the descen
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
-As opposed to a fully connected neural network, a convolutional neural network is specifically designed to take advantage of the 2-D structure of an input image by considering only local connections. It also takes advantage of tied weights which reduced number of decision parameters, as well as pooling which results in translation invariant features. All these advantages, make CNN generally easier to train. 
+As opposed to a fully connected neural network, a convolutional neural network is specifically designed to take advantage of the 2-D structure of an input image by considering only local connections. It also takes advantage of tied weights which reduces the number of decision parameters, as well as pooling which results in translation invariant features. All these advantages, make CNN generally easier to train. 
 
 
 
@@ -228,7 +228,7 @@ Thus for the convolution layer, the derivatives can be calculated as follows.
 
 \subsection{Professional Libraries}
 
-Since deep learning has become increasingly popular, so too are optimized professional libraries  that allow students, researchers and hobbyists to easily build complex deep nets. . There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, and is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
+Since deep learning has become increasingly popular, so too has the optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets. . There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, and is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
 
 
 
@@ -338,7 +338,7 @@ Also we understand that LeCun cites convergence in testing error after 10-12 tim
 \end{table*}
 
 \subsection{Variance of Results}
-In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
+In Table~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
 
 We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histlenet} respectively. 
 
@@ -376,7 +376,7 @@ With the same number of iterations but fewer examples, a simple way to guess the
 \end{figure}
 
 
-In these plotted figures we see that as expected the networks ability to classify correctly increases as it is given more dat-sets to train on. However the learning curve was not as steep as expected. Even with only 256 data-sets the network was able to perform with only a 10.4\% test error.
+In these plotted figures we see that as expected the networks ability to classify correctly increases as it is given more data-sets to train on. However the learning curve was not as steep as expected. Even with only 256 data-sets the network was able to perform with only a 10.4\% test error.
 
 \subsection{Comparison to a two-layer model}
 According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error on a two layer model.
@@ -406,7 +406,7 @@ and in the case of the three layer model with 300 and 100 hidden nodes,
 \textrm{params} = 784*300 + 300*100 + 100* 10 = 266200
 \end{equation*}
  
-In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Therefore the time complexity is related to the number parameters.
+In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. The back-propagation needs to calculate the $\delta$ for each parameter. Therefore the time complexity of the training a network is related to the number of parameters.
 
 
 
