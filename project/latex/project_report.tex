@@ -361,9 +361,9 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 \subsection{Effect of Training Data size}
 One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the 5 and 7 layer CNNs with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. These results are shown in Fig. \ref{fig:trainsize}.  
 
-With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(shown in next section/appendix?). We expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits achieves $T$ and plateaus after this number.
+With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(shown in appendix?), we expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits $T$ and plateaus after this number.
 
- \begin{figure}
+\begin{figure}[H]
 \includegraphics[scale=.5]{trainingsize.png}
 \caption{Effect of Training Data Size for 5 and 7 layer CNN}
 \label{fig:trainsize}
@@ -372,9 +372,24 @@ With the same number of iterations but fewer examples, a simple way to guess the
 
 In these plotted figures we have 
 
+\subsection{Comparison to a two-layer model}
+According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error.
+ 
+ \begin{figure}[H]
+ 	\includegraphics[scale=.5]{errorvshiddennodes.png}
+ 	\caption{Effect of number of hidden nodes on a two layer model}
+ 	\label{fig:trainsize}
+ \end{figure}
+It is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
 
+\section{Conclusions}
+We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
+ Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from two-layer model, it is evident to us that deep neural networks are superior to the simple two-layer model. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
 
-\subsection{Benefits of Multi-layer vs Single-layer}
+\bibliographystyle{unsrt}
+\bibliography{references}
+\section{Appendix}
+\subsection{Calculation of the number of Parameters}
 According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
 \begin{equation*}
 \textrm{params} = 784*1000 + 1000* 10 = 794000
@@ -389,12 +404,4 @@ It is evident that the three-layer network outperforms the two-layer network wit
 In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
 
 It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
-
-
-\section{Conclusions}
-We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
- Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from two-layer model, it is evident to us that deep neural networks are superior to the simple two-layer model. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
-
-\bibliographystyle{unsrt}
-\bibliography{references}
 \end{document}
