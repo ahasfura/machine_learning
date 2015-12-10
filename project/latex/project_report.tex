@@ -77,14 +77,7 @@ where $\tilde{g}(x)$ is the  another nonlinear map, not necessarily the same as 
 
 \subsubsection{Back-propagation}
 
-To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. Back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary gradients with respect to the cost function $J$. Stochastic gradient descent is then used to update the weights with the following equation, 
-\begin{equation}
-w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
-\end{equation}
-
-where $\eta$ is  the learning rate and the choice of that parameter varies as it is to be chosen to optimize results for each particular model on the data-set.
-
-The error function $J(w)$ we will attempt to minimize is 
+To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. Back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary gradients with respect to the cost function $J$. The specific error function $J$ we will attempt to minimize is 
 \begin{equation}
 J(w)= l(w) + \sum_{i=1}^N\lambda_{i}(\|w_i\|_F^2);
 \end{equation}
@@ -95,6 +88,17 @@ Where  $\lambda$ is a regularization term to prevent overfitting and $l(w)$ is t
 \scriptsize
 l(w)=\sum_{i=1}^N \sum_{k=1}^K [-y^i_k log(h_k(x_i,w))-(1-y^i_k)log(1-h_k(x_i,w))]
 \end{equation}
+
+
+
+
+
+ Stochastic gradient descent is then used to update the weights with the following equation, 
+\begin{equation}
+w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
+\end{equation}
+
+where $\eta$ is  the learning rate and the choice of that parameter varies as it is to be chosen to optimize results for each particular model on the data-set.
 
 
 \subsection{Multi-layer Neural Network}
@@ -121,7 +125,7 @@ the weights are then adjusted accordingly in the gradient descent.
 \subsubsection{Implementation}
 Using MATLAB, we have implemented the Multi-layer Neural Network. It is soft-coded so the hidden layers and number of hidden nodes per layer can easily be altered. The function created cells for the weights of each layers and initialized the weights randomly between -1 and 1.
 \newline
-A sigmoid function shown below is used as the activation function.
+A sigmoid function shown below is used as the activation function for all layers. 
 
 \begin{equation}
 \tilde{g}(x)= g(x) = \frac{1}{ 1+e^{-x}}
@@ -259,7 +263,7 @@ LeNet-5 architecture expands on this even further by adding an additional layer,
 
 
 \section{Results}
-We start by benchmarking our handmade mulitlayer and convolutional network on the MNIST dataset, and provide discussion about some of the challenges and difficulties behind building these deep nets. We then replicate the remaining deeper architectures presented by LeCun, but for these we use TensorFlow. We did not have access to GPU clusters, so we found it necessary to use TensorFlow's more computationally efficient implementations. Finally, we provide further analysis of the deep architectures, further illuminating characteristics of deep neural networks. 
+We start by benchmarking our handmade multilayer and convolutional network on the MNIST dataset, and provide discussion about some of the challenges and difficulties behind building these deep nets. We then replicate the remaining deeper architectures presented by LeCun, but for these we use TensorFlow. We did not have access to GPU clusters, so we found it necessary to use TensorFlow's more computationally efficient implementations. Finally, we provide further analysis of the deep architectures, further illuminating characteristics of deep neural networks. 
 
 \subsection{Multilayer NN}
 The initial goal was to alter the two-layer neural network done for homework 3 to have the functionality to soft-code the number of hidden layers and the number of nodes per hidden layers.
@@ -336,7 +340,7 @@ Also we understand that LeCun cites convergence in testing error after 10-12 tim
 \subsection{Variance of Results}
 In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
 
-We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histletnet4} respectively. 
+We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histlenet} respectively. 
 
 
 
@@ -352,8 +356,8 @@ The results show that the is low variance in the 2-layer fully connected neural 
 \end{figure}
 
 \begin{figure}
-	\includegraphics[scale=.5]{hist2layer.png}
-	\caption{Histogram for Test Error for the LeNet network}
+	\includegraphics[scale=.45]{histlenet.png}
+	\caption{Histogram for Test Error for the 6 layer CNN}
 	\label{fig:histlenet}
 \end{figure}
 
@@ -401,21 +405,9 @@ and in the case of the three layer model with 300 and 100 hidden nodes,
 \begin{equation*}
 \textrm{params} = 784*300 + 300*100 + 100* 10 = 266200
 \end{equation*}
-It is evident that the three-layer network outperforms the two-layer network with less parameters. 
-
-<<<<<<< HEAD
-In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
-
-It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
+ 
+In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Therefore the time complexity is related to the number parameters.
 
 
-\section{Conclusions}
-We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
- Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from two-layer model, it is evident to us that deep neural networks are superior to the simple two-layer model. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
 
-\bibliographystyle{unsrt}
-\bibliography{references}
-=======
-In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. 
->>>>>>> c257ad97f7d245e04b712fad6a1076f37418a4be
 \end{document}
