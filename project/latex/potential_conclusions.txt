@@ -1,0 +1,5 @@
+1. Just replicate LeCun's stuff, show what we get using his parameters, and what our most optimized things was able to get
+
+2. Maybe show that we can replicate anything using 2 layer net? Talk about the successes and failures
+
+3. 

@@ -8,7 +8,9 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 # Import MINST data
 import time
 import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+import sys
+print int(sys.argv[1])
+mnist = input_data.read_data_sets("/tmp/data/", data_amount=int(sys.argv[1]), one_hot=True)
 
 import tensorflow as tf
 

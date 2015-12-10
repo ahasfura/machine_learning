@@ -22,17 +22,23 @@ Deep learning, although not a recent idea, has recently exploded in popularity d
 	
 Not only do deep nets contain more hidden layers but a multitude of different types of layers. Each layer type has different connectivity and objectives allowing for a greater richness of information. For use with images convolutional layers are especially beneficial for examining only the relevance of spatially nearby pixels in the context of determining features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
 
-In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is to generalize the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures but utilizing software we build. Not only do we want to gain familiarity with concept and tools used in deep learning but we also hope to document generalities by applying these approaches to multiple image datasets. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed? How does a specific type of layer affect accuracy  or computation time? 
+In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is implement our own multilayer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures.  Not only do we want to gain familiarity with concept and tools used in deep learning but we do hope to benchmark our home made software on MNIST. 
 
 Our second goal is to attempt to replicate results from Yann Lecun on the classification of the MNIST data sets for more complicated frameworks like LeNet \cite{LeCun1998}. For this we will use the professional deep learning library to get faster results and be able to quickly build extensive architectures. 
 
-This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. In the approach section we will also describe the dataset, MNIST, as well as those networks we wish to replicate.  Then we will describe our results starting with  results from the simplest, 3 layer convolutional neural network and a similarly sized fully connected network to explore benefits and extract generalities about design and parameter choices to deepen our understanding and intuition behind the network. We will then introduce the professional libraries and the extended architectures see how close to the published results we can achieve on MNIST. Lastly we will summarize our findings and successes.
+Thirdly, we hope to do some analysis of the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization.  To quickly cycle through a number of different tests we will utilize professional software here as well. 
 
-\section{Approach and Methodology}
+This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. In the approach section we will also describe the dataset, MNIST, as well as those networks we wish to replicate.  Then we will describe our results starting with  results from the simplest, home  3 layer convolutional neural network and a similarly sized fully connected network to explore benefits and extract generalities about design and parameter choices to deepen our understanding and intuition behind the network. We will then introduce the professional libraries and the extended architectures see how close to the published results we can achieve on MNIST. Lastly we will summarize our findings and successes.
+
+\section{Methodology}
+
+\subsection{Approach and Division of Labor}
 	
 In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on the data , so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
 
  We will then compare our rudimentary approach to a professional library for deep learning, specifically TensorFlow. Obviously the professional library will allow for better results and the interesting conclusions but building and implementing a simplified version will give a better understanding into how the neural network works. 
+ 
+ Kathryn built and analyzed the CNN. Andres led the implementation of TensorFlow and complex architectures for replication of results. Remy built the fully connected multilayer neural nets. 
 
 \subsection{Neural Network Basics}
 
@@ -88,6 +94,8 @@ To use stochastic gradient descent  on the neural net, the back prop algorithm i
 
 
 \subsection{Multi-layer Neural Network}
+
+
 For each fully connected layer forward propagation is straight forward, as you simply continue the formula for a single hidden layer and chain them together for more layers. 
 
 For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
@@ -166,7 +174,7 @@ The region to be pooled over is determined by the pooling dimensions. It again i
 
 \subsubsection{Dropout}
 
-Another common trick used in CNN is the inclusion of drop-out layers which help to decrease the likelihood of overfitting. It achieves this by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
+Another common trick used in CNN is the inclusion of drop-out layers which help to decrease the likelihood of over-fitting. It achieves this by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
 \begin{figure}
 \includegraphics[scale=.52]{dropout.png}
 
@@ -174,7 +182,7 @@ Another common trick used in CNN is the inclusion of drop-out layers which help 
 \label{fig:dropout}
 \end{figure}
 
-The simplest way to implement drop-out is to keep each node with probability, $p$, and otherwise discard it. The key benefit is that dropout is able to outperform regularization in neural networks for reducing overfitting \cite{Dropout}. Dropout also has the added benefit of being able to evaluate exponentially many different neural network architectures depending on which nodes are dropped.
+The simplest way to implement drop-out is to keep each node with probability, $p$, and otherwise discard it. The key benefit is that dropout is able to outperform regularization in neural networks for reducing over-fitting \cite{Dropout}. Dropout also has the added benefit of being able to evaluate exponentially many different neural network architectures depending on which nodes are dropped.
  
 \subsubsection{Re-LU}
 
@@ -199,7 +207,7 @@ For mean pooling, with pool dimension, $p$, this is equivalent to
 \begin{equation}
 delta^{(l)}= \frac{1}{\textrm{p}^2}  \textrm{kron}(\delta^{(l+1)}, \textrm{ones}(p))
 \end{equation}
-Where kron, is the Kroneckor Tensor Product.
+where kron, is the Kroneckor Tensor Product.
 
 Thus for the convolution layer, the derivatives can be calculated as follows.
 \begin{equation}
@@ -212,7 +220,7 @@ Thus for the convolution layer, the derivatives can be calculated as follows.
 
 \subsection{Professional Libraries}
 
-Since deep learning has become increasingly popular, optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets are becoming easily accesible. There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
+Since deep learning has become increasingly popular, optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets are becoming easily accessible. There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
 
 
 
@@ -227,7 +235,7 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 \caption{Sample entries of the MNIST dataset \cite{LeCun1998}}
 \end{figure}
 
-Since the datatset has already been thoroughly explored on by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets provided in this paper is the first objective of our study. By comparing our results for different layers and types of layers to published and documented results, we can make sure our implementation is working correctly before taking on a more complicated dataset. 
+Since the data-set has already been thoroughly explored on by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets provided in this paper is the first objective of our study. By comparing our results for different layers and types of layers to published and documented results, we can make sure our implementation is working correctly before taking on a more complicated dataset. 
 
 \subsubsection{LeNets}
 The CNN LeNet-1 architecture created by LeCun, consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
@@ -251,98 +259,111 @@ LeNet-5 architecture expands on this even further by adding an additional layer,
 We start by examining the effects of multiple layers and convolutional network layers to improve performance on MNIST using networks that we made. We will try to quantify accuracy gains versus computation time for different type of networks of relatively small size. To test bigger networks and to replicate LeCun's results we will transition to utilizing TensorFlow to classify MNIST images. 
 
 \subsection{Multilayer NN}
+The initial goal was to alter the two-layer neural network done for homework 3 to have the functionality to soft-code the number of hidden layers and the number of nodes per hidden layers.
+\newline
+
+Once this was done, a grid search was done to find the optimal parameters. Due to the fact that all results documented by others have been on the three-layer model (using two hidden layers), we decided to focus on the three-layer model. The parameters optimized include the number of hidden nodes and regularization $\lambda_1$ ,$\lambda_2$ and $\lambda_3$ for layers 1, 2 and 3 respectively.
+\newine
+For the architecture with 300 hidden nodes and 100 hidden nodes respecitevely, we obtained the best testing accuracy when 
 \subsection{Simple CNN}
-The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works. We will examine individual design choices and parameters to gain intuition on how they impact the overall result. However, it is important to note than in all these cases we are not performing a full search over the parameter space so these are not necessarily true optima or fully generalizable statements. Rather they may be local maximas. In the sake of completely the project on time,  we will only concentrate on these small studies in the hope that we can glean useful information from them. 
+The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works and to test some simply features of performance and computation time.  
 
-The optimal combination for this simple three layer CNN was found to be with SIZE FILTERS, NUM NODES, DROPOUT, POOLING TYPE, and was found to have only a BLANK  BLANK error. From this optima we will consider small perturbations to each parameter to investigate the effect of each parameter on performance. 
+Our process was to find a set of parameters that produced good results. We understand that it would be difficult to examine effects of individual parameters. Since there are a lot of different variables and the parameter space is large it would be to find true optima or fully generalizable statements about individual parameters with out investing more time than provided for this project. Since effects of one parameter around this local point could not be representative of the effect of that variable in general on a global scale or on other architectures. 
 
-
-\subsubsection{Efficiency}
-iterations versus accuracy 
-
-\subsubsection{Filter Sizes}
-
-We decided to look at the effect of the filter size on the accuracy and computation time, while keeping all other parameters constant. Not surprisingly, increasing the filter size increases the computation time quadratically. However, the main takeaway is that after a certain threshold size, the accuracy seems not to be affected by the filter size. This idea is show in Fig.~\ref{fig:filtsize}. As long as the filter is bigger than 6x6 pixels, the net is able to achieve less than 4 $\%$ error on the testing data. For this architecture there is a optima at a filter size of 13 x 13 pixels, but this may just be an effect of other meta parameters. 
-\begin{figure}
-\includegraphics[scale=.35]{filtersize.png}
-\caption{Effect of changing filter size on error and time}
-\label{fig:filtsize}
-
-\end{figure}
+The optimal combination for this simple three layer CNN was found to be with 20, 9 x 9 filters and 2 x 2 mean pooling, and was found to have only a BLANK  BLANK error. However this was our best performance. With that same network and parameter we actually achieved errors varying from BLANK to BLANK. 
 
 
-\subsubsection{Dropout Effect}
-We also looked at changing the dropout rate, $p$ from .5 to 1, where $p=1$ is no dropout. Which the exception of one sharp peak, the computation time showed a logarithmic increase in computation time, making little difference at the high end of the range tested shown in Fig. ~\ref{fig:dropoutres}. It also show that high probabilities of dropout perform better than lower values and better than no dropout at all $p=1$. 
-\begin{figure}
-\includegraphics[scale=.35]{dropoutrate.png}
-\caption{Effect of changing dropout rate on error and time}
-\label{fig:dropoutres}
-\end{figure}
-
-
-\subsubsection{Pooling Method}
-On this simple network we investigated the accuracy and computation time of utilizing mean versus max pooling. We expect computation time to be about the same since both operations are linear time. However we found that 
-
-SMALL filter, MEDIUM BIG Filter,
-
-\subsubsection{Pooling Size}
-
-\subsubsection{Tanh versus ReLU}
-
-
-For bigger CNNs we will turn to TensorFlow and run with CUDA on the GPU. 
+For bigger CNNs we will turn to TensorFlow for faster performance. 
 \subsection{Replication of NNs and LeNets Results}
 
+We hoped to replicate published results for testing error on MNIST for a variety of different network structures from LeCun, \cite{LeCun1998}. Specifically we designed
+
+\begin{itemize}
+\item{2 layer fully connected with 1000 hidden nodes}
+\item{3 layer fully connected with 300 then 100 hidden nodes}
+\item{3 layer fully connected with 500, then 150 hidden nodes}
+\item{5 layer convolutional network (reminiscent of LeNet-1)}
+\item{6 layer convolutional network (reminiscent of LeNet-4)}
+\item{7 layer convolutional network (reminiscent of LeNet-5)}
+\end{itemize}
+
+
+Although the LeNets come with specified filter numbers, sizes, and pooling sizes, there are still a lot of other parameters that were not given which make it non-trivial to replicate including, iterations, learning rates, batch size, dropout, pooling method, weight initializations bounds which are not included clearly in the published results. Because results are so sensitive to the whole combination of parameters, knowing the few  Therefore we will attempt to replicate the results from these networks by keeping the same number and types of layers but we will not restrict ourselves to exactly the specifications of the LeNets. We don't  believe the combinations of parameters we find to give the best results to be a global optima since we did not do a particularly thorough search over the parameter space. 
+
+For our 5 layer CNN we restricted ourselves to be comprised of a convolutional layer followed by pooling layer followed by another set of convolutional and pooling layers followed by a fully connections to the output layer. For the 6 layer, we simply add an additional fully connected layer and add another fully connected for the 7 layer CNN. 
+
+
+In general we fixed certain parameters to make our search simpler. For any convolutional layer we fixed filter size to be 5x5 pixels and pooling size to be 2x2 pixels. We found that the first convolution worked well with with 32 filters and second with 64.   We left all fully connected layers with 1024 nodes. 
 
 
 
-
-\begin{center}
 \begin{table*}[t]
-\begin{tabular} { |c | c | c | c | }
+\begin{center}
+\begin{tabular} { |c | c | c | }
     \hline
-    NN Type & LeCun Error  &  Our Error  & Tensor Flow Error \\ \hline
-    2-layer NN, 300 hidden units, mean square error & 4.7 &  & \\ \hline
-    2-layer NN, 1000 hidden units & 4.5 & & \\ \hline
-    3-layer NN, 300+100 hidden units & 3.05 & &  \\ \hline
-    3-layer NN, 500+150 hidden units & 2.95 & & \\ \hline
-    3- layer CNN &  -- &  2.7 &  \\ \hline
-    5 layer CNN  (LeNet-1) & 1.7 & -- & \\ \hline 
-    6 layerCNN (LeNet-4) & 1.1& -- & \\ \hline 
-    7 layer CNN (LeNet-5) &  0.95 &  -- &\\ \hline
+    NN Type & LeCun Error  &   Tensor Flow Error \\ \hline
+    2-layer NN, 1000 hidden units & 4.5  & \\ \hline
+    3-layer NN, 300+100 hidden units & 3.05  &  \\ \hline
+    3-layer NN, 500+150 hidden units & 2.95  & \\ \hline
+    5 layer CNN  (LeNet-1) & 1.7  & \\ \hline 
+    6 layerCNN (LeNet-4) & 1.1 & \\ \hline 
+    7 layer CNN (LeNet-5) &  0.95  &\\ \hline
 \end{tabular}
 \label{table: MNISTLeCun}
 \caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
-\end{table*}
 \end{center}
+\end{table*}
 
+\begin{table*}[t]
+	\begin{center}
+		\begin{tabular} { |c | c | c | }
+			\hline
+			NN Type & Mean error &   V ariance\\ \hline
+			2-layer NN, 1000 hidden units & 4.5  & \\ \hline
+			3-layer NN, 300+100 hidden units & 3.05  &  \\ \hline
+			3-layer NN, 500+150 hidden units & 2.95  & \\ \hline
+			5 layer CNN  (LeNet-1) & 1.7  & \\ \hline 
+			6 layerCNN (LeNet-4) & 1.1 & \\ \hline 
+			7 layer CNN (LeNet-5) &  0.95  &\\ \hline
+		\end{tabular}
+		\label{table: MNISTLeCun}
+		\caption{Comparison of Mean Accuracy and Variance results for multilayer ANN and CNN \cite{LeCun1998}.}
+	\end{center}
+\end{table*}
+
+\subsection{Variance of Results}
+In the table above we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that in runs on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. We ran each of the nets list above BLANK times  to achieve the following results
+
+
+
+
+
+\subsection{Effect of the Amount of Training Data}
+One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the exact same network, with the same parameters for the same number of iterations and gradually increase the percentage of the MNIST data we give as an input. With the same number of iterations but fewer examples, we expect that the  
+
+
+
+\subsection{Benefits of Multi-layer vs Single-layer}
+According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
+\begin{equation*}
+\textrm{params} = 784*1000 + 1000* 10 = 794000
+\end{equation*}
+
+and in the case of the three layer model with 300 and 100 hidden nodes,
+\begin{equation*}
+\textrm{params} = 784*300 + 300*100 + 100* 10 = 266200
+\end{equation*}
+It is evident that the three-layer network outperforms the two-layer network with less parameters. 
+
+In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
+
+It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
 
 
 \section{Conclusions}
 
-\subsection{Division of Labor}
-Kathryn built and analyzed the CNN. 
-Andres led the implementation of TensorFlow and complex architectures for replication of results.
-Remy built multilayer neural nets. 
 
-\subsection{Additional Insight: Multi-layer vs Single-layer}
-According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
-\begin{equation}
-\textrm{params} = 784*1000 + 1000* 10 = 794000
-\end{equation}
-\newline
-and in the case of the 3 layer with 300 and 100 hidden nodes,
-\begin{equation}
-\textrm{params} = 784*300 + 300*100 + 100* 10 = 266200
-\end{equation}
-\newline
-It is evident that the three-layer network outperforms the two-layer network with less parameters. 
-\newline
-\newline
-In regards to time complexity, it is evident that the bottleneck of the function is back-propagation. Since the complexity back-propagation is related to the number of parameters it is also evident that the three-layer method has a lower time complexity.
-\newline
-\newline
-It is clear from the two factors above that multi-layer is more efficient and is no surprise that deep learning is increasing in popularity.
+
 
 \bibliographystyle{unsrt}
 \bibliography{references}
