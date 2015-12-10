@@ -88,7 +88,8 @@ The error function $J(w)$ we will attempt to minimize is
 \begin{equation}
 J(w)= l(w) + \sum_{i=1}^N\lambda_{i}(\|w_i\|_F^2);
 \end{equation}
-where $l(w)$ is the negative loglikelihood function,
+
+Where  $\lambda$ is a regularization term to prevent overfitting and $l(w)$ is the negative loglikelihood function,
 
 \begin{equation}
 \scriptsize
@@ -134,7 +135,6 @@ A stochastic gradient descent approach was used with a step size $\eta$ shown be
 where $\beta \leq 100$, $\gamma >.5$ and epoch is the number of times the descent method has gone through the training set.  
 \newline\newline
 
-To prevent over-fitting we used a regularization parameter $\lambda$. 
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
