@@ -277,7 +277,7 @@ We began by building the most basic form of a convolutional neural network, whic
 
 As we discovered with neural nets, the devil is in the details. It is very difficult to find the optimal parameters for CNNs because of the high dimensional optimization space and the lack of generalization between architectures. Finding optimal parameters for a particular net says very little about the best parameters for another architecture. The space is too high dimensional for grid search and also highly non-convex, eliminating any guarantees for gradient descent based methods. 
 
-After much research and trail-and-error, we converged on a set of parameters which achieved 2.7$\%$ on the MNIST dataset. The optimal combination for our architecture was 20 filters, 9 x 9 convolution kernels, and 2 x 2 pooling dimensions. We were only able to reach 2.7 error after the third epoch, after only one pass through the training data the net still produced 4.6$\%$ error. 
+After much research and trail-and-error, we converged on a set of parameters which achieved 2.7$\%$ on the MNIST dataset. The optimal combination for our architecture was 20 filters, 9 x 9 convolution kernels, and 2 x 2 pooling dimensions. We were only able to reach 2.7 error after the third epoch, one pass through the training data the net still produced 4.6$\%$ error. 
 
 \subsection{Replication of NNs and LeNets Results}
 
@@ -312,13 +312,13 @@ We attempted to replicate the published results for testing error on MNIST for t
 
 
 
-Although the LeNets come with specified filter numbers, sizes, and pooling sizes, there remained many parameters that were not given which make it non-trivial to replicate. These parameters included number of iterations, learning rates, batch size, dropout, pooling method, weight initializations, and others, all of which are not included clearly in the published results. Because results are so sensitive to the entire combination of parameters, knowing the few provided was not sufficient to reproducing his results. Therefore, we maintained the same network architecture, but did not restrict ourselves to only using the parameters specified in LeCun's paper. Instead, we were able to closely replicate the results using our own combination of the system's parameters.
+Although the LeNets come with specified filter numbers, sizes, and pooling sizes, there remain many parameters that were not given which made it non-trivial to replicate. These parameters included number of iterations, learning rates, batch size, dropout, pooling method, weight initializations, and others, all of which are not included clearly in the published results. Because results are so sensitive to the entire combination of parameters, knowing the few provided was not sufficient to reproducing his results. Therefore, we maintained the same network architecture, but did not restrict ourselves to only using the parameters specified in LeCun's paper. Instead, we were able to closely replicate the results using our own combination of system parameters.
 
-Our 5 layer CNN, which was modeled after LeCun's LeNet1, is constructed as follows. Input images are fed through two convolution and pooling layer combinations in series, and finish with a fully connected layer. To implement our 6 layer CNN, modeled after LeCun's LeNet4, we simply added another fully connected layer to the tail, and similarly appended another fully connected layer to LeNet4 for our 7 layer LeNet5 emulation. 
+Our 5 layer CNN, which was modeled after LeCun's LeNet1, is constructed as follows. Input images are fed through two convolution and pooling layer combinations in series, and finish with a fully connected layer. To implement our 6 layer CNN, modeled after LeCun's LeNet4, we simply added another fully connected layer to the tail, and similarly appended another fully connected layer to out 6 layer CNN for our 7 layer LeNet5 emulation. 
 
-In general we fixed certain parameters to make our search simpler. For any convolutional layer we fixed filter size to be 5x5 pixels and pooling size to be 2x2 pixels. We found that the first convolution worked well with with 32 filters and second with 64.   We left all fully connected layers with 1024 nodes. 
+In general we fixed certain parameters to make our search simpler. For any convolutional layer we fixed filter size to be 5x5 pixels and pooling size to be 2x2 pixels. We found that the first convolution worked well with with 32 filters and the second with 64. We left all fully connected layers with 1024 nodes. 
 
-Also we understand that LeCun cites convergence in testing error after 10-12 times the number of training data in iterations for LeNet-5 \cite{LeCun1998}. However, since it takes greater than 4 minutes to run each of the multilayer CNNs for 1 epoch and we were more interested in experimenting with a variety of different parameters, we capped the iterations at 100,000. Obviously these will not be as successful as runs that were carried out for an order of magnitude more iterations and therefore we do not expect to match Lecun's results perfectly.  Our best results are shown in Table ~\ref{table:MNISTLeCun}. 
+Also we understand that LeCun cites convergence in testing error after 10-12 times the number of training data in iterations for LeNet-5 \cite{LeCun1998}. However, since it takes greater than 4 minutes to run each of the multilayer CNNs for 1 epoch and we were more interested in experimenting with a variety of different parameters, we stopped our runs after 2 epochs. Obviously these will not be as successful as runs that were carried out for an order of magnitude more iterations and therefore we do not expect to match Lecun's results perfectly.  Our best results are shown in Table ~\ref{table:MNISTLeCun}. 
 
 \begin{table*}
 	\begin{center}
@@ -338,15 +338,13 @@ Also we understand that LeCun cites convergence in testing error after 10-12 tim
 \end{table*}
 
 \subsection{Variance of Results}
-In Table~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
+In Table~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this hides certain information. If every parameter and detail of a net remain consistent through runs, test errors had large variance due to random initialization of weights and dropout layers. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
 
-We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histlenet} respectively. 
-
-
+Additionally, we reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histlenet} respectively. 
 
 
 
-The results show that the is low variance in the 2-layer fully connected neural network but high variance in both of the 3 layer fully connected networks. High variance could be indicative that many more iterations through the training data would be needed to converge to steady state weights and therefore a consistent test error. It could also be a sign that the cost space for that particular network is riddled with more local optima.  
+The results show that there is lower variance in the 2-layer fully connected neural network but high variance in both of the 3 layer fully connected networks. High variance could be indicative that many more iterations through the training data would be needed to converge to steady state weights and therefore a consistent test error. It could also be a sign that the cost space for that particular network is riddled with more local optima.  
 
 
 \begin{figure}
@@ -365,7 +363,7 @@ The results show that the is low variance in the 2-layer fully connected neural 
 
 
 \subsection{Effect of Training Data Size}
-One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the 5 and 7 layer CNNs with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. These results are shown in Fig. \ref{fig:trainsize}.  
+One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error changes for increasingly large networks. We decided to investigate this by running the 5 and 7 layer CNNs with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. These results are shown in Fig. \ref{fig:trainsize}.  
 
 With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(see appendix), we expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits $T$ and plateaus after this number.
 
@@ -389,8 +387,8 @@ According to the Universal Approximation theorem, in a compact and continuous da
 Looking at the figure 8, it is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
 
 \section{Conclusions}
-We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
- Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from two-layer model, it is evident to us that deep neural networks are superior to the simple two-layer model. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
+We implemented multi-layer and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow and compared our results with LeCun's results, and finally did some further analysis to gain deeper insight.
+ Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from a two-layer model, we find that deep neural networks are superior to the simple two-layer model in both training speed and quality. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
 
 \bibliographystyle{unsrt}
 \bibliography{references}
