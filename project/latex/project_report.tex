@@ -31,14 +31,14 @@ Thirdly, we hope to do some analysis on the results of multilayer architectures.
 This paper is organized as follows. First we will introduce the theory behind fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implementations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication of LeCun's results using TensorFlow and lastly expanding to deeper analysis. 
 
 \section{Methodology}
-In this project, we seek to implement a version of multi-layer neural network for supervised learning on images. We plan on trying our implementation on the MNIST dataset, so that we do not have to worry about data generation and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit in making the network out of convolution layers, where not all nodes are connected. We will compare this to a implementation with fully connected layers.
+In this project, we seek to implement a multi-layer neural network for supervised learning on images. We plan on testing our implementation on the MNIST dataset, so  we do not have to worry about data generation, preprocessing, and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit in making the network out of convolution layers, where not all nodes are connected. We will compare this to a implementation with fully connected layers.
 
- We will then compare our rudimentary approach to a professional library for deep learning, specifically the TensorFlow platform. Undoubtedly, the professional library will allow for better results and interesting conclusions. However, building and implementing a simplified version will give a better understanding into how the neural network works. 
+ We will then compare our rudimentary approach to a professional library for deep learning, specifically the TensorFlow framework. Undoubtedly, the professional library will allow for better, faster results and interesting conclusions. However, building and implementing a simplified version will give a better understanding into how the neural network works. 
 
 \subsection{Division of Labor}
 	
  
- For the project we split the work into three parts for each of the members. Kathryn Evans built and analyzed the CNN. Andres Hasfura led the implementation of TensorFlow and complex architectures for replication of results. Remy Mock built the fully connected multilayer neural nets. We worked collaboratively to do parameters searches and design experiments. 
+ For the project we split the work into three parts for each of the members. Kathryn Evans built and analyzed the CNN. Andres Hasfura led the TensorFlow implementations of complex architectures for replication of results. Remy Mock built the fully connected multilayer neural nets. We worked collaboratively to do parameters searches and design experiments. 
 
 \subsection{Neural Network Basics}
 
@@ -51,7 +51,7 @@ a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
 z_j= g(a_j)
 \end{equation}
 
-Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid. The activation, $a_j$  depends on the data, $x_i, \; i=\{1,...N\}$, learned weights $w_{ji}^{(1)}$ and bias $w_0^{(1)}$. 
+Where $g(x)$ is a nonlinear map of input. The activation, $a_j$  depends on the data, $x_i, \; i=\{1,...N\}$, learned weights $w_{ji}^{(1)}$ and bias $w_0^{(1)}$. 
 
 The second layer learns in a similar fashion and can be described for $K$ output classes and $M$ features in the hidden layer as
 \begin{equation}
@@ -123,7 +123,7 @@ the weights are then adjusted accordingly in the gradient descent.
 
 
 \subsubsection{Implementation}
-Using MATLAB, we have implemented the Multi-layer Neural Network. It is soft-coded so the hidden layers and number of hidden nodes per layer can easily be altered. The function created cells for the weights of each layers and initialized the weights randomly between -1 and 1.
+We have implemented the Multi-layer Neural Network using MATLAB. It is soft-coded so the hidden layers and number of hidden nodes per layer can easily be altered. The function created cells for the weights of each layers and initialized the weights randomly between -1 and 1.
 \newline
 A sigmoid function shown below is used as the activation function for all layers. 
 
@@ -228,7 +228,7 @@ Thus for the convolution layer, the derivatives can be calculated as follows.
 
 \subsection{Professional Libraries}
 
-Since deep learning has become increasingly popular, so too has the optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets. . There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, and is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
+Since deep learning has become increasingly popular, so too has the optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets. . There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, and is easy and intuitive to use.\cite{TensorFlowWeb}. 
 
 
 
