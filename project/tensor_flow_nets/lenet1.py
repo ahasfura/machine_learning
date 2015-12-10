@@ -9,12 +9,13 @@ print 'lenet1'
 # Import MINST data
 import time
 import input_data
+import sys
 mnist = input_data.read_data_sets("/tmp/data/", data_amount=int(sys.argv[1]), one_hot=True)
 
 import tensorflow as tf
 
 # Parameters
-learning_rate = 0.1
+learning_rate = 0.001
 training_iters = 100000
 batch_size = 128
 display_step = 10
