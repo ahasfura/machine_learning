@@ -28,21 +28,21 @@ Our second goal is to attempt to replicate results from Yann Lecun on the classi
 
 Thirdly, we hope to do some analysis of the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization.  To quickly cycle through a number of different tests we will utilize professional software here as well. 
 
-This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. In the approach section we will also describe the dataset, MNIST, as well as those networks we wish to replicate.  Then we will describe our results starting with  results from the simplest, home  3 layer convolutional neural network and a similarly sized fully connected network to explore benefits and extract generalities about design and parameter choices to deepen our understanding and intuition behind the network. We will then introduce the professional libraries and the extended architectures see how close to the published results we can achieve on MNIST. Lastly we will summarize our findings and successes.
+This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. In the approach section we will also describe the dataset, MNIST, as well as those networks we wish to replicate.  Then we will describe our results starting with  results from the simplest, three-layer convolutional neural network and a similarly sized fully connected network to explore benefits and extract generalities about design and parameter choices to deepen our understanding and intuition behind the network. We will then introduce the professional libraries and the extended architectures see how close to the published results we can achieve on MNIST. Lastly we will do some further analysis on the networks and summarize our findings and successes.
 
 \section{Methodology}
 
 \subsection{Approach and Division of Labor}
 	
-In this project, we seek to implement a version of multilayer neural nets for supervised learning on specifically images. We plan on trying our implementations on the data , so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
+In this project, we seek to implement a version of multi-layer neural nets for supervised learning on images. We plan on trying our implementations on the data, so that we do not have to worry about data generation and labeling and provide generalization about the neural net choices. Because we are specifically interested in applying our implementation to images, we hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
 
- We will then compare our rudimentary approach to a professional library for deep learning, specifically TensorFlow. Obviously the professional library will allow for better results and the interesting conclusions but building and implementing a simplified version will give a better understanding into how the neural network works. 
+ We will then compare our rudimentary approach to a professional library for deep learning, specifically the TensorFlow platform. Undoubtedly, the professional library will allow for better results and interesting conclusions. However, building and implementing a simplified version will give a better understanding into how the neural network works. 
  
- Kathryn built and analyzed the CNN. Andres led the implementation of TensorFlow and complex architectures for replication of results. Remy built the fully connected multilayer neural nets. 
+ For the project we split the work into three parts for each of the members. Kathryn Evans built and analyzed the CNN. Andres Hasfura led the implementation of TensorFlow and complex architectures for replication of results. Remy Mock built the fully connected multilayer neural nets. 
 
 \subsection{Neural Network Basics}
 
-In general, the idea of a neural network replaces the known basis functions with features, which are parametric functions of activations, learned from the input data in the first layer of learning, and then utilize a second layer to learn the relationship of the output data from those selected features.
+In general, the idea of a neural network is to replace the known basis functions with adaptive features that are functions of adaptive weights and a parametric functions of activations. The basis functions are learned from the input data in the first layer of learning, and then utilized by a second layer to learn the relationship of the output data from those selected features.
 
 \begin{equation}
 a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
@@ -51,9 +51,9 @@ a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
 z_j= g(a_j)
 \end{equation}
 
-Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid, and $a_j$ is an activiation, which depends on the data, $x_i, \; i=\{1,...N\}$  and learned weights $w_ji^{(1)}$ and bias $w_0^{(1)}$. 
+Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid, and $a_j$ is an activiation, which depends on the data, $x_i, \; i=\{1,...N\}$, learned weights $w_ji^{(1)}$ and bias $w_0^{(1)}$. 
 
-The second layer learns in a similar fashion and can be describe for $K$ output classes and M features in the  hidden layer  is thus 
+The second layer learns in a similar fashion and can be described for $K$ output classes and $M$ features in the hidden layer and is thus 
 \begin{equation}
 a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
 \end{equation}
@@ -61,7 +61,7 @@ a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
 f_k= \tilde{g}(a_k^{(2)})
 \end{equation}
  
-Where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$ and $f_k$ is really our prediction $h_k(x,w)$. H
+where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$ and $f_k$ is really our prediction $h_k(x,w)$. 
 
 \begin{figure}
 \includegraphics[scale=.6]{simpleNN.png}
@@ -80,23 +80,35 @@ J(w)= \sum_{i=1}^N \sum_{k=1}^K -y^{(i)}_k \textrm{log}h_k(x^{(i)})- (1 -y^{(i)}
 
 
 
-As the network grows in size, the computational time becomes more and more of a constraint. So for all studied neural networks we will used Stochastic Gradient descent as opposed to batch methods in order to find the optimal weights for each layer. 
+As the network grows in size, the computational time becomes more and more of a constraint. So for all studied neural networks we will use stochastic gradient descent as opposed to batch methods in order to find the optimal weights for each layer. 
 \begin{equation}
 w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
 \end{equation}
 
-Where $\eta$ is  the learning rate and the choice of that parameter is to be chosen to optimize results for a particular model on a particular data set.
+where $\eta$ is  the learning rate and the choice of that parameter varies as it is to be chosen to optimize results for each particular model on the data-set.
 
 
 \subsubsection{Backpropagation}
 
-To use stochastic gradient descent  on the neural net, the back prop algorithm is used, which moves from input to output layers in forward propagation to calculate activations and then from output to input for the backward propagation to calculate the gradients. 
+To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. The back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary changed needed for the weights in the form of gradients. 
 
 
 \subsection{Multi-layer Neural Network}
 
 
 For each fully connected layer forward propagation is straight forward, as you simply continue the formula for a single hidden layer and chain them together for more layers. 
+
+The error function $J(w)$ we will attempt to minimize is 
+\begin{equation}
+J(w)= ll(w) + \sum_{i=1}^N\lambda_{i}(\|w_i\|_F^2);
+\end{equation}
+where $ll(w)$ is the negative loglikelihood function,
+
+\begin{equation}
+l(w)=\sum_{i=1}^N \sum_{k=1}^K [-y^i_k log(h_k(x_i,w))-(1-y^i_k)log(1-h_k(x_i,w))]
+\end{equation}
+
+and 
 
 For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
 
@@ -111,6 +123,15 @@ and the following derivatives for weights and biases,
 \begin{equation}
 \nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
 \end{equation}
+
+the weights are then adjusted in the gradient descent
+\begin{equation}
+\nabla_{W^{(l)}}J(W,b;x,y) = \delta^{(l+1)}(a^{(l)})^T
+\end{equation}
+\begin{equation}
+\nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
+\end{equation}
+
 
 \subsubsection{Implementation}
 Using MATLAB, we have implemented the Multi-layer Neural Network. It is soft-coded so the hidden layers and number of hidden nodes per layer can easily be altered. The function created cells for the weights of each layers and initialized the weights randomly between -1 and 1.
@@ -263,8 +284,8 @@ The initial goal was to alter the two-layer neural network done for homework 3 t
 \newline
 
 Once this was done, a grid search was done to find the optimal parameters. Due to the fact that all results documented by others have been on the three-layer model (using two hidden layers), we decided to focus on the three-layer model. The parameters optimized include the number of hidden nodes and regularization $\lambda_1$ ,$\lambda_2$ and $\lambda_3$ for layers 1, 2 and 3 respectively.
-\newine
-For the architecture with 300 hidden nodes and 100 hidden nodes respecitevely, we obtained the best testing accuracy when 
+\newline
+For the architecture with 300 hidden nodes and 100 hidden nodes respectively, we obtained the best testing accuracy when 
 \subsection{Simple CNN}
 The first objective was to build the simplest CNN, comprising of one convolutional layer, one pooling layer and one fully connected layer and implement it on the full MNIST dataset to ensure that it works and to test some simply features of performance and computation time.  
 
@@ -302,12 +323,12 @@ In general we fixed certain parameters to make our search simpler. For any convo
 \begin{tabular} { |c | c | c | }
     \hline
     NN Type & LeCun Error  &   Tensor Flow Error \\ \hline
-    2-layer NN, 1000 hidden units & 4.5  & \\ \hline
-    3-layer NN, 300+100 hidden units & 3.05  &  \\ \hline
-    3-layer NN, 500+150 hidden units & 2.95  & \\ \hline
-    5 layer CNN  (LeNet-1) & 1.7  & \\ \hline 
-    6 layerCNN (LeNet-4) & 1.1 & \\ \hline 
-    7 layer CNN (LeNet-5) &  0.95  &\\ \hline
+    2-layer NN, 1000 hidden units & 4.5  & 5.8\\ \hline
+    3-layer NN, 300+100 hidden units & 3.05  & 8.2 \\ \hline
+    3-layer NN, 500+150 hidden units & 2.95  & 5.6\\ \hline
+    5 layer CNN  (LeNet-1) & 1.7  & 3.1\\ \hline 
+    6 layerCNN (LeNet-4) & 1.1 & 1.6\\ \hline 
+    7 layer CNN (LeNet-5) &  0.95  & 2.3\\ \hline
 \end{tabular}
 \label{table: MNISTLeCun}
 \caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
@@ -318,13 +339,13 @@ In general we fixed certain parameters to make our search simpler. For any convo
 	\begin{center}
 		\begin{tabular} { |c | c | c | }
 			\hline
-			NN Type & Mean error &   V ariance\\ \hline
-			2-layer NN, 1000 hidden units & 4.5  & \\ \hline
-			3-layer NN, 300+100 hidden units & 3.05  &  \\ \hline
-			3-layer NN, 500+150 hidden units & 2.95  & \\ \hline
-			5 layer CNN  (LeNet-1) & 1.7  & \\ \hline 
-			6 layerCNN (LeNet-4) & 1.1 & \\ \hline 
-			7 layer CNN (LeNet-5) &  0.95  &\\ \hline
+			NN Type & Mean error &   Variance\\ \hline
+			2-layer NN, 1000 hidden units & 6.8  & .63\\ \hline
+			3-layer NN, 300+100 hidden units & 11.4  & 3.9 \\ \hline
+			3-layer NN, 500+150 hidden units & 8.9  & 3.4\\ \hline
+			5 layer CNN  (LeNet-1) & 3.8  & 1.07 \\ \hline 
+			6 layerCNN (LeNet-4) & 3.7 & 1.01\\ \hline 
+			7 layer CNN (LeNet-5) &  3.9  &1.3\\ \hline
 		\end{tabular}
 		\label{table: MNISTLeCun}
 		\caption{Comparison of Mean Accuracy and Variance results for multilayer ANN and CNN \cite{LeCun1998}.}
@@ -332,14 +353,14 @@ In general we fixed certain parameters to make our search simpler. For any convo
 \end{table*}
 
 \subsection{Variance of Results}
-In the table above we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that in runs on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. We ran each of the nets list above BLANK times  to achieve the following results
+In table 1, above we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results(table 2).
 
 
 
 
 
-\subsection{Effect of the Amount of Training Data}
-One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the exact same network, with the same parameters for the same number of iterations and gradually increase the percentage of the MNIST data we give as an input. With the same number of iterations but fewer examples, we expect that the  
+\subsection{Effect of Training Data size}
+One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running a fully connected two layer network with 1000 hidden nodes with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. With the same number of iterations but fewer examples. A simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(shown in next section/appendix?). We expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits achieves $T$ and plateaus after this number.
 
 
 
