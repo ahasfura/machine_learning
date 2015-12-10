@@ -13,22 +13,22 @@
 \maketitle
 
 \section{ Introduction} 
-Artificial Neural networks (ANN) are a useful machine learning framework. Their primary benefit is that instead of specifying the basis functions relating input to output, the basis function is learned.  This is especially useful for when the optimal basis function is complicated or non-intuitive, such as in the case of images.
+Artificial Neural networks (ANN) are a useful machine learning framework. Their primary benefit is that instead of specifying the basis functions relating input to output, they are learned.  This is especially useful for when the optimal basis function is complicated or non-intuitive, such as in the case of images.
 
 
-Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system which provided the inspiration for artificial neural networks, the architecture used for machine learning neural networks can be more complicated and complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, allows for more complex input/output relationship and an ability to classify based on both information from low and high level features.
+Through this course, a simple singular layer artificial neural network was presented. However, much like the neural networks in the human brain visual system , the architectures used for machine learning neural networks can be more complex than a single hidden layer. The idea of utilizing many layers is known as deep learning.  Increasing layers, allows for more complex input/output relationships and an ability to classify based on both information from low and high level features.
 
-Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of area in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
+Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of areas in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
 	
-Not only do deep nets contain more hidden layers but a multitude of different types of layers. Each layer type has different connectivity and objectives allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining only the relevance of spatially nearby pixels in the context of determining features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
+Not only do deep nets contain more hidden layers but also a multitude of different types of layers. Each layer type has different connectivity and objective, allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining spatially close pixels to determine features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
 
-In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is implement our own multilayer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures.  Not only do we want to gain familiarity with the concept and tools used in deep learning but we hope to benchmark our home made software on MNIST. 
+In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is implement our own multilayer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated layer types.  Not only do we want to gain familiarity with the concepts and tools used in deep learning but we hope to benchmark our home made software on MNIST. 
 
-Our second goal is to attempt to replicate results from Yann LeCun on the classification of the MNIST data sets for more complicated frameworks like LeNet \cite{LeCun1998}. For this we will use the professional deep learning library to get faster results and be able to quickly build extensive architectures. 
+Our second goal is to attempt to replicate results from Yann LeCun on the classification of the MNIST data sets for more complicated frameworks like LeNet \cite{LeCun1998}. For this we will use a professional deep learning library to get faster results and be able to quickly build extensive architectures. 
 
-Thirdly, we hope to do some analysis of the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization/dropouts? How large of a dataset do we need to train on to be able to classify accurately?  To quickly cycle through a number of different tests we will utilize professional software here as well. 
+Thirdly, we hope to do some analysis on the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization/dropouts? How large of a dataset do we need to train on to be able to classify accurately?  To quickly cycle through a number of different tests we will utilize TensorFlow, a professional software by Google.
 
-This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. In the approach section we will also describe the dataset, MNIST, as well as those networks we wish to replicate.  Then we will describe our results starting with  results from the simplest three-layer convolutional neural network and a similarly sized fully connected network to explore benefits and extract generalities about design and parameter choices to deepen our understanding and intuition behind the network. We will then introduce the professional libraries and the extended architectures see how close to the published results we can achieve on MNIST. Lastly we will do some further analysis on the networks and summarize our findings and successes.
+This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implementations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication and lastly expanding to deeper analysis. 
 
 \section{Methodology}
 In this project, we seek to implement a version of multi-layer neural network for supervised learning on images. We plan on trying our implementation on the MNIST dataset, so that we do not have to worry about data generation and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
@@ -42,7 +42,7 @@ In this project, we seek to implement a version of multi-layer neural network fo
 
 \subsection{Neural Network Basics}
 
-In general, the idea of a neural network is to replace specific basis functions with learned basis functions. The basis functions are learned from the input data in the first layer of learning, and then utilized by a second layer to learn the relationship of the output data from those selected features.
+In general, the idea of a neural network is to replace specific basis functions with learned basis functions. The basis functions are learned from the input data in the first layer of learning, and then utilized by a second layer which learns the relationship of the output data from those selected features.
 
 \begin{equation}
 a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
@@ -51,17 +51,17 @@ a_j^{(1)}= \sum_{i=1}^N w_{ji}^{(1)} x_i+w_{j0}^{(1)}
 z_j= g(a_j)
 \end{equation}
 
-Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid, and $a_j$ is an activation, which depends on the data, $x_i, \; i=\{1,...N\}$, learned weights $w_ji^{(1)}$ and bias $w_0^{(1)}$. 
+Where $g(x)$ is a nonlinear map of input to $(0,1)$, generally tanh or sigmoid. The activation, $a_j$  depends on the data, $x_i, \; i=\{1,...N\}$, learned weights $w_{ji}^{(1)}$ and bias $w_0^{(1)}$. 
 
-The second layer learns in a similar fashion and can be described for $K$ output classes and $M$ features in the hidden layer and is thus 
+The second layer learns in a similar fashion and can be described for $K$ output classes and $M$ features in the hidden layer as
 \begin{equation}
-a_k^{(2)}= \sum_{j=1}^M w_jk^{(2)} z_j+w_{k0}^{(2)}
+a_k^{(2)}= \sum_{j=1}^M w_{jk}^{(2)} z_j+w_{k0}^{(2)}
 \end{equation}
 \begin{equation}
 f_k= \tilde{g}(a_k^{(2)})
 \end{equation}
  
-where $\tilde{g}(x)$ is the activation function, another nonlinear map, not necessarily the same as $g(x)$ and $f_k$ is really our prediction $h_k(x,w)$. 
+where $\tilde{g}(x)$ is the  another nonlinear map, not necessarily the same as $g(x)$ and $f_k$ is really our prediction $h_k(x,w)$. 
 
 \begin{figure}
 \includegraphics[scale=.6]{simpleNN.png}
@@ -72,23 +72,17 @@ where $\tilde{g}(x)$ is the activation function, another nonlinear map, not nece
 
 
 
-As the network grows in size, the computational time becomes more and more of a constraint. So for all studied neural networks we will use stochastic gradient descent as opposed to batch methods in order to find the optimal weights for each layer. 
+
+
+
+\subsubsection{Back-propagation}
+
+To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. Back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary gradients with respect to the cost function $J$. Stochastic gradient descent is then used to update the weights with the following equation, 
 \begin{equation}
 w^{(t+1)} = w^{(t)} + \eta_t \nabla_w J(w^{(t)})
 \end{equation}
 
 where $\eta$ is  the learning rate and the choice of that parameter varies as it is to be chosen to optimize results for each particular model on the data-set.
-
-
-\subsubsection{Backpropagation}
-
-To perform stochastic gradient descent on the neural net, the back-propagation algorithm is used. The back-propagation uses the errors calculated in the forward propagation to calculate activations to calculate the necessary changed needed for the weights in the form of gradients. 
-
-
-\subsection{Multi-layer Neural Network}
-
-
-For each fully connected layer forward propagation is straight forward, as you simply continue the formula for a single hidden layer and chain them together for more layers. 
 
 The error function $J(w)$ we will attempt to minimize is 
 \begin{equation}
@@ -101,15 +95,17 @@ where $l(w)$ is the negative loglikelihood function,
 l(w)=\sum_{i=1}^N \sum_{k=1}^K [-y^i_k log(h_k(x_i,w))-(1-y^i_k)log(1-h_k(x_i,w))]
 \end{equation}
 
-and 
 
-For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
+\subsection{Multi-layer Neural Network}
+
+
+For each fully connected layer forward propagation is straight forward, as you simply  chain the formula for a single hidden layer together for more layers.  For backwards propagation, the error for each fully connected layer, $l$ is computed from the error of its output layer, $l+1$  
 
 \begin{equation}
 \delta^{(l)}=((W^{(l)})^T \delta^{(l+1)}) \cdot f ^{\prime} (z^{(l)})
 \end{equation}
 
-and the following derivatives for weights and biases, 
+Which create the the following derivatives for weights and biases, 
 \begin{equation}
 \nabla_{W^{(l)}}J(W,b;x,y) = \delta^{(l+1)}(a^{(l)})^T
 \end{equation}
@@ -117,13 +113,8 @@ and the following derivatives for weights and biases,
 \nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
 \end{equation}
 
-the weights are then adjusted in the gradient descent
-\begin{equation}
-\nabla_{W^{(l)}}J(W,b;x,y) = \delta^{(l+1)}(a^{(l)})^T
-\end{equation}
-\begin{equation}
-\nabla_{b^{(l)}}J(W,b;x,y)= \delta^{(l+1)}
-\end{equation}
+the weights are then adjusted accordingly in the gradient descent
+
 
 
 \subsubsection{Implementation}
@@ -147,17 +138,14 @@ To prevent over-fitting we used a regularization parameter $\lambda$.
 
 
 \subsection{General Architecture of a Convolutional Neural Network}
-As opposed to a simple neural network, a convolutional neural network is specifically designed to take advantage of the 2-d structure of an input image by considering only local connections and tied weights followed by some form of pooling which results in translation invariant features. Compared to regular neural nets,  CNNs  have many fewer parameters than networks of similar size and thus they are easier to train. 
+As opposed to a fully connected neural network, a convolutional neural network is specifically designed to take advantage of the 2-D structure of an input image by considering only local connections. It also takes advantage of tied weights which reduced number of decision parameters, as well as pooling which results in translation invariant features. All these advantages, make CNN generally easier to train. 
 
 
 
 \subsubsection{Convolutional Layer}
-The idea of the CNN is to no longer have fully connected layers. In a CNN, the relationship between two nodes are described by a kernel, ie. the convolutional kernel. But instead of hard coding the filters, the filters used are learned by training. 
+In a CNN, filters are learned to be used to identify key characteristics of a certain classification. These filters are convolved over subspaces of the original image dictated by the filter size, that learn features of these small segments of the larger image.  This transforms the 2-D images into a 3-D space.
 
-By sub-sampling the image and having learned features over smaller segments of the larger image. The feature detector learning from the subsection can then be applied anywhere in the remaining image. Specifically, we can take the learned subsection features and convolve them with the larger image there by transforming the 2-D images into a 3-D space. For a  $M * N $ size image, using $K$ filters that are $m * n$,  after convolution, there are  $ K * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time we learn low level features. 
-
-
-Generally, the process that occurs in a convolution layer can be described as for each image, $x_n$ for $n=1..N$ and for each filter $k=1...K$ in the convolution layer, $c$
+ For a  $M * N $ size image, using $K$ filters that are $m * n$,  after convolution, there are  $ K * (M - m + 1) * (N - n + 1) $ sub images. Using this method, we decrease the size of each image, but at the same time learn low level features. This is described for each image, $x_n$ for $n=1..N$ and for each filter $k=1...K$ in the convolution layer, $c$ as
 \begin{equation}
 a_{n,k}^{(c)}= x_n \ast w_k^{(c)} + b_k^{(c)}
 \end{equation}
@@ -167,9 +155,9 @@ f_{n,k}= \tilde{g}(a_{n,k}^{(c)})
  
  Where $\ast$ is the convolution operator. 
  
- The number of feature maps directly controls capacity and so that depends on the number of available examples and the complexity of the task. The challenge is then to identify the correct filter size in order to obtain reasonable features, given a particular dataset.
+ The number of filters directly controls capacity and is chosen based on the number of available examples and the complexity of the task. The challenge is then to identify the correct filter size in order to obtain reasonable granularity of features, given a particular dataset.
 
-Also CNNs introduce the idea of tied weights, which mean that certain connections between one layer to the next are defined to be the same. The tied weights dramatically reduces the number of parameters needed to describe and set up the network compared to a fully connected network of similar size. This idea is shown in fig. \ref{fig:conv}.
+Also CNNs introduce the idea of tied weights, which mean that certain connections affiliated with a particular filter between one layer to the next are defined to be the same. The use of tied weights dramatically reduces the number of parameters needed to define network compared to a fully connected network of similar size. This idea is shown in Fig. \ref{fig:conv}.
 
 
 
@@ -182,13 +170,13 @@ Also CNNs introduce the idea of tied weights, which mean that certain connection
 
 
 \subsubsection{Pooling Layer}
-The features learned using convolution, are next used for classification. Previously with the fully connected neural network we utilized a softmax classifier, but this can be computationally challenging and expensive. Instead, pooling layers take advantage of a single parameter of these features, such as the mean, ( 'mean pooling') or max ( 'max pooling'), at  various regions in the image. Not only does this reduce the dimensionality of the result but can also help reduce over-fitting, a problem that is of serious concern for networks with increasing numbers of hidden nodes. 
+The features learned using convolution are next used for classification. Previously with the fully connected neural network we utilized a softmax classifier, but this can be computationally challenging and expensive. Instead, pooling layers take advantage of a single parameter of these features, such as the mean, ( 'mean pooling') or max ( 'max pooling'), at  various regions in the image. Not only does this reduce the dimensionality of the result but can also help reduce over-fitting, a problem that is of serious concern for networks with increasing numbers of hidden nodes. 
 
 The region to be pooled over is determined by the pooling dimensions. It again involves a convolution, this time between regions specified by the pooling dimensions and the results from the previous convolution layer. 
 
 \subsubsection{Dropout}
 
-Another common trick used in CNN is the inclusion of drop-out layers which help to decrease the likelihood of over-fitting. It achieves this by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
+Another common trick used in CNNs is the inclusion of drop-out layers which help to decrease the likelihood of over-fitting. It achieves this by essentially thinning out the number of hidden nodes by randomly dropping units during training.  A depiction of this effect is shown in Fig.~\ref{fig:dropout}. However, during test time all nodes are present. 
 \begin{figure}
 \includegraphics[scale=.52]{dropout.png}
 
@@ -200,7 +188,9 @@ The simplest way to implement drop-out is to keep each node with probability, $p
  
 \subsubsection{Re-LU}
 
-Yet another problem with deep nets is that they are computationally expensive. One of the main tools to minimize this is a smart selection of the activation function, $g$. Specifically using a rectified linear unit, (Re-LU) as opposed to more traditional sigmoids or tanh, can be beneficial in increasing the efficiency of a neural network \cite{imagenet}. The Re-LU function is simple, 
+As we already mentioned, a major flaw of deep nets is that they can be computationally expensive. One of the main tools to minimize this is a smart selection of the activation function, $g$. 
+
+Specifically using a rectified linear unit, (Re-LU) as opposed to more traditional sigmoids or tanh, can be beneficial in increasing the efficiency of a neural network \cite{imagenet}. The Re-LU function is simple, 
 
 \begin{equation}
 g(x)= \textrm{max}(0,x)
@@ -219,13 +209,13 @@ For the pooling layer, the error must be up-sampled to propagate backwards
 
 For mean pooling, with pool dimension, $p$, this is equivalent to 
 \begin{equation}
-\delta^{(l)}= \frac{1}{\textrm{p}^2}  \textrm{kron}(\delta^{(l+1)}, \textrm{ones}(p))
+\delta^{(l)}= \frac{1}{p^2}  \textrm{kron}(\delta^{(l+1)}, \textrm{ones}(p))
 \end{equation}
 where kron, is the Kroneckor Tensor Product.
 
 Thus for the convolution layer, the derivatives can be calculated as follows.
 \begin{equation}
-\nabla_{W^{(l)}}J(W,b;x,y) = \sum_{i=1}^m (a^{(l)}_i) \ast \textrm{rot90}( \delta^{(l+1)}_k,2)
+\nabla_{W^{(l)}}J(W,b;x,y) = \sum_{i=1}^m (a^{(l)}_i) \ast  \delta^{(l+1)}_k
 \end{equation}
 \begin{equation}
 \nabla_{b^{(l)}}J(W,b;x,y)= \sum_{a,b}(\delta^{(l+1)}_k)_{a,b}
@@ -234,7 +224,7 @@ Thus for the convolution layer, the derivatives can be calculated as follows.
 
 \subsection{Professional Libraries}
 
-Since deep learning has become increasingly popular, optimized professional libraries that allow students, researchers and hobbyists to easily build complex deep nets are becoming easily accessible. There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
+Since deep learning has become increasingly popular, so too are optimized professional libraries  that allow students, researchers and hobbyists to easily build complex deep nets. . There are many of these libraries, but we chose to adopt TensorFlow, the open source software from Google \cite{TensorFlowGH}. We especially like TensorFlow because it is python based, has abundant tutorials, and is easy and intuitive to use. In addition, is uses an interface with Cuda for GPU processing to speed up results for image computations. \cite{TensorFlowWeb}. 
 
 
 
@@ -249,13 +239,14 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 \caption{Sample entries of the MNIST dataset \cite{LeCun1998}}
 \end{figure}
 
-Since the data-set has already been thoroughly explored on by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets provided in this paper is the first objective of our study. By comparing our results for different layers and types of layers to published and documented results, we can make sure our implementation is working correctly before taking on a more complicated dataset. 
+Since the data-set has already been thoroughly explored  by many people including Yann LeCun \cite{LeCun1998}, it is a good data set on which to measure our success.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets, (LeNet) provided in this paper is the one of the objective of our study. 
 
 \subsubsection{LeNets}
-The CNN LeNet-1 architecture created by LeCun, consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
+The LeNet framework was developed by LeCun beginning in the 1980's. They provide a few examples of more complex CNN architecture on which we will compare our performance. 
+The CNN LeNet-1 architecture consists of 5 layers, which are denoted by C1, S2, C3, S4, and F5.  The output of the first layer serves as
 input to the next layer. C1 and C3 are convolution layers, and S2 and S4 are sub-sampling layers and the fifth layer is fully connected. \cite{LeCun89}
 
-The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers . \cite{LeCun95}
+The CNN LeNet-4 architecture consists of 6 layers, which adds to LeNet-1 an additional hidden layer that is fully connected to its  input and output layers  \cite{LeCun95}.
 
 LeNet-5 architecture expands on this even further by adding an additional layer, with gaussian connections. More details on the architecture chosen, including filter size number and pooling dimension are shown in Fig. ~\ref{fig:LeNet5}
 
@@ -266,19 +257,16 @@ LeNet-5 architecture expands on this even further by adding an additional layer,
 \end{figure*}
 
 
- We specifically chose to replicate the 2 and 3 layer fully connected neural nets as well as LeNet-1, -4 and -5 with no preprocessing or distortions. 
-
 
 \section{Results}
 We start by benchmarking our handmade mulitlayer and convolutional network on the MNIST dataset, and provide discussion about some of the challenges and difficulties behind building these deep nets. We then replicate the remaining deeper architectures presented by LeCun, but for these we use TensorFlow. We did not have access to GPU clusters, so we found it necessary to use TensorFlow's more computationally efficient implementations. Finally, we provide further analysis of the deep architectures, further illuminating characteristics of deep neural networks. 
 
 \subsection{Multilayer NN}
 The initial goal was to alter the two-layer neural network done for homework 3 to have the functionality to soft-code the number of hidden layers and the number of nodes per hidden layers.
-\newline
 
 Once this was done, a grid search was done to find the optimal parameters. Due to the fact that all results documented by others have been on the three-layer model (using two hidden layers), we decided to focus on the three-layer model. The parameters optimized include the number of hidden nodes and regularization $\lambda_1$ ,$\lambda_2$ and $\lambda_3$ for layers 1, 2 and 3 respectively.
 
-For the architecture with 300 hidden nodes and 100 hidden nodes respectively, we obtained the best testing accuracy when 
+For the architecture with 300 hidden nodes and 100 hidden nodes, we obtained the best testing accuracy of 6.2\% when $\lambda_1$ ,$\lambda_2$ and $\lambda_3$ were $10^{-3}$, $10^{-8}$ and $10^{-5}$. The testing error was extremely sensitive to  the regularization parameters, and even changing one of the parameters slightly increased the testing error significantly. 
 
 \subsection{Simple CNN}
 We began by building the most basic form of a convolutional neural network, which starts with a convolution layer, followed by one pooling layer, and finished with a fully connected layer to the output. This net was then trained and tested on the MNIST dataset to ensure proper implementation and extract performance and computation time metrics. 
@@ -300,14 +288,6 @@ We attempted to replicate the published results for testing error on MNIST for t
 \item{7 layer convolutional network (based on LeNet-5)}
 \end{itemize}
 
-Although the LeNets come with specified filter numbers, sizes, and pooling sizes, there remained many parameters that were not given which make it non-trivial to replicate. These parameters included number of iterations, learning rates, batch size, dropout, pooling method, weight initializations, and others, all of which are not included clearly in the published results. Because results are so sensitive to the entire combination of parameters, knowing the few provided was not sufficient to reproducing his results. Therefore, we maintained the same network architecture, but did not restrict ourselves to only using the parameters specified in LeCun's paper. Instead, we were able to closely replicate the results using our own combination of the system's parameters.
-
-Our 5 layer CNN, which was modeled after LeCun's LeNet1, is constructed as follows. Input images are fed through two convolution and pooling layer combinations in series, and finish with a fully connected layer. To implement our 6 layer CNN, modeled after LeCun's LeNet4, we simply added another fully connected layer to the tail, and similarly appended another fully connected layer to LeNet4 for our 7 layer LeNet5 emulation. 
-
-In general we fixed certain parameters to make our search simpler. For any convolutional layer we fixed filter size to be 5x5 pixels and pooling size to be 2x2 pixels. We found that the first convolution worked well with with 32 filters and second with 64.   We left all fully connected layers with 1024 nodes. 
-
-Also we understand that LeCun cites convergence in testing error after 10-12 times the number of training data in iterations for LeNet-5 \cite{LeCun1998}. However, since it takes greater than 4 minutes to run each of the multilayer CNNs for 1 epoch and we were more interested in experimenting with a variety of different parameters, we capped the iterations at 100,000. Obviously these will not be as successful as runs that were carried out for an order of magnitude more iterations and therefore we do not expect to match Lecun's results perfectly.  Our best results are shown in Table ~\ref{table:MNISTLeCun}. 
-
 \begin{table*}
 \begin{center}
 \begin{tabular} { |c | c | c | }
@@ -326,9 +306,15 @@ Also we understand that LeCun cites convergence in testing error after 10-12 tim
 \end{table*}
 
 
-\subsection{Variance of Results}
-In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}.
 
+
+Although the LeNets come with specified filter numbers, sizes, and pooling sizes, there remained many parameters that were not given which make it non-trivial to replicate. These parameters included number of iterations, learning rates, batch size, dropout, pooling method, weight initializations, and others, all of which are not included clearly in the published results. Because results are so sensitive to the entire combination of parameters, knowing the few provided was not sufficient to reproducing his results. Therefore, we maintained the same network architecture, but did not restrict ourselves to only using the parameters specified in LeCun's paper. Instead, we were able to closely replicate the results using our own combination of the system's parameters.
+
+Our 5 layer CNN, which was modeled after LeCun's LeNet1, is constructed as follows. Input images are fed through two convolution and pooling layer combinations in series, and finish with a fully connected layer. To implement our 6 layer CNN, modeled after LeCun's LeNet4, we simply added another fully connected layer to the tail, and similarly appended another fully connected layer to LeNet4 for our 7 layer LeNet5 emulation. 
+
+In general we fixed certain parameters to make our search simpler. For any convolutional layer we fixed filter size to be 5x5 pixels and pooling size to be 2x2 pixels. We found that the first convolution worked well with with 32 filters and second with 64.   We left all fully connected layers with 1024 nodes. 
+
+Also we understand that LeCun cites convergence in testing error after 10-12 times the number of training data in iterations for LeNet-5 \cite{LeCun1998}. However, since it takes greater than 4 minutes to run each of the multilayer CNNs for 1 epoch and we were more interested in experimenting with a variety of different parameters, we capped the iterations at 100,000. Obviously these will not be as successful as runs that were carried out for an order of magnitude more iterations and therefore we do not expect to match Lecun's results perfectly.  Our best results are shown in Table ~\ref{table:MNISTLeCun}. 
 
 \begin{table*}
 	\begin{center}
@@ -347,6 +333,18 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 	\end{center}
 \end{table*}
 
+\subsection{Variance of Results}
+In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
+
+We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histletnet4} respectively. 
+
+
+
+
+
+The results show that the is low variance in the 2-layer fully connected neural network but high variance in both of the 3 layer fully connected networks. High variance could be indicative that many more iterations through the training data would be needed to converge to steady state weights and therefore a consistent test error. It could also be a sign that the cost space for that particular network is riddled with more local optima.  
+
+
 \begin{figure}
 \includegraphics[scale=.5]{hist2layer.png}
 \caption{Histogram for Test Error for the 2 layer 1000 hidden node network}
@@ -355,12 +353,14 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 
 
 
-\subsection{Effect of Training Data size}
+
+
+\subsection{Effect of Training Data Size}
 One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the 5 and 7 layer CNNs with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. These results are shown in Fig. \ref{fig:trainsize}.  
 
-With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(shown in next section/appendix?). We expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits achieves $T$ and plateaus after this number.
+With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(see appendix), we expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits $T$ and plateaus after this number.
 
- \begin{figure}
+\begin{figure}
 \includegraphics[scale=.5]{trainingsize.png}
 \caption{Effect of Training Data Size for 5 and 7 layer CNN}
 \label{fig:trainsize}
@@ -369,9 +369,24 @@ With the same number of iterations but fewer examples, a simple way to guess the
 
 In these plotted figures we have 
 
+\subsection{Comparison to a two-layer model}
+According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error.
+ 
+ \begin{figure}
+ 	\includegraphics[scale=.6]{errorvshiddennodes.png}
+ 	\caption{Effect of number of hidden nodes on a two layer model}
+ 	\label{fig:numhidden}
+ \end{figure}
+It is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
 
+\section{Conclusions}
+We implemented the multi-layer neural network and convolutional neural network and optimized them for varying parameters. The best test errors obtained on the networks we implemented were 6.2\% and 2.7\% for the multi-layer network and convolutional network respectively. We then replicated these networks using TensorFlow, compared our results with Lecun's results and did some further analysis to gain deeper insight.
+ Using TensorFlow, we obtained our best result with a test error of merely 1.6\% using the network architecture that corresponds with LeNet-4. Considering that our best results were from deep networks and not from two-layer model, it is evident to us that deep neural networks are superior to the simple two-layer model. Deep neural networks are a powerful tool and it is no surprise that deep learning is increasing in popularity.
 
-\subsection{Benefits of Multi-layer vs Single-layer}
+\bibliographystyle{unsrt}
+\bibliography{references}
+\section{Appendix}
+\subsection{Calculation of the number of Parameters}
 According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. Since in our tests the two layer network does not perform as well as the three layer network it is an interesting question to ask how many nodes we would need. Calculating the number of parameters of the two layer network with 1000 hidden nodes, 
 \begin{equation*}
 \textrm{params} = 784*1000 + 1000* 10 = 794000
