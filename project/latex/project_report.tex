@@ -20,21 +20,15 @@ Through this course, a simple singular layer artificial neural network was prese
 
 Deep learning, although not a recent idea, has recently exploded in popularity due to rise in labeled data and general purpose GPU programming and is revolutionizing very important subfields within artificial intelligence. Machine learning, machine vision, and natural language processing are examples of areas in which the use of deep learning has produced large jumps in performance on difficult test sets. Deep nets are now being used anywhere from pedestrian detection for autonomous vehicles \cite{Szarvas2006}, to facial expression recognition \cite{Li2015} to classifying whether or not a selfie is good \cite{Karpathy}. 
 	
-<<<<<<< HEAD
-Not only do deep nets contain more hidden layers but can contain a multitude of different types of layers. Each layer type has different connectivity and objectives allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining only the relevance of spatially nearby pixels in the context of determining features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
-
-In this project, we want to explore the benefits of multi-layer fully connected neural networks as well as convolutional neural networks for image classification. Our first goal is implement our own multi-layer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated convolutional layers and architectures.  Not only do we want to gain familiarity with the concept and tools used in deep learning but we hope to benchmark our home-made software on MNIST. 
-=======
 Not only do deep nets contain more hidden layers but also a multitude of different types of layers. Each layer type has different connectivity and objective, allowing for a greater richness of information. In the case of images, convolutional layers are especially beneficial for examining spatially close pixels to determine features. Arrangements of convolutional layers as well as other types of layers leads to Convolutional Neural Networks (CNN). 
 
 In this project, we want to explore the benefits of deep nets as well as convolutional neural networks for image classification.  Our first goal is implement our own multilayer neural networks and convolutional neural networks. From this we hope to gain insights on the benefit on image classification performance of firstly, additional fully connected hidden layers and secondly, more complicated layer types.  Not only do we want to gain familiarity with the concepts and tools used in deep learning but we hope to benchmark our home made software on MNIST. 
->>>>>>> 5f5f77333d596b0b0307a20365120b51fecb4724
 
 Our second goal is to attempt to replicate results from Yann LeCun on the classification of the MNIST data sets for more complicated frameworks like LeNet \cite{LeCun1998}. For this we will use a professional deep learning library to get faster results and be able to quickly build extensive architectures. 
 
 Thirdly, we hope to do some analysis on the results of multilayer architectures. The generalities we hope to explore include the following: How does the number of layers affect the amount of training data needed?  How much variance is there in the output results due to random initialization/dropouts? How large of a dataset do we need to train on to be able to classify accurately?  To quickly cycle through a number of different tests we will utilize TensorFlow, a professional software by Google.
 
-This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implemenations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication and lastly expanding to deeper analysis. 
+This paper is organized as follows. First we will introduce fully connected and convolutional neural networks with an emphasis on types of layers and implementation. We will also describe the dataset which we use for testing our implementations, MNIST, as well as those networks we wish to replicate.  Then we will describe our results for each of the three goals previously stated, starting with results from the implementation with software we built, then replication and lastly expanding to deeper analysis. 
 
 \section{Methodology}
 In this project, we seek to implement a version of multi-layer neural network for supervised learning on images. We plan on trying our implementation on the MNIST dataset, so that we do not have to worry about data generation and labeling. Because we are specifically interested in applying our implementation to images, we also hope to see benefit of making the network out of convolution layers, where not all nodes are connected and we will compare this to a implementation with fully connected layers.
@@ -94,7 +88,8 @@ The error function $J(w)$ we will attempt to minimize is
 \begin{equation}
 J(w)= l(w) + \sum_{i=1}^N\lambda_{i}(\|w_i\|_F^2);
 \end{equation}
-where $l(w)$ is the negative loglikelihood function,
+
+Where  $\lambda$ is a regularization term to prevent overfitting and $l(w)$ is the negative loglikelihood function,
 
 \begin{equation}
 \scriptsize
@@ -244,7 +239,7 @@ The MNIST is a well-known dataset of handwritten digits, 0-9, comprising 60,000 
 \caption{Sample entries of the MNIST dataset \cite{LeCun1998}}
 \end{figure}
 
-Since the data-set has already been thoroughly explored  by many people including Yann LeCun \cite{LeCun1998}, it provides a good system to check our results.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets, (LeNet) provided in this paper is the one of the objective of our study. 
+Since the data-set has already been thoroughly explored  by many people including Yann LeCun \cite{LeCun1998}, it is a good data set on which to measure our success.  Replication of the architecture of both the fully-connected and convolutional multi-layer neural nets, (LeNet) provided in this paper is the one of the objective of our study. 
 
 \subsubsection{LeNets}
 The LeNet framework was developed by LeCun beginning in the 1980's. They provide a few examples of more complex CNN architecture on which we will compare our performance. 
@@ -284,6 +279,24 @@ The optimal combination for this simple three layer CNN was found to be with 20,
 For bigger CNNs we will turn to TensorFlow for faster performance. 
 \subsection{Replication of NNs and LeNets Results}
 
+\begin{table*}
+\begin{center}
+\begin{tabular} { |c | c | c | }
+    \hline
+    NN Type & LeCun Error  &   Tensor Flow Error \\ \hline
+    2-layer NN, 1000 hidden units & 4.5  & 5.8\\ \hline
+    3-layer NN, 300+100 hidden units & 3.05  & 8.2 \\ \hline
+    3-layer NN, 500+150 hidden units & 2.95  & 5.6\\ \hline
+    5 layer CNN  (LeNet-1) & 1.7  & 3.1\\ \hline 
+    6 layerCNN (LeNet-4) & 1.1 & 1.6\\ \hline 
+    7 layer CNN (LeNet-5) &  0.95  & 2.3\\ \hline
+  \end{tabular}
+\caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
+\label{table:MNISTLeCun}
+\end{center}
+\end{table*}
+
+
 We hoped to replicate published results for testing error on MNIST for a variety of different network structures from LeCun, \cite{LeCun1998}. Specifically we designed
 
 \begin{itemize}
@@ -306,28 +319,6 @@ In general we fixed certain parameters to make our search simpler. For any convo
 Also we understand that LeCun cites convergence in testing error after 10-12 times the number of training data in iterations for LeNet-5 \cite{LeCun1998}. However, since it takes greater than 4 minutes to run each of the multilayer CNNs for 1 epoch and we wanted to try a variety of different parameters, we capped the iterations at 100,000. Obviously these will not be as successful as runs that were carried out for an order of magnitude more iterations and therefore we do not expect to match Lecun's results perfectly.  Our best results are shown in Table ~\ref{table:MNISTLeCun}. 
 
 \begin{table*}
-\begin{center}
-\begin{tabular} { |c | c | c | }
-    \hline
-    NN Type & LeCun Error  &   Tensor Flow Error \\ \hline
-    2-layer NN, 1000 hidden units & 4.5  & 5.8\\ \hline
-    3-layer NN, 300+100 hidden units & 3.05  & 8.2 \\ \hline
-    3-layer NN, 500+150 hidden units & 2.95  & 5.6\\ \hline
-    5 layer CNN  (LeNet-1) & 1.7  & 3.1\\ \hline 
-    6 layerCNN (LeNet-4) & 1.1 & 1.6\\ \hline 
-    7 layer CNN (LeNet-5) &  0.95  & 2.3\\ \hline
-  \end{tabular}
-\caption{Comparison of Test Error results for multilayer ANN and CNN with published results \cite{LeCun1998}.}
-\label{table:MNISTLeCun}
-\end{center}
-\end{table*}
-
-
-\subsection{Variance of Results}
-In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}.
-
-
-\begin{table*}
 	\begin{center}
 		\begin{tabular} { |c | c | c | }
 			\hline
@@ -344,6 +335,18 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 	\end{center}
 \end{table*}
 
+\subsection{Variance of Results}
+In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the test data. However, this may not be a great metric since we found with our results, that when the data-set on the exact same network with exactly the same parameters with the randomized initial weight, we get a shockingly large range of testing errors. This is due to the weight initialization and drop outs that happen in a random manner. We ran each of the nets list twenty times  to achieve the following results Table ~\ref{table:variance}. 
+
+We reran two specific networks, the 2 layer fully connected and the 6 layer CNN, an additional 30 times and made histograms of the results so that the scatter could be visualized as well. These can be seen in Fig. ~\ref{fig:hist2layer} and Fig.~\ref{fig:histletnet4} respectively. 
+
+
+
+
+
+The results show that the is low variance in the 2-layer fully connected neural network but high variance in both of the 3 layer fully connected networks. High variance could be indicative that many more iterations through the training data would be needed to converge to steady state weights and therefore a consistent test error. It could also be a sign that the cost space for that particular network is riddled with more local optima.  
+
+
 \begin{figure}
 \includegraphics[scale=.5]{hist2layer.png}
 \caption{Histogram for Test Error for the 2 layer 1000 hidden node network}
@@ -357,12 +360,14 @@ In Table ~\ref{table:MNISTLeCun}, we include only the maximum performance on the
 \end{figure}
 
 
-\subsection{Effect of Training Data size}
+
+
+\subsection{Effect of Training Data Size}
 One of the other main areas we wanted to investigate was how the relationship between amount of training data affects and testing error, changes for increasingly large networks. We decided to investigate this by running the 5 and 7 layer CNNs with the same parameters and iterations and gradually increase the percentage of the MNIST data we give as an input. These results are shown in Fig. \ref{fig:trainsize}.  
 
-With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(shown in appendix?), we expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits $T$ and plateaus after this number.
+With the same number of iterations but fewer examples, a simple way to guess the size of dataset needed comes from mathematics.  We need at least the same number of equation and variables to solve a multi-variable equation. Since the number of unknown weights can be calculated(see appendix), we expect the number of training data needed $T$ is proportional to this number. We expect that the network does a increasingly better job at classifying until it hits $T$ and plateaus after this number.
 
-\begin{figure}[H]
+\begin{figure}
 \includegraphics[scale=.5]{trainingsize.png}
 \caption{Effect of Training Data Size for 5 and 7 layer CNN}
 \label{fig:trainsize}
@@ -374,10 +379,10 @@ In these plotted figures we see that as expected the networks ability to classif
 \subsection{Comparison to a two-layer model}
 According to the Universal Approximation theorem, in a compact and continuous data-set the two-layer neural network can perform as well as any multi-layer neural network given enough hidden nodes. We decided to see if this theory can be applied to our data-set by varying the number of hidden nodes and measuring the test error on a two layer model.
  
- \begin{figure}[H]
- 	\includegraphics[scale=.5]{errorvshiddennodes.png}
+ \begin{figure}
+ 	\includegraphics[scale=.6]{errorvshiddennodes.png}
  	\caption{Effect of number of hidden nodes on a two layer model}
- 	\label{fig:trainsize}
+ 	\label{fig:numhidden}
  \end{figure}
 Looking at the figure 8, it is evident that the networks performs better with increasing the amount of hidden nodes. However training takes increasingly longer since the network is linearly proportional to the number of hidden parameters which is proportionally to the number of hidden nodes (see appendix). Furthermore once the number of parameters is on the order of the number of data-sets we may see no additional benefit of increasing the number of nodes. This is due to the same reason discussed in the section before regarding the solving a multi-variable equation.
 
